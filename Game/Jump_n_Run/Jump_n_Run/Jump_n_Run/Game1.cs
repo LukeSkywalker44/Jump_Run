@@ -18,6 +18,9 @@ namespace Jump_n_Run
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Rectangle mainFrame = new Rectangle(0, 0, 800, 600);
+        Texture2D background;
+
 
         public Game1()
         {
@@ -34,7 +37,7 @@ namespace Jump_n_Run
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            background = new Texture2D(graphics.GraphicsDevice, 800,600);
             base.Initialize();
         }
 
@@ -46,6 +49,7 @@ namespace Jump_n_Run
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            background = Content.Load<Texture2D>("800x600_Pacman");
 
             // TODO: use this.Content to load your game content here
         }
@@ -67,8 +71,7 @@ namespace Jump_n_Run
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            
 
             // TODO: Add your update logic here
 
@@ -81,10 +84,10 @@ namespace Jump_n_Run
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(background,mainFrame,Color.White);
             // TODO: Add your drawing code here
-
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
