@@ -39,28 +39,109 @@ namespace Jump_n_Run.classes
         {
             this.orientation = Orientation.Up;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
                 this.rectangle.Y -= this.movementSpeed;
+            }
+            else
+            {
+                int oldMoveSpeed = this.movementSpeed;
+                for (int i = 1; i <= this.movementSpeed; i++)
+                {
+                    int newSpeed = this.movementSpeed - i;
+
+                    this.movementSpeed = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.Y -= newSpeed;
+                        break;
+                    }
+                    this.movementSpeed = oldMoveSpeed;
+                }
+                this.movementSpeed = oldMoveSpeed;
+            }
         }
 
         public void MoveDown(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
                 this.rectangle.Y += this.movementSpeed;
+            }
+            else
+            {
+                int oldMoveSpeed = this.movementSpeed;
+                for (int i = 1; i <= this.movementSpeed; i++)
+                {
+                    int newSpeed = this.movementSpeed - i;
+
+                    this.movementSpeed = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.Y += newSpeed;
+                        break;
+                    }
+                    this.movementSpeed = oldMoveSpeed;
+                }
+                this.movementSpeed = oldMoveSpeed;
+            }
         }
 
         public void MoveLeft(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Left;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
                 this.rectangle.X -= this.movementSpeed;
+            }
+            else
+            {
+                int oldMoveSpeed = this.movementSpeed;
+                for (int i = 1; i <= this.movementSpeed; i++)
+                {
+                    int newSpeed = this.movementSpeed - i;
+
+                    this.movementSpeed = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.X -= newSpeed;
+                        break;
+                    }
+                    this.movementSpeed = oldMoveSpeed;
+                }
+                this.movementSpeed = oldMoveSpeed;
+            }
         }
 
         public void MoveRight(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Right;
-            if ((!Collision.BoundCollision(bound,this)) && (!Collision.ObjectCollision(collider, this)))
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
                 this.rectangle.X += this.movementSpeed;
+            }
+            else
+            {
+                int oldMoveSpeed = this.movementSpeed;
+                for (int i = 0; i <= this.movementSpeed; i++)
+                {
+                    int newSpeed = this.movementSpeed - i;
+
+                    this.movementSpeed = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.X += newSpeed;
+                        break;
+                    }
+                    this.movementSpeed = oldMoveSpeed;
+                 
+                }
+                this.movementSpeed = oldMoveSpeed;
+            }
         }
     }
 }
