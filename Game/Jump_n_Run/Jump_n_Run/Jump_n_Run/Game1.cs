@@ -19,14 +19,21 @@ namespace Jump_n_Run
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle mainFrame = new Rectangle(0, 0, 800, 600);
+        
         Texture2D background;
         MoveableObject obj;
+        MoveableObject obj2;
         Texture2D objTex;
-
+        string info = "";
+        SpriteFont Arial;
 
         public Game1()
         {
+            // open a window 800x600
             graphics = new GraphicsDeviceManager(this);
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 800;
             Content.RootDirectory = "Content";
         }
 
@@ -55,7 +62,13 @@ namespace Jump_n_Run
 
             objTex = new Texture2D(graphics.GraphicsDevice, 64, 64);
             objTex = Content.Load<Texture2D>("object");
-            obj = new MoveableObject(10, objTex, new Rectangle(100, 100, 64, 64));
+
+
+            // Objects for Collision testing
+            obj = new MoveableObject(10, objTex, new Rectangle(106, 106, 64, 64));
+            obj2 = new MoveableObject(10, objTex, new Rectangle(206, 206, 64, 64));
+
+            Arial = Content.Load<SpriteFont>("Arial");
 
             // TODO: use this.Content to load your game content here
         }
@@ -87,25 +100,43 @@ namespace Jump_n_Run
 
             if (kbstate.IsKeyDown(Keys.W))
             {
-               if(!Collision(mainFrame,obj.rectangle,obj.movementSpeed))
-                obj.rectangle.Y -= obj.movementSpeed;
+
+                obj.MoveUp(mainFrame, obj2);
             }
             if (kbstate.IsKeyDown(Keys.A))
             {
-                if (!Collision(mainFrame, obj.rectangle, obj.movementSpeed))
-                obj.rectangle.X -= obj.movementSpeed;
+                obj.MoveLeft(mainFrame, obj2);
             }
             if (kbstate.IsKeyDown(Keys.S))
             {
-                if (!Collision(mainFrame, obj.rectangle, obj.movementSpeed))
-                obj.rectangle.Y += obj.movementSpeed;
+                obj.MoveDown(mainFrame, obj2);
             }
             if (kbstate.IsKeyDown(Keys.D))
             {
-                if (!Collision(mainFrame, obj.rectangle, obj.movementSpeed))
-                obj.rectangle.X += obj.movementSpeed;
+                obj.MoveRight(mainFrame, obj2);
             }
-            
+
+
+            if (kbstate.IsKeyDown(Keys.Up))
+            {
+
+                obj2.MoveUp(mainFrame, obj);
+            }
+            if (kbstate.IsKeyDown(Keys.Left))
+            {
+                obj2.MoveLeft(mainFrame, obj);
+            }
+            if (kbstate.IsKeyDown(Keys.Down))
+            {
+                obj2.MoveDown(mainFrame, obj);
+            }
+            if (kbstate.IsKeyDown(Keys.Right))
+            {
+                obj2.MoveRight(mainFrame, obj);
+            }
+
+
+         
 
             // TODO: Add your update logic here
 
@@ -119,32 +150,21 @@ namespace Jump_n_Run
         protected override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+
             spriteBatch.Draw(background,mainFrame,Color.White);
-            spriteBatch.Draw(obj.Texture, obj.rectangle, Color.White);
-            // TODO: Add your drawing code here
+
+            spriteBatch.Draw(obj.Texture, obj.rectangle, Color.Blue);
+            spriteBatch.Draw(obj2.Texture, obj2.rectangle, Color.Red);
+
+            spriteBatch.DrawString(Arial, info, new Vector2(1, 1), Color.White);
+       
             spriteBatch.End();
+
             base.Draw(gameTime);
         }
 
-        static bool Collision(Rectangle bounds, Rectangle moveable, int moveSpeed)
-        {
-            bool result1;
-            bool result2;
-            bool result3;
-            bool result4;
-
-            Rectangle futureRect1 = new Rectangle(moveable.X + moveSpeed ,moveable.Y, moveable.Width, moveable.Height);
-            Rectangle futureRect2 = new Rectangle(moveable.X - moveSpeed ,moveable.Y, moveable.Width, moveable.Height);
-            Rectangle futureRect3 = new Rectangle(moveable.X , moveable.Y + moveSpeed , moveable.Width, moveable.Height);
-            Rectangle futureRect4 = new Rectangle(moveable.X , moveable.Y - moveSpeed , moveable.Width, moveable.Height);
-
-            bounds.Contains(ref futureRect1, out result1);
-            bounds.Contains(ref futureRect2, out result2);
-            bounds.Contains(ref futureRect3, out result3);
-            bounds.Contains(ref futureRect3, out result4);
+   
 
 
-            return !(result1 & result2 & result3 & result4);
-        }
     }
 }

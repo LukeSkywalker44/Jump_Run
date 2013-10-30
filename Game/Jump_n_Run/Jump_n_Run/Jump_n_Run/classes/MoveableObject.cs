@@ -12,19 +12,55 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Jump_n_Run.classes
 {
-    class MoveableObject
+
+    enum Orientation
+    {
+        Up, Down, Left, Right, Idle
+    }
+    class MoveableObject : GameObject
     {
         public int movementSpeed;
-        public Texture2D Texture;
-        public Rectangle rectangle;
-       
+        public Orientation orientation;
 
         public MoveableObject(int moveSpeed, Texture2D texture, Rectangle rect)
+            
         {
-            this.movementSpeed = moveSpeed;
             this.Texture = texture;
             this.rectangle = rect;
-           
+            this.movementSpeed = moveSpeed;
+            this.orientation = Orientation.Idle;
+        }
+
+        // TODO
+        // Move-Methods should take an IEnumerable<GameObject> as collider Parameter
+        //  ->there will be more than two objects in the game :)
+
+        public void MoveUp(Rectangle bound, GameObject collider)
+        {
+            this.orientation = Orientation.Up;
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                this.rectangle.Y -= this.movementSpeed;
+        }
+
+        public void MoveDown(Rectangle bound, GameObject collider)
+        {
+            this.orientation = Orientation.Down;
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                this.rectangle.Y += this.movementSpeed;
+        }
+
+        public void MoveLeft(Rectangle bound, GameObject collider)
+        {
+            this.orientation = Orientation.Left;
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                this.rectangle.X -= this.movementSpeed;
+        }
+
+        public void MoveRight(Rectangle bound, GameObject collider)
+        {
+            this.orientation = Orientation.Right;
+            if ((!Collision.BoundCollision(bound,this)) && (!Collision.ObjectCollision(collider, this)))
+                this.rectangle.X += this.movementSpeed;
         }
     }
 }
