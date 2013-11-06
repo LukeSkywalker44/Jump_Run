@@ -110,6 +110,7 @@
     <Compile Include="classes\Collision.cs" />
     <Compile Include="classes\GameObject.cs" />
     <Compile Include="classes\MoveableObject.cs" />
+    <Compile Include="classes\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

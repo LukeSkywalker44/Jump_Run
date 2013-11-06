@@ -27,6 +27,9 @@ namespace Jump_n_Run
         string info = "";
         SpriteFont Arial;
 
+        // Instanz
+        Player player = new Player();
+
         public Game1()
         {
             // open a window 800x600
@@ -59,6 +62,9 @@ namespace Jump_n_Run
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             background = Content.Load<Texture2D>("800x600_Pacman");
+
+            player.loadPlayer(this.graphics, this.Content);
+
 
             objTex = new Texture2D(graphics.GraphicsDevice, 64, 64);
             objTex = Content.Load<Texture2D>("object");
@@ -119,7 +125,6 @@ namespace Jump_n_Run
 
             if (kbstate.IsKeyDown(Keys.Up))
             {
-
                 obj2.MoveUp(mainFrame, obj);
             }
             if (kbstate.IsKeyDown(Keys.Left))
@@ -152,6 +157,9 @@ namespace Jump_n_Run
             spriteBatch.Begin();
 
             spriteBatch.Draw(background,mainFrame,Color.White);
+
+
+            player.DrawPlayer(spriteBatch);
 
             spriteBatch.Draw(obj.Texture, obj.rectangle, Color.Blue);
             spriteBatch.Draw(obj2.Texture, obj2.rectangle, Color.Red);
