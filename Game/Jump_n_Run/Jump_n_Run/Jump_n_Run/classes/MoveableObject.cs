@@ -60,6 +60,7 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+            animation(Orientation.Up);
         }
 
         public void MoveDown(Rectangle bound, GameObject collider)
@@ -87,6 +88,7 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+            animation(Orientation.Down);
         }
 
         public void MoveLeft(Rectangle bound, GameObject collider)
@@ -114,6 +116,7 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+            animation(Orientation.Left);
         }
 
         public void MoveRight(Rectangle bound, GameObject collider)
@@ -142,6 +145,16 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+
+            animation(Orientation.Right);
+        }
+
+        public void MoveIdle()
+        {
+        }
+
+        private virtual void animation(Orientation ori)
+        {
         }
     }
 }

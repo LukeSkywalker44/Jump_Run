@@ -104,40 +104,48 @@ namespace Jump_n_Run
                 this.Exit();
             }
 
-            if (kbstate.IsKeyDown(Keys.W))
+            else if (kbstate.IsKeyDown(Keys.W))
             {
 
-                obj.MoveUp(mainFrame, obj2);
+                obj.MoveUp(mainFrame, player);
             }
-            if (kbstate.IsKeyDown(Keys.A))
+            else if (kbstate.IsKeyDown(Keys.A))
             {
-                obj.MoveLeft(mainFrame, obj2);
+                obj.MoveLeft(mainFrame, player);
             }
-            if (kbstate.IsKeyDown(Keys.S))
+            else if (kbstate.IsKeyDown(Keys.S))
             {
-                obj.MoveDown(mainFrame, obj2);
+                obj.MoveDown(mainFrame, player);
             }
-            if (kbstate.IsKeyDown(Keys.D))
+            else if (kbstate.IsKeyDown(Keys.D))
             {
-                obj.MoveRight(mainFrame, obj2);
+                obj.MoveRight(mainFrame, player);
+            }
+            else
+            {
+                obj.MoveIdle();
             }
 
 
             if (kbstate.IsKeyDown(Keys.Up))
             {
-                obj2.MoveUp(mainFrame, obj);
+                player.MoveUp(mainFrame, obj);
             }
-            if (kbstate.IsKeyDown(Keys.Left))
+            else if (kbstate.IsKeyDown(Keys.Left))
             {
-                obj2.MoveLeft(mainFrame, obj);
+                player.MoveLeft(mainFrame, obj);
             }
-            if (kbstate.IsKeyDown(Keys.Down))
+            else if (kbstate.IsKeyDown(Keys.Down))
             {
-                obj2.MoveDown(mainFrame, obj);
+                player.MoveDown(mainFrame, obj);
             }
-            if (kbstate.IsKeyDown(Keys.Right))
+            else if (kbstate.IsKeyDown(Keys.Right))
             {
-                obj2.MoveRight(mainFrame, obj);
+                player.MoveRight(mainFrame, obj);
+            }
+            else
+            {
+                player.MoveIdle();
             }
 
 
@@ -159,7 +167,7 @@ namespace Jump_n_Run
             spriteBatch.Draw(background,mainFrame,Color.White);
 
 
-            player.DrawPlayer(spriteBatch);
+            player.DrawPlayer(ref spriteBatch);
 
             spriteBatch.Draw(obj.Texture, obj.rectangle, Color.Blue);
             spriteBatch.Draw(obj2.Texture, obj2.rectangle, Color.Red);
