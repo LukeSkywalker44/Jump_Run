@@ -66,6 +66,9 @@ namespace Jump_n_Run.classes
         }
 
 
+      
+
+
         /// <summary>
         /// Checks if two Objects would collide in the next frame
         /// </summary>
@@ -112,10 +115,82 @@ namespace Jump_n_Run.classes
 
             Rectangle futureRect = new Rectangle(moveable.X + objX, moveable.Y + objY, moveable.Width, moveable.Height);
 
-
-
-
             return Object.rectangle.Intersects(futureRect);
         }
+
+
+        /// <summary>
+        /// Checks if the MoveableObject would collide with any of 
+        /// the GameObjects in the next frame
+        /// </summary>
+        /// <param name="Objects">The Objects, the MoveableObject can collide with</param>
+        /// <param name="obj">The moving Object</param>
+        /// <returns>true on collision</returns>
+        public static bool ObjectCollision(IEnumerable<GameObject> Objects, MoveableObject obj)
+        {
+
+            bool result = false;
+
+            Rectangle moveable = obj.rectangle;
+            int moveSpeed = obj.movementSpeed;
+
+            int objX;
+            int objY;
+
+            switch (obj.orientation)
+            {
+                case Orientation.Up:
+                    objY = 0 - moveSpeed;
+                    objX = 0;
+                    break;
+
+                case Orientation.Down:
+                    objY = moveSpeed;
+                    objX = 0;
+                    break;
+
+                case Orientation.Left:
+                    objY = 0;
+                    objX = 0 - moveSpeed;
+                    break;
+
+                case Orientation.Right:
+                    objY = 0;
+                    objX = moveSpeed;
+                    break;
+
+                default:
+                    objX = 0;
+                    objY = 0;
+                    break;
+
+            }
+
+
+            Rectangle futureRect = new Rectangle(moveable.X + objX, moveable.Y + objY, moveable.Width, moveable.Height);
+
+
+            List<GameObject> gobjs = Objects.ToList();
+
+
+            gobjs.Remove(obj);  // remove the moving object to prevent self-collision
+
+
+
+
+            foreach (GameObject collider in gobjs)
+            {
+                result = collider.rectangle.Intersects(futureRect);
+
+                if (result == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
     }
 }
