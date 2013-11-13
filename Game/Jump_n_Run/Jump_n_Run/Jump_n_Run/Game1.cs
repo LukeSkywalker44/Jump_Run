@@ -118,27 +118,29 @@ namespace Jump_n_Run
 
             obj.Move(gameTime, kbstate, mainFrame, GObjects);
 
+            player.Move(gameTime, kbstate, mainFrame, GObjects);
 
-            if (kbstate.IsKeyDown(Keys.Up))
-            {
-                player.MoveUp(mainFrame, GObjects, gameTime);
-            }
-            else if (kbstate.IsKeyDown(Keys.Left))
-            {
-                player.MoveLeft(mainFrame, GObjects, gameTime);
-            }
-            else if (kbstate.IsKeyDown(Keys.Down))
-            {
-                player.MoveDown(mainFrame, GObjects, gameTime);
-            }
-            else if (kbstate.IsKeyDown(Keys.Right))
-            {
-                player.MoveRight(mainFrame, GObjects, gameTime);
-            }
-            else
-            {
-                player.MoveIdle(gameTime);
-            }
+
+            //if (kbstate.IsKeyDown(Keys.Up))
+            //{
+            //    player.MoveUp(mainFrame, GObjects, gameTime);
+            //}
+            //else if (kbstate.IsKeyDown(Keys.Left))
+            //{
+            //    player.MoveLeft(mainFrame, GObjects, gameTime);
+            //}
+            //else if (kbstate.IsKeyDown(Keys.Down))
+            //{
+            //    player.MoveDown(mainFrame, GObjects, gameTime);
+            //}
+            //else if (kbstate.IsKeyDown(Keys.Right))
+            //{
+            //    player.MoveRight(mainFrame, GObjects, gameTime);
+            //}
+            //else
+            //{
+            //    player.MoveIdle(gameTime);
+            //}
 
 
          
@@ -159,7 +161,7 @@ namespace Jump_n_Run
             spriteBatch.Draw(background,mainFrame,Color.White);
 
 
-            player.DrawPlayer(ref spriteBatch);
+            player.Draw(ref spriteBatch);
 
             spriteBatch.Draw(obj.Texture, obj.rectangle, Color.Blue);
             spriteBatch.Draw(obj2.Texture, obj2.rectangle, Color.Red);

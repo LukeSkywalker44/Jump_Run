@@ -20,11 +20,11 @@ namespace Jump_n_Run.classes
     class MoveableObject : GameObject
     {
         public int movementSpeed;
-        public Orientation orientation; 
-        private Keys KeyUp;
-        private Keys KeyDown;
-        private Keys KeyLeft;
-        private Keys KeyRight;
+        public Orientation orientation;
+        protected Keys KeyUp = Keys.None;
+        protected Keys KeyDown = Keys.None;
+        protected Keys KeyLeft = Keys.None;
+        protected Keys KeyRight = Keys.None;
 
 
         public MoveableObject(int moveSpeed, Texture2D texture, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight)
@@ -50,9 +50,6 @@ namespace Jump_n_Run.classes
             
         }
 
-        // TODO
-        // Move-Methods should take an IEnumerable<GameObject> as collider Parameter
-        //  ->there will be more than two objects in the game :)
 
         public void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
@@ -176,8 +173,7 @@ namespace Jump_n_Run.classes
 
         public void Move(GameTime gt, KeyboardState kbstate, Rectangle mainFrame, IEnumerable<GameObject> GObjects)
         {
-            if (KeyDown != null && KeyLeft != null && KeyRight != null && KeyUp != null)
-            {
+           
 
                 if (kbstate.IsKeyDown(KeyUp))
                 {
@@ -199,12 +195,17 @@ namespace Jump_n_Run.classes
                 {
                     this.MoveIdle(gt);
                 }
-            }
+            
 
         }
 
         public virtual void animation(Orientation ori, GameTime gt)
         {
+        }
+
+        public void Draw(ref SpriteBatch sb)
+        {
+            sb.Draw(this.Texture, this.rectangle, Color.White);
         }
     }
 }
