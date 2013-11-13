@@ -20,41 +20,22 @@ namespace Jump_n_Run.classes
     class MoveableObject : GameObject
     {
         public int movementSpeed;
-        public Orientation orientation; 
-        private Keys KeyUp;
-        private Keys KeyDown;
-        private Keys KeyLeft;
-        private Keys KeyRight;
-
-
-        public MoveableObject(int moveSpeed, Texture2D texture, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight)
-            
-        {
-            this.Texture = texture;
-            this.rectangle = rect;
-            this.movementSpeed = moveSpeed;
-            this.orientation = Orientation.Idle;
-            this.KeyDown = keyDown;
-            this.KeyLeft = keyLeft;
-            this.KeyRight = keyRight;
-            this.KeyUp = keyUp;
-        }
-
+        public Orientation orientation;
 
         public MoveableObject(int moveSpeed, Texture2D texture, Rectangle rect)
+            
         {
             this.Texture = texture;
             this.rectangle = rect;
             this.movementSpeed = moveSpeed;
             this.orientation = Orientation.Idle;
-            
         }
 
         // TODO
         // Move-Methods should take an IEnumerable<GameObject> as collider Parameter
         //  ->there will be more than two objects in the game :)
 
-        public void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        public void MoveUp(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Up;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -79,10 +60,10 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
-            animation(Orientation.Up,gt);
+            animation(Orientation.Up);
         }
 
-        public void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        public void MoveDown(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -107,10 +88,10 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
-            animation(Orientation.Down, gt);
+            animation(Orientation.Down);
         }
 
-        public void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        public void MoveLeft(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Left;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -135,10 +116,10 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
-            animation(Orientation.Left,gt);
+            animation(Orientation.Left);
         }
 
-        public void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        public void MoveRight(Rectangle bound, GameObject collider)
         {
             this.orientation = Orientation.Right;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -165,45 +146,14 @@ namespace Jump_n_Run.classes
                 this.movementSpeed = oldMoveSpeed;
             }
 
-            animation(Orientation.Right, gt);
+            animation(Orientation.Right);
         }
 
-        public void MoveIdle(GameTime gt)
+        public void MoveIdle()
         {
-            animation(Orientation.Idle, gt);
         }
 
-
-        public void Move(GameTime gt, KeyboardState kbstate, Rectangle mainFrame, IEnumerable<GameObject> GObjects)
-        {
-            if (KeyDown != null && KeyLeft != null && KeyRight != null && KeyUp != null)
-            {
-
-                if (kbstate.IsKeyDown(KeyUp))
-                {
-                    this.MoveUp(mainFrame, GObjects,gt);
-                }
-                else if (kbstate.IsKeyDown(KeyLeft))
-                {
-                    this.MoveLeft(mainFrame, GObjects,gt);
-                }
-                else if (kbstate.IsKeyDown(KeyDown))
-                {
-                    this.MoveDown(mainFrame, GObjects,gt);
-                }
-                else if (kbstate.IsKeyDown(KeyRight))
-                {
-                    this.MoveRight(mainFrame, GObjects,gt);
-                }
-                else
-                {
-                    this.MoveIdle(gt);
-                }
-            }
-
-        }
-
-        public virtual void animation(Orientation ori, GameTime gt)
+        private virtual void animation(Orientation ori)
         {
         }
     }

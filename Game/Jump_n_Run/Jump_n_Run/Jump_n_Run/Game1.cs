@@ -27,10 +27,6 @@ namespace Jump_n_Run
         string info = "";
         SpriteFont Arial;
 
-        // List of all GameObjects
-
-        List<GameObject> GObjects = new List<GameObject>();
-
         // Instanz
         Player player = new Player();
 
@@ -75,16 +71,8 @@ namespace Jump_n_Run
 
 
             // Objects for Collision testing
-            obj = new MoveableObject(10, objTex, new Rectangle(106, 106, 64, 64),Keys.W,Keys.S,Keys.A, Keys.D);
+            obj = new MoveableObject(10, objTex, new Rectangle(106, 106, 64, 64));
             obj2 = new MoveableObject(10, objTex, new Rectangle(206, 206, 64, 64));
-
-
-            // registrate GameObjects
-
-            GObjects.Add(obj);
-            GObjects.Add(obj2);
-            GObjects.Add(player);
-
 
             Arial = Content.Load<SpriteFont>("Arial");
 
@@ -116,28 +104,48 @@ namespace Jump_n_Run
                 this.Exit();
             }
 
-            obj.Move(gameTime, kbstate, mainFrame, GObjects);
+            else if (kbstate.IsKeyDown(Keys.W))
+            {
+
+                obj.MoveUp(mainFrame, player);
+            }
+            else if (kbstate.IsKeyDown(Keys.A))
+            {
+                obj.MoveLeft(mainFrame, player);
+            }
+            else if (kbstate.IsKeyDown(Keys.S))
+            {
+                obj.MoveDown(mainFrame, player);
+            }
+            else if (kbstate.IsKeyDown(Keys.D))
+            {
+                obj.MoveRight(mainFrame, player);
+            }
+            else
+            {
+                obj.MoveIdle();
+            }
 
 
             if (kbstate.IsKeyDown(Keys.Up))
             {
-                player.MoveUp(mainFrame, GObjects, gameTime);
+                player.MoveUp(mainFrame, obj);
             }
             else if (kbstate.IsKeyDown(Keys.Left))
             {
-                player.MoveLeft(mainFrame, GObjects, gameTime);
+                player.MoveLeft(mainFrame, obj);
             }
             else if (kbstate.IsKeyDown(Keys.Down))
             {
-                player.MoveDown(mainFrame, GObjects, gameTime);
+                player.MoveDown(mainFrame, obj);
             }
             else if (kbstate.IsKeyDown(Keys.Right))
             {
-                player.MoveRight(mainFrame, GObjects, gameTime);
+                player.MoveRight(mainFrame, obj);
             }
             else
             {
-                player.MoveIdle(gameTime);
+                player.MoveIdle();
             }
 
 

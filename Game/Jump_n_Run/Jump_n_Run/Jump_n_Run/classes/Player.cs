@@ -71,7 +71,7 @@ namespace Jump_n_Run.classes
         
         }
 
-        public override void animation(Orientation ori,GameTime gt)
+        private override void animation(Orientation ori)
         {
             if (ori == Orientation.Idle)
             {
