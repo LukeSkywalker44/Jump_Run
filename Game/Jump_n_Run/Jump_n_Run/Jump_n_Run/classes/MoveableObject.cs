@@ -25,9 +25,14 @@ namespace Jump_n_Run.classes
         protected Keys KeyDown = Keys.None;
         protected Keys KeyLeft = Keys.None;
         protected Keys KeyRight = Keys.None;
+        public int gravity;
+        protected bool jumping = false;
+        int jumpHeight;
+        int jumpRelative;
+        bool canJump;
 
 
-        public MoveableObject(int moveSpeed, Texture2D texture, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight)
+        public MoveableObject(int moveSpeed,int gravity, Texture2D texture, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight, int jump)
             
         {
             this.Texture = texture;
@@ -38,45 +43,52 @@ namespace Jump_n_Run.classes
             this.KeyLeft = keyLeft;
             this.KeyRight = keyRight;
             this.KeyUp = keyUp;
+            this.gravity = gravity;
+            this.jumpHeight = jump;
         }
 
 
-        public MoveableObject(int moveSpeed, Texture2D texture, Rectangle rect)
+        public MoveableObject(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump)
         {
             this.Texture = texture;
             this.rectangle = rect;
             this.movementSpeed = moveSpeed;
             this.orientation = Orientation.Idle;
+            this.gravity = gravity;
+            this.jumpHeight = jump;
             
         }
 
 
         private void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
-            this.orientation = Orientation.Up;
-            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            if (canJump)
             {
-                this.rectangle.Y -= this.movementSpeed;
-            }
-            else
-            {
-                int oldMoveSpeed = this.movementSpeed;
-                for (int i = 1; i <= this.movementSpeed; i++)
+                this.orientation = Orientation.Up;
+                if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                 {
-                    int newSpeed = this.movementSpeed - i;
-
-                    this.movementSpeed = newSpeed;
-
-                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    this.rectangle.Y -= this.movementSpeed;
+                }
+                else
+                {
+                    int oldMoveSpeed = this.movementSpeed;
+                    for (int i = 1; i <= this.movementSpeed; i++)
                     {
-                        this.rectangle.Y -= newSpeed;
-                        break;
+                        int newSpeed = this.movementSpeed - i;
+
+                        this.movementSpeed = newSpeed;
+
+                        if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                        {
+                            this.rectangle.Y -= newSpeed;
+                            break;
+                        }
+                        this.movementSpeed = oldMoveSpeed;
                     }
                     this.movementSpeed = oldMoveSpeed;
                 }
-                this.movementSpeed = oldMoveSpeed;
+                animation(Orientation.Up, gt);
             }
-            animation(Orientation.Up,gt);
         }
 
         private void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
@@ -84,25 +96,32 @@ namespace Jump_n_Run.classes
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.Y += this.movementSpeed;
+                this.rectangle.Y += this.gravity;
+                canJump = false;
             }
             else
             {
-                int oldMoveSpeed = this.movementSpeed;
-                for (int i = 1; i <= this.movementSpeed; i++)
+                int oldMoveSpeed = this.gravity;
+                for (int i = 1; i <= this.gravity; i++)
                 {
-                    int newSpeed = this.movementSpeed - i;
+                    int newSpeed = this.gravity - i;
 
-                    this.movementSpeed = newSpeed;
+                    this.gravity = newSpeed;
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
                         this.rectangle.Y += newSpeed;
+                        canJump = false;
                         break;
                     }
-                    this.movementSpeed = oldMoveSpeed;
+                    else
+                    {
+                        canJump = true;
+
+                    }
+                    this.gravity = oldMoveSpeed;
                 }
-                this.movementSpeed = oldMoveSpeed;
+                this.gravity = oldMoveSpeed;
             }
             animation(Orientation.Down, gt);
         }
@@ -132,6 +151,41 @@ namespace Jump_n_Run.classes
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+
+            this.orientation = Orientation.Down;
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
+                this.rectangle.Y += this.gravity;
+                canJump = false;
+            }
+            else
+            {
+                int oldMoveSpeed = this.gravity;
+                for (int i = 1; i <= this.gravity; i++)
+                {
+                    int newSpeed = this.gravity - i;
+
+                    this.gravity = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.Y += newSpeed;
+                        canJump = false;
+                        break;
+                    }
+                    else
+                    {
+                        canJump = true;
+
+                    }
+                    this.gravity = oldMoveSpeed;
+                }
+                this.gravity = oldMoveSpeed;
+            }
+
+
+            this.orientation = Orientation.Left;
+
             animation(Orientation.Left,gt);
         }
 
@@ -162,12 +216,78 @@ namespace Jump_n_Run.classes
                 this.movementSpeed = oldMoveSpeed;
             }
 
+            this.orientation = Orientation.Down;
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
+                this.rectangle.Y += this.gravity;
+                canJump = false;
+            }
+            else
+            {
+                int oldMoveSpeed = this.gravity;
+                for (int i = 1; i <= this.gravity; i++)
+                {
+                    int newSpeed = this.gravity - i;
+
+                    this.gravity = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.Y += newSpeed;
+                        canJump = false;
+                        break;
+                    }
+                    else
+                    {
+                        canJump = true;
+
+                    }
+                    this.gravity = oldMoveSpeed;
+                }
+                this.gravity = oldMoveSpeed;
+            }
+
+            this.orientation = Orientation.Right;
+
             animation(Orientation.Right, gt);
         }
 
-        private void MoveIdle(GameTime gt)
+        private void MoveIdle(Rectangle bound, IEnumerable<GameObject>collider, GameTime gt)
         {
+            this.orientation = Orientation.Down;
+            if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+            {
+                this.rectangle.Y += this.gravity;
+                canJump = false;
+            }
+            else
+            {
+                int oldMoveSpeed = this.gravity;
+                for (int i = 1; i <= this.gravity; i++)
+                {
+                    int newSpeed = this.gravity - i;
+
+                    this.gravity = newSpeed;
+
+                    if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
+                    {
+                        this.rectangle.Y += newSpeed;
+                        canJump = false;
+                        break;
+                    }
+                    else
+                    {
+                        
+
+                    }
+                    this.gravity = oldMoveSpeed;
+                }
+                canJump = true;
+                this.gravity = oldMoveSpeed;
+            }
+
             animation(Orientation.Idle, gt);
+           
         }
 
 
@@ -193,11 +313,12 @@ namespace Jump_n_Run.classes
                 }
                 else
                 {
-                    this.MoveIdle(gt);
+                    this.MoveIdle(mainFrame,GObjects,gt);
                 }
             
 
         }
+       
 
         public virtual void animation(Orientation ori, GameTime gt)
         {

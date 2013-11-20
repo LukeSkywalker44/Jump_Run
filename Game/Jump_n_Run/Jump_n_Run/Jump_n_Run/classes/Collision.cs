@@ -36,7 +36,7 @@ namespace Jump_n_Run.classes
                     break;
 
                 case Orientation.Down:
-                    objY = moveSpeed;
+                    objY = obj.gravity;
                     objX = 0;
                     break;
 
@@ -91,7 +91,7 @@ namespace Jump_n_Run.classes
                     break;
 
                 case Orientation.Down:
-                    objY = moveSpeed;
+                    objY = obj.gravity;
                     objX = 0;
                     break;
 
@@ -145,7 +145,7 @@ namespace Jump_n_Run.classes
                     break;
 
                 case Orientation.Down:
-                    objY = moveSpeed;
+                    objY = obj.gravity;
                     objX = 0;
                     break;
 

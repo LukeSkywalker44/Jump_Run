@@ -18,8 +18,11 @@ namespace Jump_n_Run.classes
         private Texture2D playerImgRun, playerImgStand, playerImgJump;
         private Vector2 playerPosition;
 
-        private Rectangle[] playerRects;
-        private int playerImgIndex = 0;
+        private Rectangle[] playerRectsRun;
+        private Rectangle[] playerRectsJump;
+        private Rectangle playerRectIdle;
+        private int playerImgIndexRun = 0;
+        private int playerImgIndexJump = 0;
 
         private SpriteEffects playerDirection = SpriteEffects.None;
 
@@ -28,17 +31,20 @@ namespace Jump_n_Run.classes
         private int playerTime;
         private const int playerImgChangeTime = 80;
 
+
+        private Rectangle renderRect;
+
         //ctors
-        public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(),Keys.Up, Keys.Down, Keys.Left, Keys.Right) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
-        public Player(Texture2D playerRun, Texture2D playerStand, Texture2D playerActual, Texture2D playerJump, Vector2 position, Rectangle[] rects, int MoveSpeed, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight)
-            : base(MoveSpeed, playerActual, rect)
+        public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(),Keys.Up, Keys.Down, Keys.Left, Keys.Right,0,0) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
+        public Player(Texture2D playerRun, Texture2D playerStand, Texture2D playerActual, Texture2D playerJump, Vector2 position, Rectangle[] rects, int MoveSpeed, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight, int gravity, int jump)
+            : base(MoveSpeed,gravity, playerActual, rect,jump)
         {
             this.playerImgRun = playerRun;
             this.playerImgStand = playerStand;
             this.Texture = playerActual;
             this.playerPosition = position;
             this.playerImgJump = playerJump;
-            this.playerRects = rects;
+            this.playerRectsRun = rects;
             this.playerTime = 0;
             this.KeyDown = keyDown;
             this.KeyLeft = keyLeft;
@@ -53,44 +59,85 @@ namespace Jump_n_Run.classes
         {
 
 
-            playerImgRun = Content.Load<Texture2D>("Images/gameobjects/Run_new");
-            playerImgStand = Content.Load<Texture2D>("Images/gameobjects/Stand_new");
+            playerImgRun = Content.Load<Texture2D>("Images/gameobjects/Run_480_40");
+            playerImgStand = Content.Load<Texture2D>("Images/gameobjects/Stand");
             playerImgJump = Content.Load<Texture2D>("Images/gameobjects/T_Jump");
 
             int startX = 0;
-            int deltaX = 42;
+            int deltaX = 40;
             playerPosition = new Vector2(504, graphics.PreferredBackBufferHeight - playerImgRun.Height - 21);
 
+            this.gravity = 10;
 
+            playerRectIdle = new Rectangle(0, 0, 42, 40);
 
-            playerRects = new Rectangle[playerImgRun.Width / 50];
-            for (int i = 0; i < playerRects.Length; i++)
+            playerRectsRun = new Rectangle[12];
+            for (int i = 0; i < playerRectsRun.Length; i++)
             {
-                playerRects[i] = new Rectangle(startX + i * deltaX, 0, 42, 50);
+                playerRectsRun[i] = new Rectangle(startX + i * deltaX, 0, 40, 40);
+
+                
+            }
+
+            playerRectsJump = new Rectangle[13];
+            for (int i = 0; i < playerRectsJump.Length; i++)
+            {
+                playerRectsJump[i] = new Rectangle(startX + i * deltaX, 0, 42, 42); // !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
             }
 
             oldOrientation = Orientation.Idle;
 
             Texture = playerImgStand;
             this.rectangle = new Rectangle(300, 300, 42, 50);
-            this.movementSpeed = 10;
+            this.movementSpeed = 5;
 
         }
        
 
-        private void CalculatePlayerImgIndex(GameTime gameTime)
+        private void CalculatePlayerImgIndex(GameTime gameTime,Orientation ori)
         {
+
             playerTime += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (playerTime >= playerImgChangeTime)
+            if (ori == Orientation.Right || ori == Orientation.Left)
             {
-                playerTime = 0;
-                playerImgIndex++;
-                if (playerImgIndex >= playerRects.Length)
+                if (playerTime >= playerImgChangeTime)
                 {
-                    playerImgIndex = 0;
+                    playerTime = 0;
+                    playerImgIndexRun++;
+                    if (playerImgIndexRun >= playerRectsRun.Length)
+                    {
+                        playerImgIndexRun = 0;
+                    }
+
+                    renderRect = playerRectsRun[playerImgIndexRun];
                 }
+
             }
+
+            if (ori == Orientation.Up)
+            {
+
+                if (playerTime >= playerImgChangeTime)
+                {
+                    playerTime = 0;
+                    playerImgIndexJump++;
+                    if (playerImgIndexJump >= playerRectsJump.Length)
+                    {
+                        playerImgIndexJump = 0;
+                    }
+
+                    renderRect = playerRectsJump[playerImgIndexJump];
+                }
+
+            }
+
+
+           
+
+         
         }
 
         public override void animation(Orientation ori, GameTime gt)
@@ -99,6 +146,7 @@ namespace Jump_n_Run.classes
             {
                 // texture auf stand
                 this.Texture = playerImgStand;
+                renderRect = playerRectIdle;
                 oldOrientation = Orientation.Idle;
             }
 
@@ -123,12 +171,20 @@ namespace Jump_n_Run.classes
                     // animation weiterführen
                     playerDirection = SpriteEffects.FlipHorizontally;
 
+                    Texture = playerImgRun;
 
+                    CalculatePlayerImgIndex(gt, Orientation.Left);
 
                 }
                 else
                 {
                     // animation neu beginnen
+                    playerDirection = SpriteEffects.FlipHorizontally;
+
+                    Texture = playerImgRun;
+                    playerImgIndexRun = 0;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Left);
 
                 }
 
@@ -144,12 +200,17 @@ namespace Jump_n_Run.classes
 
                     Texture = playerImgRun;
 
-                    CalculatePlayerImgIndex(gt);
+                    CalculatePlayerImgIndex(gt,Orientation.Right);
 
                 }
                 else
                 {
                     // animation neu beginnen
+                    playerDirection = SpriteEffects.None;
+                    Texture = playerImgRun;
+                    playerImgIndexRun = 0;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Left);
 
                 }
 
@@ -178,7 +239,7 @@ namespace Jump_n_Run.classes
 
         public override void Draw(ref SpriteBatch sb)
         {
-            sb.Draw(Texture, rectangle, playerRects[playerImgIndex], Color.White);
+            sb.Draw(Texture, rectangle, renderRect, Color.White,0.0f,new Vector2(0.0f,0.0f),playerDirection,0.0f);
         }
     }
 

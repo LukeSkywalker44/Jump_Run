@@ -75,8 +75,8 @@ namespace Jump_n_Run
 
 
             // Objects for Collision testing
-            obj = new MoveableObject(10, objTex, new Rectangle(106, 106, 64, 64),Keys.W,Keys.S,Keys.A, Keys.D);
-            obj2 = new MoveableObject(10, objTex, new Rectangle(206, 206, 64, 64));
+            obj = new MoveableObject(5, 10, objTex, new Rectangle(106, 106, 64, 64),Keys.W,Keys.S,Keys.A, Keys.D,40);
+            obj2 = new MoveableObject(10,10, objTex, new Rectangle(206, 206, 64, 64),40);
 
 
             // registrate GameObjects
