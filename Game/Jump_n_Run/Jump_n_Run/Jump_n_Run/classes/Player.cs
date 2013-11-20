@@ -98,6 +98,7 @@ namespace Jump_n_Run.classes
             if (ori == Orientation.Idle)
             {
                 // texture auf stand
+                this.Texture = playerImgStand;
                 oldOrientation = Orientation.Idle;
             }
 
@@ -172,6 +173,12 @@ namespace Jump_n_Run.classes
 
 
             //Animation nur jedes 3.mal ausführen (60 mal por sec. wäre zu schnell)
+        }
+
+
+        public override void Draw(ref SpriteBatch sb)
+        {
+            sb.Draw(Texture, rectangle, playerRects[playerImgIndex], Color.White);
         }
     }
 

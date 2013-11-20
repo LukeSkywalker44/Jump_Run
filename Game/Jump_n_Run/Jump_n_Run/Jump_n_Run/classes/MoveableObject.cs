@@ -51,7 +51,7 @@ namespace Jump_n_Run.classes
         }
 
 
-        public void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        private void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             this.orientation = Orientation.Up;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -79,7 +79,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Up,gt);
         }
 
-        public void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        private void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -107,7 +107,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Down, gt);
         }
 
-        public void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        private void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             this.orientation = Orientation.Left;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -135,7 +135,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Left,gt);
         }
 
-        public void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        private void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             this.orientation = Orientation.Right;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
@@ -165,7 +165,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Right, gt);
         }
 
-        public void MoveIdle(GameTime gt)
+        private void MoveIdle(GameTime gt)
         {
             animation(Orientation.Idle, gt);
         }
@@ -203,7 +203,7 @@ namespace Jump_n_Run.classes
         {
         }
 
-        public void Draw(ref SpriteBatch sb)
+        public virtual void Draw(ref SpriteBatch sb)
         {
             sb.Draw(this.Texture, this.rectangle, Color.White);
         }
