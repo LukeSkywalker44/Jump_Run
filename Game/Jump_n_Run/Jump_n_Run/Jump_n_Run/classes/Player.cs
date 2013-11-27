@@ -29,7 +29,8 @@ namespace Jump_n_Run.classes
         private Orientation oldOrientation;
 
         private int playerTime;
-        private const int playerImgChangeTime = 80;
+        private const int playerImgChangeTimeRun = 80;
+        private const int playerImgChangeTimeJump = 40;
 
 
         private Rectangle renderRect;
@@ -61,7 +62,7 @@ namespace Jump_n_Run.classes
 
             playerImgRun = Content.Load<Texture2D>("Images/gameobjects/Run_480_40");
             playerImgStand = Content.Load<Texture2D>("Images/gameobjects/Stand");
-            playerImgJump = Content.Load<Texture2D>("Images/gameobjects/T_Jump");
+            playerImgJump = Content.Load<Texture2D>("Images/gameobjects/Jump_520_40");
 
             int startX = 0;
             int deltaX = 40;
@@ -79,7 +80,7 @@ namespace Jump_n_Run.classes
                 
             }
 
-            playerRectsJump = new Rectangle[13];
+            playerRectsJump = new Rectangle[9];
             for (int i = 0; i < playerRectsJump.Length; i++)
             {
                 playerRectsJump[i] = new Rectangle(startX + i * deltaX, 0, 42, 42); // !!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -92,6 +93,7 @@ namespace Jump_n_Run.classes
             Texture = playerImgStand;
             this.rectangle = new Rectangle(300, 300, 42, 50);
             this.movementSpeed = 5;
+            this.jumpHeight = 120;
 
         }
        
@@ -103,7 +105,7 @@ namespace Jump_n_Run.classes
 
             if (ori == Orientation.Right || ori == Orientation.Left)
             {
-                if (playerTime >= playerImgChangeTime)
+                if (playerTime >= playerImgChangeTimeRun)
                 {
                     playerTime = 0;
                     playerImgIndexRun++;
@@ -120,7 +122,7 @@ namespace Jump_n_Run.classes
             if (ori == Orientation.Up)
             {
 
-                if (playerTime >= playerImgChangeTime)
+                if (playerTime >= playerImgChangeTimeJump)
                 {
                     playerTime = 0;
                     playerImgIndexJump++;
@@ -155,13 +157,95 @@ namespace Jump_n_Run.classes
                 if (oldOrientation == Orientation.Up)
                 {
                     // animation weiterführen
+                    playerDirection = SpriteEffects.None;
+
+                    Texture = playerImgJump;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
+                }
+                else if (oldOrientation == Orientation.Left)
+                {
+                    // animation neu beginnen
+                    playerDirection = SpriteEffects.FlipHorizontally;
+
+                    Texture = playerImgJump;
+                    playerImgIndexRun = 0;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
+                }
+
+                else
+                {
+                    // animation neu beginnen
+                    playerDirection = SpriteEffects.None;
+
+                    Texture = playerImgJump;
+                    playerImgIndexRun = 0;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
+                }
+
+
+                oldOrientation = Orientation.Up;
+            }
+
+            if (ori == Orientation.UpLeft)
+            {
+                if (oldOrientation == Orientation.UpLeft)
+                {
+                    // animation weiterführen
+                    playerDirection = SpriteEffects.FlipHorizontally;
+
+                    Texture = playerImgJump;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
                 }
                 else
                 {
                     // animation neu beginnen
+                    playerDirection = SpriteEffects.FlipHorizontally;
+
+                    Texture = playerImgJump;
+                    playerImgIndexRun = 0;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
                 }
 
-                oldOrientation = Orientation.Up;
+
+                oldOrientation = Orientation.UpLeft;
+            }
+
+            if (ori == Orientation.UpRight)
+            {
+                if (oldOrientation == Orientation.UpRight)
+                {
+                    // animation weiterführen
+                    playerDirection = SpriteEffects.None;
+
+                    Texture = playerImgJump;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
+                }
+                else
+                {
+                    // animation neu beginnen
+                    playerDirection = SpriteEffects.None;
+
+                    Texture = playerImgJump;
+                    playerImgIndexRun = 0;
+
+                    CalculatePlayerImgIndex(gt, Orientation.Up);
+
+                }
+
+
+                oldOrientation = Orientation.UpRight;
             }
 
             if (ori == Orientation.Left)

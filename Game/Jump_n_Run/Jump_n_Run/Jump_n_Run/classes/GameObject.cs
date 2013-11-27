@@ -27,5 +27,11 @@ namespace Jump_n_Run.classes
         {
         }
 
+        public virtual void  Draw(ref SpriteBatch sb)
+        {
+            sb.Draw(this.Texture, this.rectangle, Color.White);
+        }
+
+
     }
 }

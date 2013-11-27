@@ -42,13 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Jump.png">
-      <Name>Jump</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="800x600_Pacman.jpg">
       <Name>800x600_Pacman</Name>
       <Importer>TextureImporter</Importer>
@@ -70,34 +63,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Images\gameobjects\Stand_new.png">
-      <Name>Stand_new</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Images\gameobjects\Run_new.png">
-      <Name>Run_new</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Images\gameobjects\T_Jump.png">
-      <Name>T_Jump</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Images\gameobjects\Run_494_40.png">
-      <Name>Run_494_40</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Images\gameobjects\Run_480_40.png">
       <Name>Run_480_40</Name>
       <Importer>TextureImporter</Importer>
@@ -107,6 +72,13 @@
   <ItemGroup>
     <Compile Include="Images\gameobjects\Stand.png">
       <Name>Stand</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\gameobjects\Jump_520_40.png">
+      <Name>Jump_520_40</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
