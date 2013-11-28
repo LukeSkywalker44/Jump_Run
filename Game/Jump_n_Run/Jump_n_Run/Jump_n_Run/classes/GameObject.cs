@@ -32,6 +32,10 @@ namespace Jump_n_Run.classes
             sb.Draw(this.Texture, this.rectangle, Color.White);
         }
 
+        public virtual void Move(GameTime gt, KeyboardState kbstate, Rectangle mainFrame, IEnumerable<GameObject> GObjects)
+        {
+        }
+
 
     }
 }

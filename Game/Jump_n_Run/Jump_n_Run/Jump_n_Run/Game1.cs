@@ -25,7 +25,7 @@ namespace Jump_n_Run
         MoveableObject obj2;
         MoveableObject obj3;
         Texture2D objTex;
-        string info = "";
+        
         SpriteFont Arial;
         int updateCounter = 0;
 
@@ -76,22 +76,31 @@ namespace Jump_n_Run
             objTex = Content.Load<Texture2D>("object");
 
 
-            // Objects for Collision testing
-            obj = new MoveableObject(10, 10, objTex, new Rectangle(106, 106, 64, 64),0);
-            obj2 = new MoveableObject(10,10, objTex, new Rectangle(206, 206, 64, 64),0);
-            obj3 = new MoveableObject(10,10 ,objTex, new Rectangle(100, 500,100, 64),Keys.W,Keys.S,Keys.A,Keys.D,0);
-            
+          
+            #region testLevel
+
+            GObjects.Add(new GameObject(objTex,new Rectangle(100,200,20,200)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(180, 200, 20, 200)));
+
+            GObjects.Add(new GameObject(objTex, new Rectangle(600, 500, 200, 10)));
+
+            GObjects.Add(new GameObject(objTex, new Rectangle(400, 400, 200, 10)));
+
+            GObjects.Add(new GameObject(objTex, new Rectangle(600, 300, 200, 10)));
+
+            GObjects.Add(new GameObject(objTex, new Rectangle(300, 200, 200, 10)));
+
+            GObjects.Add(new MoveableObject(0, 10, objTex, new Rectangle(120,360,60,40),0));
+            GObjects.Add(new MoveableObject(0, 9, objTex, new Rectangle(120, 320, 60, 40), 0));
+            GObjects.Add(new MoveableObject(0, 8, objTex, new Rectangle(120, 280, 60, 40), 0));
+            GObjects.Add(new MoveableObject(0, 7, objTex, new Rectangle(120, 240, 60, 40), 0));
+            GObjects.Add(new MoveableObject(0, 6, objTex, new Rectangle(120, 200, 60, 40), 0));
+
+            GObjects.Add(new MoveableObject(10, 0, objTex, new Rectangle(100, 400, 100, 64), Keys.W, Keys.S, Keys.A, Keys.D, 0));
+            #endregion
 
 
-
-            // registrate GameObjects
-
-            GObjects.Add(obj);
-            GObjects.Add(obj2);
             GObjects.Add(player);
-            GObjects.Add(obj3);
-            GObjects.Add(new GameObject(objTex, new Rectangle(250, 450, 200, 20)));
-
 
 
             Arial = Content.Load<SpriteFont>("Arial");
@@ -124,9 +133,12 @@ namespace Jump_n_Run
                 this.Exit();
             }
 
-            obj.Move(gameTime, kbstate, mainFrame, GObjects);
+           
 
-            player.Move(gameTime, kbstate, mainFrame, GObjects);
+            foreach (GameObject go in GObjects)
+            {
+                go.Move(gameTime, kbstate, mainFrame, GObjects);
+            }
 
 
            

@@ -303,14 +303,8 @@ namespace Jump_n_Run.classes
 
             if (ori == Orientation.Down)
             {
-                if (oldOrientation == Orientation.Down)
-                {
-                    // animation weiterführen
-                }
-                else
-                {
-                    // animation neu beginnen
-                }
+                this.Texture = playerImgStand;
+                renderRect = playerRectIdle;
 
                 oldOrientation = Orientation.Down;
             }

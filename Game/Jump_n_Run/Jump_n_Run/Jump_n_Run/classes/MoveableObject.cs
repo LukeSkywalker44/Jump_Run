@@ -95,6 +95,14 @@ namespace Jump_n_Run.classes
                                 this.rectangle.Y -= newSpeed;
                                 break;
                             }
+                            else
+                            {
+                                animation(Orientation.Idle, gt);
+                                jumping = false;
+                                this.MoveDown(bound, collider, gt);
+                                break;
+                            }
+
                             this.movementSpeed = oldMoveSpeed;
 
 
@@ -153,6 +161,13 @@ namespace Jump_n_Run.classes
                             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                             {
                                 this.rectangle.Y -= newSpeed;
+                                break;
+                            }
+                            else
+                            {
+                                animation(Orientation.Idle, gt);
+                                jumping = false;
+                                this.MoveDown(bound, collider, gt);
                                 break;
                             }
                             this.movementSpeed = oldMoveSpeed;
@@ -257,7 +272,6 @@ namespace Jump_n_Run.classes
             }
         }
 
-
         private void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (canJump)
@@ -291,6 +305,13 @@ namespace Jump_n_Run.classes
                             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                             {
                                 this.rectangle.Y -= newSpeed;
+                                break;
+                            }
+                            else
+                            {
+                                animation(Orientation.Idle, gt);
+                                jumping = false;
+                                this.MoveDown(bound, collider, gt);
                                 break;
                             }
                             this.movementSpeed = oldMoveSpeed;
@@ -597,8 +618,7 @@ namespace Jump_n_Run.classes
 
         }
 
-
-        public void Move(GameTime gt, KeyboardState kbstate, Rectangle mainFrame, IEnumerable<GameObject> GObjects)
+        public override void Move(GameTime gt, KeyboardState kbstate, Rectangle mainFrame, IEnumerable<GameObject> GObjects)
         {
 
 
@@ -612,7 +632,7 @@ namespace Jump_n_Run.classes
             Keys[] pressedKeys = kbstate.GetPressedKeys();
 
 
-            if (pressedKeys.Contains(KeyUp))
+            if (pressedKeys.Contains(this.KeyUp))
             {
                 KeyUpPress = true;
             }
@@ -628,14 +648,6 @@ namespace Jump_n_Run.classes
             {
                 KeyRightPress = true;
             }
-
-
-
-
-
-
-
-
 
 
 
@@ -678,7 +690,6 @@ namespace Jump_n_Run.classes
 
 
         }
-
 
         public virtual void animation(Orientation ori, GameTime gt)
         {
