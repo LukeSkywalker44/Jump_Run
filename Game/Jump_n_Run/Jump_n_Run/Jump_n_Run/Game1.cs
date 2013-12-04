@@ -18,7 +18,8 @@ namespace Jump_n_Run
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Rectangle mainFrame = new Rectangle(0, 0, 800, 600);
+        Rectangle mainFrame = new Rectangle(0, 0, 1024, 768);
+        Rectangle bgFrame = new Rectangle(0, 0, 2048, 768);
         
         Texture2D background;
         MoveableObject obj;
@@ -41,8 +42,8 @@ namespace Jump_n_Run
             // open a window 800x600
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 1024;
             Content.RootDirectory = "Content";
         }
 
@@ -67,7 +68,7 @@ namespace Jump_n_Run
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>("800x600_Pacman");
+            background = Content.Load<Texture2D>("landscape_2048x768");
 
             player.loadPlayer(this.graphics, this.Content);
 
@@ -79,24 +80,26 @@ namespace Jump_n_Run
           
             #region testLevel
 
-            GObjects.Add(new GameObject(objTex,new Rectangle(100,200,20,200)));
-            GObjects.Add(new GameObject(objTex, new Rectangle(180, 200, 20, 200)));
+            GObjects.Add(new GameObject(objTex,new Rectangle(100,400,20,200)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(180, 400, 20, 200)));
+
+            GObjects.Add(new GameObject(objTex, new Rectangle(600, 700, 200, 10)));
+
+            GObjects.Add(new GameObject(objTex, new Rectangle(400, 600, 200, 10)));
 
             GObjects.Add(new GameObject(objTex, new Rectangle(600, 500, 200, 10)));
 
-            GObjects.Add(new GameObject(objTex, new Rectangle(400, 400, 200, 10)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(300, 400, 200, 10)));
 
-            GObjects.Add(new GameObject(objTex, new Rectangle(600, 300, 200, 10)));
+            GObjects.Add(new GameObject(objTex,new Rectangle(0,718,1024,50)));
 
-            GObjects.Add(new GameObject(objTex, new Rectangle(300, 200, 200, 10)));
+            GObjects.Add(new MoveableObject(0, 10, objTex, new Rectangle(120,560,60,40),0));
+            GObjects.Add(new MoveableObject(0, 9, objTex, new Rectangle(120, 520, 60, 40), 0));
+            GObjects.Add(new MoveableObject(0, 8, objTex, new Rectangle(120, 480, 60, 40), 0));
+            GObjects.Add(new MoveableObject(0, 7, objTex, new Rectangle(120, 440, 60, 40), 0));
+            GObjects.Add(new MoveableObject(0, 6, objTex, new Rectangle(120, 400, 60, 40), 0));
 
-            GObjects.Add(new MoveableObject(0, 10, objTex, new Rectangle(120,360,60,40),0));
-            GObjects.Add(new MoveableObject(0, 9, objTex, new Rectangle(120, 320, 60, 40), 0));
-            GObjects.Add(new MoveableObject(0, 8, objTex, new Rectangle(120, 280, 60, 40), 0));
-            GObjects.Add(new MoveableObject(0, 7, objTex, new Rectangle(120, 240, 60, 40), 0));
-            GObjects.Add(new MoveableObject(0, 6, objTex, new Rectangle(120, 200, 60, 40), 0));
-
-            GObjects.Add(new MoveableObject(10, 0, objTex, new Rectangle(100, 400, 100, 64), Keys.W, Keys.S, Keys.A, Keys.D, 0));
+            GObjects.Add(new MoveableObject(10, 0, objTex, new Rectangle(100, 600, 100, 64), Keys.W, Keys.S, Keys.A, Keys.D, 0));
             #endregion
 
 
@@ -141,7 +144,28 @@ namespace Jump_n_Run
             }
 
 
-           
+
+            //if (player.rectangle.X >= 700)
+            //{
+            //    foreach (GameObject obj in GObjects)
+            //    {
+            //        obj.rectangle.X -= player.movementSpeed;
+            //    }
+
+            //    bgFrame.X -= player.movementSpeed;
+            //}
+
+            //if (player.rectangle.X <= 100)
+            //{
+            //    foreach (GameObject obj in GObjects)
+            //    {
+            //        obj.rectangle.X += player.movementSpeed;
+            //    }
+
+            //    bgFrame.X += player.movementSpeed;
+            //}
+
+            Scrolling.Scroll(player,  GObjects,ref bgFrame, mainFrame);
 
          
 
@@ -160,7 +184,7 @@ namespace Jump_n_Run
             KeyboardState kbstate = Keyboard.GetState();
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background,mainFrame,Color.White);
+            spriteBatch.Draw(background,bgFrame,Color.White);
 
 
             foreach (GameObject gobject in GObjects)
@@ -168,14 +192,15 @@ namespace Jump_n_Run
                 gobject.Draw(ref spriteBatch);
             }
 
-            spriteBatch.DrawString(Arial, "Ausgangsposition: " + player.jumpRelative, new Vector2(1, 1), Color.White);
-            spriteBatch.DrawString(Arial, "Sprunghoehe: " + player.jumpHeight, new Vector2(1, 30), Color.White);
-            spriteBatch.DrawString(Arial, "Springt: " + player.jumping, new Vector2(1, 60), Color.White);
-            spriteBatch.DrawString(Arial, "Updates: " + updateCounter, new Vector2(1, 90), Color.White);
+            spriteBatch.DrawString(Arial, "Ausgangsposition: " + player.jumpRelative, new Vector2(1, 1), Color.Violet);
+            spriteBatch.DrawString(Arial, "Sprunghoehe: " + player.jumpHeight, new Vector2(1, 30), Color.Violet);
+            spriteBatch.DrawString(Arial, "Springt: " + player.jumping, new Vector2(1, 60), Color.Violet);
+            spriteBatch.DrawString(Arial, "Updates: " + updateCounter, new Vector2(1, 90), Color.Violet);
+            spriteBatch.DrawString(Arial, "Height: " + player.rectangle.Bottom, new Vector2(1, 120), Color.Violet);
 
             for (int i = 0; i < kbstate.GetPressedKeys().Count(); i++)
             {
-                spriteBatch.DrawString(Arial, kbstate.GetPressedKeys()[i].ToString(), new Vector2(1, 120 + i*30), Color.White);
+                spriteBatch.DrawString(Arial, kbstate.GetPressedKeys()[i].ToString(), new Vector2(1, 150 + i * 30), Color.Violet);
             }
 
                 spriteBatch.End();

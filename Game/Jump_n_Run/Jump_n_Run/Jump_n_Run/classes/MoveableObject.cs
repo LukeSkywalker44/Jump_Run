@@ -62,8 +62,14 @@ namespace Jump_n_Run.classes
 
         private void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
+          
             if (canJump)
             {
+               
                 // new Jump sequence
                 if (!jumping)
                 {
@@ -130,8 +136,14 @@ namespace Jump_n_Run.classes
 
         private void MoveUpLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
+          
             if (canJump)
             {
+               
                 // new Jump sequence
                 if (!jumping)
                 {
@@ -237,6 +249,7 @@ namespace Jump_n_Run.classes
                         }
                         else
                         {
+                            jumpRelative = this.rectangle.Bottom;
                             canJump = true;
 
                         }
@@ -274,8 +287,14 @@ namespace Jump_n_Run.classes
 
         private void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
+          
             if (canJump)
             {
+               
                 // new Jump sequence
                 if (!jumping)
                 {
@@ -381,6 +400,7 @@ namespace Jump_n_Run.classes
                         }
                         else
                         {
+                            jumpRelative = this.rectangle.Bottom;
                             canJump = true;
 
                         }
@@ -418,6 +438,10 @@ namespace Jump_n_Run.classes
 
         private void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
@@ -442,6 +466,7 @@ namespace Jump_n_Run.classes
                     else
                     {
                         canJump = true;
+                        jumpRelative = this.rectangle.Bottom;
 
                     }
                     this.gravity = oldMoveSpeed;
@@ -453,6 +478,10 @@ namespace Jump_n_Run.classes
 
         private void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
             this.orientation = Orientation.Left;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
@@ -518,6 +547,10 @@ namespace Jump_n_Run.classes
 
         private void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
             this.orientation = Orientation.Right;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
@@ -582,6 +615,10 @@ namespace Jump_n_Run.classes
 
         private void MoveIdle(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            if (!jumping)
+            {
+                this.jumpRelative = this.rectangle.Bottom;
+            }
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
@@ -605,6 +642,7 @@ namespace Jump_n_Run.classes
                     }
                     else
                     {
+                        jumpRelative = this.rectangle.Bottom;
                         canJump = true;
 
                     }
