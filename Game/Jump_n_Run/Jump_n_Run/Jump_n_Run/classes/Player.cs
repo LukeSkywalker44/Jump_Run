@@ -17,26 +17,22 @@ namespace Jump_n_Run.classes
 
         private Texture2D playerImgRun, playerImgStand, playerImgJump;
         private Vector2 playerPosition;
-
         private Rectangle[] playerRectsRun;
         private Rectangle[] playerRectsJump;
         private Rectangle playerRectIdle;
         private int playerImgIndexRun = 0;
         private int playerImgIndexJump = 0;
-
         private SpriteEffects playerDirection = SpriteEffects.None;
-
         private Orientation oldOrientation;
-
         private int playerTime;
         private const int playerImgChangeTimeRun = 80;
         private const int playerImgChangeTimeJump = 40;
-
-
         private Rectangle renderRect;
+        private bool hasKey = false;
+        private int keyCounter = 0;
 
         //ctors
-        public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(),Keys.Up, Keys.Down, Keys.Left, Keys.Right,0,0) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
+        /*STATIC !!!!!!!!!*/public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(),Keys.Up, Keys.Down, Keys.Left, Keys.Right,0,0) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
         public Player(Texture2D playerRun, Texture2D playerStand, Texture2D playerActual, Texture2D playerJump, Vector2 position, Rectangle[] rects, int MoveSpeed, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight, int gravity, int jump)
             : base(MoveSpeed,gravity, playerActual, rect,jump)
         {
@@ -318,6 +314,37 @@ namespace Jump_n_Run.classes
         public override void Draw(ref SpriteBatch sb)
         {
             sb.Draw(Texture, rectangle, renderRect, Color.White,0.0f,new Vector2(0.0f,0.0f),playerDirection,0.0f);
+        }
+
+        public override  void ItemPickup( ref Items item)
+        {
+            if (item is Key)
+            {
+                this.hasKey = true;
+                item.rectangle = new Rectangle(0, 0, 0, 0);
+            }
+            else if (item is KeyHole)
+            {
+                if (hasKey)
+                {
+                    float trans =  (300 - keyCounter) / 300.0f;
+
+                    ((KeyHole)item).transperency = trans;
+
+                    keyCounter++;
+
+                    if (keyCounter == 300)
+                    {
+                        item.rectangle = new Rectangle(0, 0, 0, 0);
+                        keyCounter = 0;
+                    }
+
+                
+                }
+                else
+                {
+                }
+            }
         }
     }
 

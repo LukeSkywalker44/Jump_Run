@@ -737,5 +737,10 @@ namespace Jump_n_Run.classes
         {
             sb.Draw(this.Texture, this.rectangle, Color.White);
         }
+
+        public virtual void ItemPickup(ref Items item)
+        {
+
+        }
     }
 }

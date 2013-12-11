@@ -66,9 +66,6 @@ namespace Jump_n_Run.classes
         }
 
 
-      
-
-
         /// <summary>
         /// Checks if two Objects would collide in the next frame
         /// </summary>
@@ -184,9 +181,15 @@ namespace Jump_n_Run.classes
 
                 if (result == true)
                 {
+                    if ((collider is Items) && (obj is Player))
+                    {
+                        Items item = (Items)collider;
+                        ((Player)obj).ItemPickup(ref item);
+                    }
                     return true;
                 }
             }
+
 
             return false;
         }

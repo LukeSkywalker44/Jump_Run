@@ -26,6 +26,8 @@ namespace Jump_n_Run
         MoveableObject obj2;
         MoveableObject obj3;
         Texture2D objTex;
+        Texture2D objItemKey;
+        Texture2D objItemKeyHole;
         
         SpriteFont Arial;
         int updateCounter = 0;
@@ -36,6 +38,8 @@ namespace Jump_n_Run
 
         // Instanz
         Player player = new Player();
+        Key key = new Key();
+        KeyHole keyHole = new KeyHole();
 
         public Game1()
         {
@@ -76,7 +80,12 @@ namespace Jump_n_Run
             objTex = new Texture2D(graphics.GraphicsDevice, 64, 64);
             objTex = Content.Load<Texture2D>("object");
 
+            // Item
+            objItemKey = Content.Load<Texture2D>(@"Images/gameobjects/Schlüssel_2");
+            objItemKeyHole = Content.Load<Texture2D>(@"Images/gameobjects/Schlüsselloch");
 
+            key = new Key(objItemKey, new Rectangle(400,380,20,20));
+            keyHole = new KeyHole(objItemKeyHole, new Rectangle(950, 680, 40, 40));
           
             #region testLevel
 
@@ -93,6 +102,8 @@ namespace Jump_n_Run
 
             GObjects.Add(new GameObject(objTex,new Rectangle(0,718,1024,50)));
 
+            GObjects.Add(new GameObject(objTex, new Rectangle(950,0,40,640)));
+
             GObjects.Add(new MoveableObject(0, 10, objTex, new Rectangle(120,560,60,40),0));
             GObjects.Add(new MoveableObject(0, 9, objTex, new Rectangle(120, 520, 60, 40), 0));
             GObjects.Add(new MoveableObject(0, 8, objTex, new Rectangle(120, 480, 60, 40), 0));
@@ -104,6 +115,8 @@ namespace Jump_n_Run
 
 
             GObjects.Add(player);
+            GObjects.Add(key);
+            GObjects.Add(keyHole);
 
 
             Arial = Content.Load<SpriteFont>("Arial");
@@ -136,6 +149,10 @@ namespace Jump_n_Run
                 this.Exit();
             }
 
+            List<GameObject> toDelete = new List<GameObject>();
+
+            GObjects.Remove(null);
+
            
 
             foreach (GameObject go in GObjects)
@@ -145,25 +162,6 @@ namespace Jump_n_Run
 
 
 
-            //if (player.rectangle.X >= 700)
-            //{
-            //    foreach (GameObject obj in GObjects)
-            //    {
-            //        obj.rectangle.X -= player.movementSpeed;
-            //    }
-
-            //    bgFrame.X -= player.movementSpeed;
-            //}
-
-            //if (player.rectangle.X <= 100)
-            //{
-            //    foreach (GameObject obj in GObjects)
-            //    {
-            //        obj.rectangle.X += player.movementSpeed;
-            //    }
-
-            //    bgFrame.X += player.movementSpeed;
-            //}
 
             Scrolling.Scroll(player,  GObjects,ref bgFrame, mainFrame);
 
@@ -192,16 +190,16 @@ namespace Jump_n_Run
                 gobject.Draw(ref spriteBatch);
             }
 
-            spriteBatch.DrawString(Arial, "Ausgangsposition: " + player.jumpRelative, new Vector2(1, 1), Color.Violet);
-            spriteBatch.DrawString(Arial, "Sprunghoehe: " + player.jumpHeight, new Vector2(1, 30), Color.Violet);
-            spriteBatch.DrawString(Arial, "Springt: " + player.jumping, new Vector2(1, 60), Color.Violet);
-            spriteBatch.DrawString(Arial, "Updates: " + updateCounter, new Vector2(1, 90), Color.Violet);
-            spriteBatch.DrawString(Arial, "Height: " + player.rectangle.Bottom, new Vector2(1, 120), Color.Violet);
+            //spriteBatch.DrawString(Arial, "Ausgangsposition: " + player.jumpRelative, new Vector2(1, 1), Color.Violet);
+            //spriteBatch.DrawString(Arial, "Sprunghoehe: " + player.jumpHeight, new Vector2(1, 30), Color.Violet);
+            //spriteBatch.DrawString(Arial, "Springt: " + player.jumping, new Vector2(1, 60), Color.Violet);
+            //spriteBatch.DrawString(Arial, "Updates: " + updateCounter, new Vector2(1, 90), Color.Violet);
+            //spriteBatch.DrawString(Arial, "Height: " + player.rectangle.Bottom, new Vector2(1, 120), Color.Violet);
 
-            for (int i = 0; i < kbstate.GetPressedKeys().Count(); i++)
-            {
-                spriteBatch.DrawString(Arial, kbstate.GetPressedKeys()[i].ToString(), new Vector2(1, 150 + i * 30), Color.Violet);
-            }
+            //for (int i = 0; i < kbstate.GetPressedKeys().Count(); i++)
+            //{
+            //    spriteBatch.DrawString(Arial, kbstate.GetPressedKeys()[i].ToString(), new Vector2(1, 150 + i * 30), Color.Violet);
+            //}
 
                 spriteBatch.End();
 

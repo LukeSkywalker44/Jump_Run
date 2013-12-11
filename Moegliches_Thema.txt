@@ -1,0 +1,12 @@
+Zoo - Angestellter, der die Tiere im Zoo einf‰ngt.
+Oder:
+Jagd - Spiel --> Tiere daschieﬂen
+
+Easter Eggs einbauen (wenn man zu einem bestimmten Zeitpunkt spielt, passiert irgendetwas)
+
+
+Sp‰tere Idee:
+
+Waffe aufheben. Anfangs M‰nnchen noch keine Puffn (in der Animation).
+Erst wenn er diese aufhebt, hat er eine puffn und kann dann auch schieﬂen
+
