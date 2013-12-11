@@ -1,6 +1,7 @@
 Zoo - Angestellter, der die Tiere im Zoo einfängt.
 Oder:
 Jagd - Spiel --> Tiere daschießen
+Jagen auf besondere Figuren zB: Mario. Luigi, Sonic (sehr schnell) usw.
 
 Easter Eggs einbauen (wenn man zu einem bestimmten Zeitpunkt spielt, passiert irgendetwas)
 
