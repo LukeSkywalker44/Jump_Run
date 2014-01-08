@@ -56,22 +56,22 @@ namespace Jump_n_Run.classes
         {
 
 
-            playerImgRun = Content.Load<Texture2D>("Images/gameobjects/Run_480_40");
+            playerImgRun = Content.Load<Texture2D>("Images/gameobjects/Runv2");
             playerImgStand = Content.Load<Texture2D>("Images/gameobjects/Stand");
             playerImgJump = Content.Load<Texture2D>("Images/gameobjects/Jump_520_40");
 
             int startX = 0;
-            int deltaX = 40;
-            playerPosition = new Vector2(504, graphics.PreferredBackBufferHeight - playerImgRun.Height - 21);
+            int deltaX = 31;
+            playerPosition = new Vector2(504, graphics.PreferredBackBufferHeight - playerImgRun.Height - 15);
 
             this.gravity = 10;
 
-            playerRectIdle = new Rectangle(0, 0, 42, 40);
+            playerRectIdle = new Rectangle(0, 0, 31, 40);
 
             playerRectsRun = new Rectangle[12];
             for (int i = 0; i < playerRectsRun.Length; i++)
             {
-                playerRectsRun[i] = new Rectangle(startX + i * deltaX, 0, 40, 40);
+                playerRectsRun[i] = new Rectangle(startX + i * deltaX, 0, 31, 40);
 
                 
             }
