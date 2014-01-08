@@ -60,7 +60,7 @@ namespace Jump_n_Run.classes
         }
 
 
-        private void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -134,7 +134,7 @@ namespace Jump_n_Run.classes
             }
         }
 
-        private void MoveUpLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveUpLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -285,7 +285,7 @@ namespace Jump_n_Run.classes
             }
         }
 
-        private void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -436,7 +436,7 @@ namespace Jump_n_Run.classes
             }
         }
 
-        private void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -476,7 +476,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Down, gt);
         }
 
-        private void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -545,7 +545,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Left, gt);
         }
 
-        private void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -613,7 +613,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Right, gt);
         }
 
-        private void MoveIdle(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected void MoveIdle(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {

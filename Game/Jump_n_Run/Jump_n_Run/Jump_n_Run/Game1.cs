@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 using Jump_n_Run.classes;
 namespace Jump_n_Run
 {
@@ -30,16 +31,23 @@ namespace Jump_n_Run
         int updateCounter = 0;
         long initMemory;
 
+        Stopwatch sw = new Stopwatch();
+        long frametime;
+        double fps;
+
+        string fpsDraw;
 
 
         // List of all GameObjects
 
         List<GameObject> GObjects = new List<GameObject>();
 
-        // Instanz
+        // Instanzen
         Player player = new Player();
         Key key = new Key();
         KeyHole keyHole = new KeyHole();
+
+        Enemy enemy1;
 
         public Game1()
         {
@@ -65,6 +73,7 @@ namespace Jump_n_Run
             // TODO: Add your initialization logic here
             background = new Texture2D(graphics.GraphicsDevice, 800,600);
             base.Initialize();
+            sw.Start();
         }
 
         /// <summary>
@@ -89,6 +98,10 @@ namespace Jump_n_Run
 
             key = new Key(objItemKey, new Rectangle(400,380,20,20));
             keyHole = new KeyHole(objItemKeyHole, new Rectangle(950, 680, 40, 40));
+
+            enemy1 = new Enemy(10,10, objTex, new Rectangle(100, 100, 40, 40),120);
+
+            GObjects.Add(enemy1);
           
             #region testLevel
 
@@ -143,6 +156,22 @@ namespace Jump_n_Run
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            sw.Stop();
+            frametime = sw.ElapsedMilliseconds;
+            fps = frametime / 1000.0 * 3600.0;
+
+            if (fps >= 60.0)
+            {
+                fpsDraw = "FPS: " + Convert.ToString(fps) + " - CAP";
+            }
+            else
+            {
+                fpsDraw = "FPS: " + Convert.ToString(fps);
+            }
+            sw.Reset();
+            sw.Start();
+
+
             updateCounter++;
             KeyboardState kbstate = Keyboard.GetState();
 
@@ -163,8 +192,10 @@ namespace Jump_n_Run
                 go.Move(gameTime, kbstate, mainFrame, GObjects);
             }
 
+            enemy1.KI_Movement(mainFrame, GObjects, gameTime);
 
-            Scrolling.Scroll(player,  GObjects,ref bgFrame, mainFrame);
+
+            Scrolling.Scroll(player,   GObjects,ref bgFrame, mainFrame);
 
          
 
@@ -191,8 +222,8 @@ namespace Jump_n_Run
                 gobject.Draw(ref spriteBatch);
             }
 
-            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false))/1024)) + "KB", new Vector2(1, 1), Color.Violet);
-           
+            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false))/1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, fpsDraw, new Vector2(1, 20), Color.LimeGreen);
 
                 spriteBatch.End();
 

@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="classes\Collision.cs" />
+    <Compile Include="classes\Enemy.cs" />
     <Compile Include="classes\GameObject.cs" />
     <Compile Include="classes\Items.cs" />
     <Compile Include="classes\MoveableObject.cs" />

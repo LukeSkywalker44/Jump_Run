@@ -18,12 +18,12 @@ namespace Jump_n_Run.classes
 
 
         /// <summary>
-        /// enables vertical and horizontal scrolling relative to the Player object
+        /// enables horizontal scrolling relative to the Player object
         /// </summary>
         /// <param name="player">the Player object</param>
         /// <param name="gobjects">the objects which will move</param>
         /// <param name="backgroundRenderFrame">the rectangle used for rendering the background</param>
-        static public void Scroll(Player player,  IEnumerable<GameObject> gobjects, ref Rectangle backgroundRenderFrame, Rectangle mainframe)
+        static public void Scroll(Player player,   IEnumerable<GameObject> gobjects, ref Rectangle backgroundRenderFrame, Rectangle mainframe)
         {
             if (player.rectangle.X > 700)
             {
