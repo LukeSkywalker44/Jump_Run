@@ -22,15 +22,15 @@ namespace Jump_n_Run
         Rectangle bgFrame = new Rectangle(0, 0, 2048, 768);
         
         Texture2D background;
-        MoveableObject obj;
-        MoveableObject obj2;
-        MoveableObject obj3;
         Texture2D objTex;
         Texture2D objItemKey;
         Texture2D objItemKeyHole;
         
         SpriteFont Arial;
         int updateCounter = 0;
+        long initMemory;
+
+
 
         // List of all GameObjects
 
@@ -49,6 +49,9 @@ namespace Jump_n_Run
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1024;
             Content.RootDirectory = "Content";
+
+            this.initMemory = GC.GetTotalMemory(false);
+           
         }
 
         /// <summary>
@@ -161,8 +164,6 @@ namespace Jump_n_Run
             }
 
 
-
-
             Scrolling.Scroll(player,  GObjects,ref bgFrame, mainFrame);
 
          
@@ -190,24 +191,12 @@ namespace Jump_n_Run
                 gobject.Draw(ref spriteBatch);
             }
 
-            //spriteBatch.DrawString(Arial, "Ausgangsposition: " + player.jumpRelative, new Vector2(1, 1), Color.Violet);
-            //spriteBatch.DrawString(Arial, "Sprunghoehe: " + player.jumpHeight, new Vector2(1, 30), Color.Violet);
-            //spriteBatch.DrawString(Arial, "Springt: " + player.jumping, new Vector2(1, 60), Color.Violet);
-            //spriteBatch.DrawString(Arial, "Updates: " + updateCounter, new Vector2(1, 90), Color.Violet);
-            //spriteBatch.DrawString(Arial, "Height: " + player.rectangle.Bottom, new Vector2(1, 120), Color.Violet);
-
-            //for (int i = 0; i < kbstate.GetPressedKeys().Count(); i++)
-            //{
-            //    spriteBatch.DrawString(Arial, kbstate.GetPressedKeys()[i].ToString(), new Vector2(1, 150 + i * 30), Color.Violet);
-            //}
+            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false))/1024)) + "KB", new Vector2(1, 1), Color.Violet);
+           
 
                 spriteBatch.End();
 
             base.Draw(gameTime);
         }
-
-   
-
-
     }
 }

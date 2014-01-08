@@ -44,14 +44,6 @@ namespace Jump_n_Run.classes
 
                 backgroundRenderFrame.X += player.movementSpeed;
             }
-
-
-           
-
-        
-
-
-
         }
     }
 }
