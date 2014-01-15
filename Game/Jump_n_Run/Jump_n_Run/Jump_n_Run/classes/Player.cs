@@ -58,7 +58,7 @@ namespace Jump_n_Run.classes
 
             playerImgRun = Content.Load<Texture2D>("Images/gameobjects/Runv2");
             playerImgStand = Content.Load<Texture2D>("Images/gameobjects/Stand");
-            playerImgJump = Content.Load<Texture2D>("Images/gameobjects/Jump_520_40");
+            playerImgJump = Content.Load<Texture2D>("Images/gameobjects/Jumpv3");
 
             int startX = 0;
             int deltaX = 31;
@@ -76,10 +76,10 @@ namespace Jump_n_Run.classes
                 
             }
 
-            playerRectsJump = new Rectangle[9];
+            playerRectsJump = new Rectangle[11];
             for (int i = 0; i < playerRectsJump.Length; i++)
             {
-                playerRectsJump[i] = new Rectangle(startX + i * deltaX, 0, 42, 42); // !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                playerRectsJump[i] = new Rectangle(startX + i * deltaX, 0, 31, 45); // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
             }
@@ -87,9 +87,9 @@ namespace Jump_n_Run.classes
             oldOrientation = Orientation.Idle;
 
             Texture = playerImgStand;
-            this.rectangle = new Rectangle(300, 300, 42, 50);
+            this.rectangle = new Rectangle(300, 300,42, 50); //(300, 300, 42, 50);
             this.movementSpeed = 5;
-            this.jumpHeight = 120;
+            this.jumpHeight = 80;
 
         }
        
