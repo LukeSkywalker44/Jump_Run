@@ -112,6 +112,7 @@
     <Compile Include="classes\GameObject.cs" />
     <Compile Include="classes\Items.cs" />
     <Compile Include="classes\MoveableObject.cs" />
+    <Compile Include="classes\Panda.cs" />
     <Compile Include="classes\Player.cs" />
     <Compile Include="classes\Scrolling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
