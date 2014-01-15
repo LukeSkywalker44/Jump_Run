@@ -16,6 +16,7 @@ namespace Jump_n_Run.classes
     {
         // fields
         private Texture2D pandaImgRun, pandaImgJump;
+       // private Vector2 pandaPosition;
         private Rectangle[] pandaRectsRun;
         private Rectangle[] pandaRectsJump;
 
@@ -29,29 +30,33 @@ namespace Jump_n_Run.classes
 
             Texture = this.pandaImgRun;
         }
-
-        public void PandaRun() 
+        public void loadPanda(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            // pandaImgRun = content.Load<Texture2D>("Images/gameobjects/Runv2");      // ändern/weck
-            // pandaImgJump = content.Load<Texture2D>("Images/gameobjects/Runv2");     // ändern/weck
+            pandaImgRun = Content.Load<Texture2D>("Images/gameobjects/PandaRunv1");      // ändern/weck
+            pandaImgJump = Content.Load<Texture2D>("Images/gameobjects/PandaJumpv1");     // ändern/weck
 
+            int startX = 0;
+            int deltaX = 31;
+
+            this.gravity = 10;
 
             pandaRectsRun = new Rectangle[8];
             for (int i = 0; i < pandaRectsRun.Length; i++)
             {
-                pandaRectsRun[i] = new Rectangle(100, 100, 54, 66);
+                pandaRectsRun[i] = new Rectangle(startX + i * deltaX, 0, 54, 66);
             }
-        }
 
-        public void PandaJump() 
-        {
             pandaRectsJump = new Rectangle[4];
             for (int i = 0; i < pandaRectsJump.Length; i++)
             {
-                pandaRectsJump[i] = new Rectangle(100, 100, 58, 60);
+                pandaRectsJump[i] = new Rectangle(startX + i * deltaX, 0, 58, 60);
             }
-
+        
         }
+        
+
+
+   
 
 
 
