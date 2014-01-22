@@ -26,7 +26,7 @@ namespace Jump_n_Run
         Texture2D objTex;
         Texture2D objItemKey;
         Texture2D objItemKeyHole;
-        
+
         SpriteFont Arial;
         int updateCounter = 0;
         long initMemory;
@@ -46,7 +46,7 @@ namespace Jump_n_Run
         Player player = new Player();
         Key key = new Key();
         KeyHole keyHole = new KeyHole();
-
+        Panda panda = new Panda();
         Enemy enemy1;
 
         public Game1()
@@ -87,7 +87,7 @@ namespace Jump_n_Run
             background = Content.Load<Texture2D>("landscape_2048x768");
 
             player.loadPlayer(this.graphics, this.Content);
-
+            panda.loadPanda(this.graphics, this.Content);
 
             objTex = new Texture2D(graphics.GraphicsDevice, 64, 64);
             objTex = Content.Load<Texture2D>("object");
@@ -102,6 +102,8 @@ namespace Jump_n_Run
             enemy1 = new Enemy(10,10, objTex, new Rectangle(100, 100, 40, 40),120);
 
             GObjects.Add(enemy1);
+
+          
           
             #region testLevel
 
@@ -133,6 +135,8 @@ namespace Jump_n_Run
             GObjects.Add(player);
             GObjects.Add(key);
             GObjects.Add(keyHole);
+
+            GObjects.Add(panda);
 
 
             Arial = Content.Load<SpriteFont>("Arial");

@@ -131,11 +131,6 @@ namespace Jump_n_Run.classes
                 }
 
             }
-
-
-           
-
-         
         }
 
         public override void animation(Orientation ori, GameTime gt)
