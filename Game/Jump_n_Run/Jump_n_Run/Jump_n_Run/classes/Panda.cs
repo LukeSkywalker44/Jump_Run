@@ -41,7 +41,7 @@ namespace Jump_n_Run.classes
 
         public void loadPanda(GraphicsDeviceManager graphics, ContentManager Content)
         {
-            pandaImgStand = Content.Load<Texture2D>("");
+            pandaImgStand = Content.Load<Texture2D>("Images/gameobjects/PandaStand");
             pandaImgRun = Content.Load<Texture2D>("Images/gameobjects/PandaRunv1");      // ändern/weck
             pandaImgJump = Content.Load<Texture2D>("Images/gameobjects/PandaJumpv1");     // ändern/weck
 
@@ -50,7 +50,7 @@ namespace Jump_n_Run.classes
 
             this.gravity = 10;
 
-            pandaRectIdle = new Rectangle(0, 0, 60, 60);
+            pandaRectIdle = new Rectangle(0, 0, 63, 62);
 
             pandaRectsRun = new Rectangle[8];
             for (int i = 0; i < pandaRectsRun.Length; i++)
@@ -71,7 +71,7 @@ namespace Jump_n_Run.classes
             this.movementSpeed = 5;
             this.jumpHeight = 30;
             this.rectangle = new Rectangle(200, 200, 60, 60);
-            //renderRect = new Rectangle(0, 0, 54, 66);
+            renderRect = pandaRectIdle;
         }
 
         public void CalculatePandaImgIndex(GameTime gametime, Orientation ori) 
@@ -138,8 +138,92 @@ namespace Jump_n_Run.classes
 
                 else
                 {
-                    
+                    pandaDirection = SpriteEffects.None;
+                    Texture = pandaImgJump;
+                    pandaImgIndexRun = 0;
+                    CalculatePandaImgIndex(gt, Orientation.Up);
                 }
+                oldOrientation = Orientation.Up;
+            }
+
+            if (ori == Orientation.UpLeft)
+            {
+                if (oldOrientation == Orientation.UpLeft)
+                {
+                    pandaDirection = SpriteEffects.FlipHorizontally;
+                    Texture = pandaImgJump;
+                    CalculatePandaImgIndex(gt, Orientation.Up);
+                }
+                else
+                {
+                    pandaDirection = SpriteEffects.FlipHorizontally;
+                    Texture = pandaImgJump;
+                    pandaImgIndexRun = 0;
+                    CalculatePandaImgIndex(gt, Orientation.Up);
+                }
+                oldOrientation = Orientation.UpLeft;
+            }
+
+            if (ori == Orientation.UpRight)
+            {
+                if (oldOrientation == Orientation.UpRight)
+                {
+                    pandaDirection = SpriteEffects.None;
+                    Texture = pandaImgJump;
+                    CalculatePandaImgIndex(gt, Orientation.Up);
+                }
+                else
+                {
+                    pandaDirection = SpriteEffects.None;
+                    Texture = pandaImgJump;
+                    pandaImgIndexRun = 0;
+                    CalculatePandaImgIndex(gt, Orientation.Up);
+                }
+                oldOrientation = Orientation.UpRight;
+            }
+
+            if (ori == Orientation.Left)
+            {
+                if (oldOrientation == Orientation.Left)
+                {
+                    pandaDirection = SpriteEffects.FlipHorizontally;
+                    Texture = pandaImgRun;
+                    CalculatePandaImgIndex(gt, Orientation.Left);
+                }
+                else
+                {
+                    pandaDirection = SpriteEffects.FlipHorizontally;
+                    Texture = pandaImgRun;
+                    pandaImgIndexRun = 0;
+                    CalculatePandaImgIndex(gt, Orientation.Left);
+                }
+                oldOrientation = Orientation.Left;
+            }
+
+            if (ori == Orientation.Right)
+            {
+                if (oldOrientation == Orientation.Right)
+                {
+                    pandaDirection = SpriteEffects.None;
+                    Texture = pandaImgRun;
+                    CalculatePandaImgIndex(gt, Orientation.Right);
+                }
+                else
+                {
+                    pandaDirection = SpriteEffects.None;
+                    Texture = pandaImgRun;
+                    pandaImgIndexRun = 0;
+                    CalculatePandaImgIndex(gt, Orientation.Right);
+                }
+                oldOrientation = Orientation.Right;
+            }
+
+            if (ori == Orientation.Down)
+            {
+                this.Texture = pandaImgStand;
+                renderRect = pandaRectIdle;
+
+                oldOrientation = Orientation.Down;
             }
         }
 
