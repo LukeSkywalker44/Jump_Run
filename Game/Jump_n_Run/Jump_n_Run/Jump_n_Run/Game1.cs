@@ -97,7 +97,7 @@ namespace Jump_n_Run
             objItemKeyHole = Content.Load<Texture2D>(@"Images/gameobjects/Schlüsselloch");
 
             key = new Key(objItemKey, new Rectangle(400,380,20,20));
-            keyHole = new KeyHole(objItemKeyHole, new Rectangle(950, 680, 40, 40));
+            keyHole = new KeyHole(objItemKeyHole, new Rectangle(950, 640, 40, 80));
 
             enemy1 = new Enemy(10,10, objTex, new Rectangle(100, 100, 40, 40),120);
 
