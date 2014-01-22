@@ -197,7 +197,7 @@ namespace Jump_n_Run
             }
 
             enemy1.KI_Movement(mainFrame, GObjects, gameTime);
-
+            panda.KI_Movement(mainFrame, GObjects, gameTime);
 
             Scrolling.Scroll(player,   GObjects,ref bgFrame, mainFrame);
 
