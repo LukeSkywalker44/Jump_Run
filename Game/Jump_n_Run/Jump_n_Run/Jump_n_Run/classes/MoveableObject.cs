@@ -60,7 +60,7 @@ namespace Jump_n_Run.classes
         }
 
 
-        protected void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -130,11 +130,15 @@ namespace Jump_n_Run.classes
             else
             {
                 // gravity
-                this.MoveDown(bound, collider, gt);
+
+                // Enemys brauchen keine Gravity, da die Korrektheit ihrer Bewegungungen
+                // in der Enemy Klasse gesteuert wird
+
+                if(!(this is Enemy))this.MoveDown(bound, collider, gt);
             }
         }
 
-        protected void MoveUpLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveUpLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -230,7 +234,7 @@ namespace Jump_n_Run.classes
                 if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                 {
                     this.rectangle.Y += this.gravity;
-                    canJump = false;
+                    if (!(this is Enemy)) canJump = false;
                 }
                 else
                 {
@@ -244,7 +248,7 @@ namespace Jump_n_Run.classes
                         if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                         {
                             this.rectangle.Y += newSpeed;
-                            canJump = false;
+                            if (!(this is Enemy)) canJump = false;
                             break;
                         }
                         else
@@ -285,7 +289,7 @@ namespace Jump_n_Run.classes
             }
         }
 
-        protected void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -381,7 +385,7 @@ namespace Jump_n_Run.classes
                 if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                 {
                     this.rectangle.Y += this.gravity;
-                    canJump = false;
+                    if (!(this is Enemy)) canJump = false;
                 }
                 else
                 {
@@ -395,7 +399,7 @@ namespace Jump_n_Run.classes
                         if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                         {
                             this.rectangle.Y += newSpeed;
-                            canJump = false;
+                            if (!(this is Enemy)) canJump = false;
                             break;
                         }
                         else
@@ -436,7 +440,7 @@ namespace Jump_n_Run.classes
             }
         }
 
-        protected void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -446,7 +450,7 @@ namespace Jump_n_Run.classes
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
                 this.rectangle.Y += this.gravity;
-                canJump = false;
+                if (!(this is Enemy)) canJump = false;
             }
             else
             {
@@ -460,7 +464,7 @@ namespace Jump_n_Run.classes
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
                         this.rectangle.Y += newSpeed;
-                        canJump = false;
+                        if (!(this is Enemy)) canJump = false;
                         break;
                     }
                     else
@@ -476,7 +480,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Down, gt);
         }
 
-        protected void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -510,7 +514,7 @@ namespace Jump_n_Run.classes
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
                 this.rectangle.Y += this.gravity;
-                canJump = false;
+                if (!(this is Enemy)) canJump = false;
             }
             else
             {
@@ -524,7 +528,7 @@ namespace Jump_n_Run.classes
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
                         this.rectangle.Y += newSpeed;
-                        canJump = false;
+                        if (!(this is Enemy)) canJump = false;
                         break;
                     }
                     else
@@ -545,7 +549,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Left, gt);
         }
 
-        protected void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -580,7 +584,7 @@ namespace Jump_n_Run.classes
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
                 this.rectangle.Y += this.gravity;
-                canJump = false;
+                if (!(this is Enemy)) canJump = false;
             }
             else
             {
@@ -594,7 +598,7 @@ namespace Jump_n_Run.classes
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
                         this.rectangle.Y += newSpeed;
-                        canJump = false;
+                        if (!(this is Enemy)) canJump = false;
                         break;
                     }
                     else
@@ -613,7 +617,7 @@ namespace Jump_n_Run.classes
             animation(Orientation.Right, gt);
         }
 
-        protected void MoveIdle(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
+        protected virtual void MoveIdle(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
             if (!jumping)
             {
@@ -623,7 +627,7 @@ namespace Jump_n_Run.classes
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
                 this.rectangle.Y += this.gravity;
-                canJump = false;
+                if(!(this is Enemy))canJump = false;
             }
             else
             {
@@ -637,7 +641,7 @@ namespace Jump_n_Run.classes
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
                         this.rectangle.Y += newSpeed;
-                        canJump = false;
+                        if (!(this is Enemy)) canJump = false;
                         break;
                     }
                     else
