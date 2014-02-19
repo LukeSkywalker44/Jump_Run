@@ -1,0 +1,135 @@
+﻿body {
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/*-------------------------------------------*/
+
+
+#container {
+    background-color:black;
+    width:1200px;
+    height:1500px;
+}
+
+#head {
+    background-color:darkgreen;
+    color:orange;
+    height:350px;
+}
+
+#containerMain {
+    background:black;
+}
+
+#navigation {
+    background-color:green;
+    color:brown;
+    width:200px;
+    height:1000px;
+    float:left;
+}
+
+#content {
+    background-color:gray;
+    color:orange;
+    width:680px;
+    height:1000px;
+    float:left;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#info {
+    background-color:green;
+    color:brown;
+    width:280px;
+    height:1000px;
+    float:right;
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#footer {
+    background-color:#128712;
+    color:brown;
+    clear:both;
+    height:150px;
+    padding-top:70px;
+    border-top-style:groove;
+    border-top-color:brown;
+    border-top-width:5px;
+}
+
+#nav1 {
+    padding-top:10px;
+    padding-left:10px;
+    font-style:normal;
+    font-size:1.4em;
+    list-style:none;
+
+}
+
+#nav2 {
+    padding-left:15px;
+    list-style:none;
+
+}
