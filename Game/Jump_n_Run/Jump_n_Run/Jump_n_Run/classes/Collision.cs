@@ -22,6 +22,7 @@ namespace Jump_n_Run.classes
         /// <returns>true on collision</returns>
         public static bool BoundCollision(Rectangle bounds, MoveableObject obj)
         {
+
             Rectangle moveable = obj.rectangle;
             int moveSpeed = obj.movementSpeed;
 
@@ -109,6 +110,11 @@ namespace Jump_n_Run.classes
 
             }
 
+            if ((obj is Enemy) && (Object is Enemy))
+            {
+                return false;
+            }
+
 
             Rectangle futureRect = new Rectangle(moveable.X + objX, moveable.Y + objY, moveable.Width, moveable.Height);
 
@@ -177,6 +183,8 @@ namespace Jump_n_Run.classes
 
             foreach (GameObject collider in gobjs)
             {
+
+              
                 result = collider.rectangle.Intersects(futureRect);
 
                 if (result == true)
@@ -186,6 +194,20 @@ namespace Jump_n_Run.classes
                         Items item = (Items)collider;
                         ((Player)obj).ItemPickup(ref item);
                     }
+                    if ((obj is Panda) && (collider is Panda))
+                    {
+                        return false;
+                    }
+                    if ((obj is Player) && (collider is Panda))
+                    {
+                        return false;
+                    }
+                    if ((obj is Panda) && (collider is Player))
+                    {
+                        return false;
+                    }
+
+                   
                     return true;
                 }
             }

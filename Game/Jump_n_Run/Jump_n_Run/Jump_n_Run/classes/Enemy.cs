@@ -32,12 +32,6 @@ namespace Jump_n_Run.classes
             
             int movement = rand.Next(0, 6);
 
-           
-
-            
-
-       
-
              this.gnd = this.GroundCollision(bound, colliders);
 
             if (gnd) jumpBase = this.rectangle.Bottom;
@@ -359,6 +353,9 @@ namespace Jump_n_Run.classes
                 this.gravity = oldMoveSpeed;
             }
 
+
+            this.orientation = Orientation.Idle;
+
         }
         protected override void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
@@ -475,6 +472,11 @@ namespace Jump_n_Run.classes
             }
 
             animation(Orientation.Right, gt);
+        }
+
+        public override void animation(Orientation ori, GameTime gt)
+        {
+           
         }
     }
 }

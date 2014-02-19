@@ -108,12 +108,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="classes\Collision.cs" />
+    <Compile Include="classes\Emitter.cs" />
+    <Compile Include="classes\EmitterHelper.cs" />
     <Compile Include="classes\Enemy.cs" />
     <Compile Include="classes\GameObject.cs" />
     <Compile Include="classes\Items.cs" />
     <Compile Include="classes\MoveableObject.cs" />
     <Compile Include="classes\Panda.cs" />
+    <Compile Include="classes\Particle.cs" />
+    <Compile Include="classes\ParticleFader.cs" />
+    <Compile Include="classes\ParticleGameComponent.cs" />
+    <Compile Include="classes\ParticleScaler.cs" />
     <Compile Include="classes\Player.cs" />
+    <Compile Include="classes\RandomMinMax.cs" />
     <Compile Include="classes\Scrolling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

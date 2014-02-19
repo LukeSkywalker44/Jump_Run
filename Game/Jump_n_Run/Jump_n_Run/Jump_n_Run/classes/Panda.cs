@@ -29,6 +29,8 @@ namespace Jump_n_Run.classes
         private int pandaImgIndexJump = 0;
         private Orientation oldOrientation;
 
+        Color drawColor = Color.White;
+
         // ctors
         public Panda() : this(0,0,null,new Rectangle(0,0,0,0),0,null, null) { }
         public Panda(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump, Texture2D pandaImgRun, Texture2D pandaImgJump)
@@ -46,7 +48,8 @@ namespace Jump_n_Run.classes
             pandaImgJump = Content.Load<Texture2D>("Images/gameobjects/PandaJumpv1");     // ändern/weck
 
             int startX = 0;
-            int deltaX = 31;
+            int deltaX = 54;
+            int deltaY = 58;
 
             this.gravity = 10;
 
@@ -61,14 +64,14 @@ namespace Jump_n_Run.classes
             pandaRectsJump = new Rectangle[4];
             for (int i = 0; i < pandaRectsJump.Length; i++)
             {
-                pandaRectsJump[i] = new Rectangle(startX + i * deltaX, 0, 58, 60);
+                pandaRectsJump[i] = new Rectangle(startX + i * deltaY, 0, 58, 60);
             }
 
             oldOrientation = Orientation.Idle;
 
             Texture = pandaImgStand;
 
-            this.movementSpeed = 5;
+            this.movementSpeed = 7;
             this.jumpHeight = 30;
             this.rectangle = new Rectangle(200, 200, 60, 60);
             renderRect = pandaRectIdle;
@@ -111,7 +114,7 @@ namespace Jump_n_Run.classes
         }
 
 
-        public void AnimationPanda(Orientation ori, GameTime gt) 
+        public  override void animation(Orientation ori, GameTime gt) 
         {
             if (ori == Orientation.Idle)
             {
@@ -229,7 +232,8 @@ namespace Jump_n_Run.classes
 
         public override void Draw(ref SpriteBatch sb)
         {
-            sb.Draw(Texture, rectangle, renderRect, Color.White, 0.0f, new Vector2(0.0f, 0.0f), pandaDirection, 0.0f);
+            
+            sb.Draw(Texture, rectangle, renderRect, drawColor, 0.0f, new Vector2(0.0f, 0.0f), pandaDirection, 0.0f);
         }
 
 

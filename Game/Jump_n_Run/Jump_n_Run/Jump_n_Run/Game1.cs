@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using Jump_n_Run.classes;
+using X2DPE;
+using X2DPE.Helpers;
 namespace Jump_n_Run
 {
     /// <summary>
@@ -21,7 +23,7 @@ namespace Jump_n_Run
         SpriteBatch spriteBatch;
         Rectangle mainFrame = new Rectangle(0, 0, 1024, 768);
         Rectangle bgFrame = new Rectangle(0, 0, 2048, 768);
-        
+
         Texture2D background;
         Texture2D objTex;
         Texture2D objItemKey;
@@ -37,6 +39,8 @@ namespace Jump_n_Run
 
         string fpsDraw;
 
+        List<Enemy> enemies = new List<Enemy>();
+
 
         // List of all GameObjects
 
@@ -46,8 +50,13 @@ namespace Jump_n_Run
         Player player = new Player();
         Key key = new Key();
         KeyHole keyHole = new KeyHole();
-        Panda panda = new Panda();
-        Enemy enemy1;
+
+
+
+        Emitter emitter = new Emitter();
+        ParticleComponent pcomponent;
+
+
 
         public Game1()
         {
@@ -59,7 +68,13 @@ namespace Jump_n_Run
             Content.RootDirectory = "Content";
 
             this.initMemory = GC.GetTotalMemory(false);
-           
+
+
+
+            pcomponent = new ParticleComponent(this);
+
+            this.Components.Add(pcomponent);
+
         }
 
         /// <summary>
@@ -71,7 +86,7 @@ namespace Jump_n_Run
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            background = new Texture2D(graphics.GraphicsDevice, 800,600);
+            background = new Texture2D(graphics.GraphicsDevice, 800, 600);
             base.Initialize();
             sw.Start();
         }
@@ -87,7 +102,7 @@ namespace Jump_n_Run
             background = Content.Load<Texture2D>("landscape_2048x768");
 
             player.loadPlayer(this.graphics, this.Content);
-            panda.loadPanda(this.graphics, this.Content);
+
 
             objTex = new Texture2D(graphics.GraphicsDevice, 64, 64);
             objTex = Content.Load<Texture2D>("object");
@@ -96,18 +111,16 @@ namespace Jump_n_Run
             objItemKey = Content.Load<Texture2D>(@"Images/gameobjects/Schlüssel_2");
             objItemKeyHole = Content.Load<Texture2D>(@"Images/gameobjects/Schlüsselloch");
 
-            key = new Key(objItemKey, new Rectangle(400,380,20,20));
+            key = new Key(objItemKey, new Rectangle(400, 380, 20, 20));
             keyHole = new KeyHole(objItemKeyHole, new Rectangle(950, 640, 40, 80));
 
-            enemy1 = new Enemy(10,10, objTex, new Rectangle(100, 100, 40, 40),120);
 
-            GObjects.Add(enemy1);
 
-          
-          
+
+
             #region testLevel
 
-            GObjects.Add(new GameObject(objTex,new Rectangle(100,400,20,200)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(100, 400, 20, 200)));
             GObjects.Add(new GameObject(objTex, new Rectangle(180, 400, 20, 200)));
 
             GObjects.Add(new GameObject(objTex, new Rectangle(600, 700, 200, 10)));
@@ -118,17 +131,11 @@ namespace Jump_n_Run
 
             GObjects.Add(new GameObject(objTex, new Rectangle(300, 400, 200, 10)));
 
-            GObjects.Add(new GameObject(objTex,new Rectangle(0,718,1024,50)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(0, 718, 1024, 50)));
 
-            GObjects.Add(new GameObject(objTex, new Rectangle(950,0,40,640)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(950, 0, 40, 640)));
 
-            GObjects.Add(new MoveableObject(0, 10, objTex, new Rectangle(120,560,60,40),0));
-            GObjects.Add(new MoveableObject(0, 9, objTex, new Rectangle(120, 520, 60, 40), 0));
-            GObjects.Add(new MoveableObject(0, 8, objTex, new Rectangle(120, 480, 60, 40), 0));
-            GObjects.Add(new MoveableObject(0, 7, objTex, new Rectangle(120, 440, 60, 40), 0));
-            GObjects.Add(new MoveableObject(0, 6, objTex, new Rectangle(120, 400, 60, 40), 0));
 
-            GObjects.Add(new MoveableObject(10, 0, objTex, new Rectangle(100, 600, 100, 64), Keys.W, Keys.S, Keys.A, Keys.D, 0));
             #endregion
 
 
@@ -136,10 +143,38 @@ namespace Jump_n_Run
             GObjects.Add(key);
             GObjects.Add(keyHole);
 
-            GObjects.Add(panda);
+
 
 
             Arial = Content.Load<SpriteFont>("Arial");
+
+
+
+
+            Emitter emitter = new Emitter()
+     {
+         Active = true,
+         TextureList = new List<Texture2D>()
+		{
+			Content.Load<Texture2D>(@"object")
+			
+		 },
+         RandomEmissionInterval = new RandomMinMax(1.0d),
+         ParticleLifeTime = 500,
+         ParticleDirection = new RandomMinMax(0, 359),
+         ParticleSpeed = new RandomMinMax(5.0f, 8.0f),
+         ParticleRotation = new RandomMinMax(0, 100),
+         RotationSpeed = new RandomMinMax(0.015f),
+         ParticleFader = new ParticleFader(false, true, 1350),
+         ParticleScaler = new ParticleScaler(true, 0.08f)
+     };
+
+           
+
+           
+            pcomponent.particleEmitterList.Add(emitter);
+
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -160,6 +195,11 @@ namespace Jump_n_Run
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+
+
+            pcomponent.particleEmitterList[0].Position = new Vector2(player.rectangle.X + 20, player.rectangle.Y + 10);
+
             sw.Stop();
             frametime = sw.ElapsedMilliseconds;
             fps = frametime / 1000.0 * 3600.0;
@@ -172,12 +212,24 @@ namespace Jump_n_Run
             {
                 fpsDraw = "FPS: " + Convert.ToString(fps);
             }
-            sw.Reset();
-            sw.Start();
 
 
+            emitter.Active = true;
+            emitter.DrawParticles(gameTime, spriteBatch);
             updateCounter++;
             KeyboardState kbstate = Keyboard.GetState();
+
+
+            if (kbstate.IsKeyDown(Keys.E))
+            {
+
+                pcomponent.particleEmitterList[0].Active = true;
+              
+            }
+            else
+            {
+                pcomponent.particleEmitterList[0].Active = false;
+            }
 
             // Allows the game to exit
             if (kbstate.IsKeyDown(Keys.Escape))
@@ -189,23 +241,48 @@ namespace Jump_n_Run
 
             GObjects.Remove(null);
 
-           
+
 
             foreach (GameObject go in GObjects)
             {
                 go.Move(gameTime, kbstate, mainFrame, GObjects);
             }
 
-            enemy1.KI_Movement(mainFrame, GObjects, gameTime);
-            panda.KI_Movement(mainFrame, GObjects, gameTime);
 
-            Scrolling.Scroll(player,   GObjects,ref bgFrame, mainFrame);
 
-         
+
+            foreach (Enemy gegner in enemies)
+            {
+                gegner.KI_Movement(mainFrame, GObjects, gameTime);
+            }
+
+            Scrolling.Scroll(player, GObjects, ref bgFrame, mainFrame);
+
+
+            Panda locpanda = new Panda();
+            locpanda.loadPanda(this.graphics, this.Content);
+
+            locpanda.rectangle.X = new Random().Next(0, 1000);
+            locpanda.rectangle.Y = new Random().Next(0, 500);
+
+
+            if (kbstate.IsKeyDown(Keys.Space))
+            {
+                int i = 0;
+                //enemies.Add(locpanda);
+                //GObjects.Add(locpanda);
+            }
+
+
+            sw.Reset();
+            sw.Start();
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+
+
+
         }
 
         /// <summary>
@@ -218,7 +295,7 @@ namespace Jump_n_Run
             KeyboardState kbstate = Keyboard.GetState();
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background,bgFrame,Color.White);
+            spriteBatch.Draw(background, bgFrame, Color.White);
 
 
             foreach (GameObject gobject in GObjects)
@@ -226,10 +303,14 @@ namespace Jump_n_Run
                 gobject.Draw(ref spriteBatch);
             }
 
-            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false))/1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, fpsDraw, new Vector2(1, 20), Color.LimeGreen);
 
-                spriteBatch.End();
+
+            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, fpsDraw, new Vector2(1, 20), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, "Pandas: " + enemies.Count, new Vector2(1, 40), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, "Partikel: " + pcomponent.particleEmitterList[0].ParticleList.Count, new Vector2(1, 60), Color.LimeGreen);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

@@ -64,7 +64,7 @@ namespace Jump_n_Run.classes
             int deltaX = 31;
            // playerPosition = new Vector2(504, graphics.PreferredBackBufferHeight - playerImgRun.Height - 15);
 
-            this.gravity = 10;
+            this.gravity = 8;
 
             playerRectIdle = new Rectangle(0, 0, 31, 40);
 
@@ -88,8 +88,8 @@ namespace Jump_n_Run.classes
 
             Texture = playerImgStand;
             this.rectangle = new Rectangle(300, 300,42, 50); //(300, 300, 42, 50);
-            this.movementSpeed = 5;
-            this.jumpHeight = 80;
+            this.movementSpeed = 6;
+            this.jumpHeight = 120;
 
         }
        
