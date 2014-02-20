@@ -15,7 +15,7 @@ namespace X2DPE
 	public class Particle
 	{
 		public Texture2D Texture { get; set; }
-		public Vector2 Position { get; set; }
+        public Vector2 Position;
 		public float Speed { get; set; }
 		public float Direction { get; set; }
 		public float TotalLifetime { get; set; }
@@ -26,6 +26,8 @@ namespace X2DPE
 		public int Fade { get; set; }
 		public float Scale { get; set; }
 		public int InitialOpacity { get; private set; }
+
+        private Vector2 position;
 
 		public Particle(Texture2D texture, Vector2 position, float speed, float direction, float rotation, float rotationSpeed, int opacity)
 		{
@@ -42,5 +44,6 @@ namespace X2DPE
 			InitialOpacity = opacity;
 			Color = new Color(Fade, Fade, Fade, Fade);
 		}
+        public Particle() { }
 	}
 }

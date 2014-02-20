@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using X2DPE;
+using X2DPE.Helpers;
 
 namespace Jump_n_Run.classes
 {
@@ -214,6 +216,23 @@ namespace Jump_n_Run.classes
 
 
             return false;
+        }
+
+        public static bool ParticleCollision(IEnumerable<GameObject> Objects, Particle particle)
+        {
+            bool collides = false;
+            foreach (GameObject obj in Objects)
+            {
+                if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
+                {
+                    if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) return true;
+                   
+                }
+            }
+
+           
+
+            return collides;
         }
 
 

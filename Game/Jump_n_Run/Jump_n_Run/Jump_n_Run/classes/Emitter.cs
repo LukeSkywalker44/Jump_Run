@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using X2DPE.Helpers;
+using Jump_n_Run.classes;
 
 namespace X2DPE
 {
@@ -37,6 +38,8 @@ namespace X2DPE
 		private int i = 0;
 		private double emitterFrequency = 0;	// in ms
 		private double timeSinceLastEmission = 0;
+
+        public IEnumerable<GameObject> colliders = new List<GameObject>();
 
 		public Emitter()
 		{
@@ -79,7 +82,8 @@ namespace X2DPE
 
                     if(particle.TotalLifetime >= 100)
                     {
-                        particle.Position += new Vector2(0, particle.Speed );
+                        particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
+                        if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(0, particle.Speed); }
                         if (particle.TotalLifetime > ParticleLifeTime)
                         {
                             ParticleList.Remove(particle);
@@ -91,7 +95,7 @@ namespace X2DPE
 					float x = (float)Math.Sin(MathHelper.ToRadians(particle.Direction)) * particle.Speed;
 
 					particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
-					particle.Position += new Vector2(x, y);
+                    if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(x, y); }
 					particle.Rotation += particle.RotationSpeed;
 					ParticleScaler.Scale(particle, ParticleLifeTime);
 					particle.Fade = ParticleFader.Fade(particle, ParticleLifeTime);

@@ -156,17 +156,18 @@ namespace Jump_n_Run
          Active = true,
          TextureList = new List<Texture2D>()
 		{
-			Content.Load<Texture2D>(@"object")
+			Content.Load<Texture2D>(@"Kopie von object")
 			
 		 },
-         RandomEmissionInterval = new RandomMinMax(1.0d),
-         ParticleLifeTime = 500,
+         RandomEmissionInterval = new RandomMinMax(0.5d),
+         ParticleLifeTime = 2000,
          ParticleDirection = new RandomMinMax(0, 359),
-         ParticleSpeed = new RandomMinMax(5.0f, 8.0f),
+         ParticleSpeed = new RandomMinMax(6.0f, 10.0f),
          ParticleRotation = new RandomMinMax(0, 100),
          RotationSpeed = new RandomMinMax(0.015f),
          ParticleFader = new ParticleFader(false, true, 1350),
-         ParticleScaler = new ParticleScaler(true, 0.08f)
+         ParticleScaler = new ParticleScaler(true, 0.08f),
+         colliders = GObjects
      };
 
            
@@ -256,7 +257,7 @@ namespace Jump_n_Run
                 gegner.KI_Movement(mainFrame, GObjects, gameTime);
             }
 
-            Scrolling.Scroll(player, GObjects, ref bgFrame, mainFrame);
+            Scrolling.Scroll(player, GObjects, ref bgFrame, mainFrame, pcomponent.particleEmitterList[0]);
 
 
             Panda locpanda = new Panda();
@@ -268,9 +269,9 @@ namespace Jump_n_Run
 
             if (kbstate.IsKeyDown(Keys.Space))
             {
-                int i = 0;
-                //enemies.Add(locpanda);
-                //GObjects.Add(locpanda);
+               
+                enemies.Add(locpanda);
+                GObjects.Add(locpanda);
             }
 
 

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Jump_n_Run.classes
 {
-    class GameObject
+    public class GameObject
     {
         public Texture2D Texture;
         public Rectangle rectangle;
