@@ -113,6 +113,7 @@
     <Compile Include="classes\EmitterHelper.cs" />
     <Compile Include="classes\Enemy.cs" />
     <Compile Include="classes\GameObject.cs" />
+    <Compile Include="classes\Gun.cs" />
     <Compile Include="classes\Items.cs" />
     <Compile Include="classes\MoveableObject.cs" />
     <Compile Include="classes\Panda.cs" />

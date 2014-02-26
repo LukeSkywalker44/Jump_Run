@@ -22,7 +22,7 @@ namespace Jump_n_Run.classes
         private Rectangle playerRectIdle;
         private int playerImgIndexRun = 0;
         private int playerImgIndexJump = 0;
-        private SpriteEffects playerDirection = SpriteEffects.None;
+        public SpriteEffects playerDirection = SpriteEffects.None;
         private Orientation oldOrientation;
         private int playerTime;
         private const int playerImgChangeTimeRun = 80;
@@ -32,9 +32,10 @@ namespace Jump_n_Run.classes
         private int keyCounter = 0;
 
         //ctors
-        /*STATIC !!!!!!!!!*/public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(),Keys.Up, Keys.Down, Keys.Left, Keys.Right,0,0) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
+        /*STATIC !!!!!!!!!*/
+        public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(), Keys.Up, Keys.Down, Keys.Left, Keys.Right, 0, 0) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
         public Player(Texture2D playerRun, Texture2D playerStand, Texture2D playerActual, Texture2D playerJump, Vector2 position, Rectangle[] rects, int MoveSpeed, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight, int gravity, int jump)
-            : base(MoveSpeed,gravity, playerActual, rect,jump)
+            : base(MoveSpeed, gravity, playerActual, rect, jump)
         {
             this.playerImgRun = playerRun;
             this.playerImgStand = playerStand;
@@ -62,7 +63,7 @@ namespace Jump_n_Run.classes
 
             int startX = 0;
             int deltaX = 31;
-           // playerPosition = new Vector2(504, graphics.PreferredBackBufferHeight - playerImgRun.Height - 15);
+            // playerPosition = new Vector2(504, graphics.PreferredBackBufferHeight - playerImgRun.Height - 15);
 
             this.gravity = 8;
 
@@ -73,7 +74,7 @@ namespace Jump_n_Run.classes
             {
                 playerRectsRun[i] = new Rectangle(startX + i * deltaX, 0, 31, 40);
 
-                
+
             }
 
             playerRectsJump = new Rectangle[11];
@@ -87,14 +88,14 @@ namespace Jump_n_Run.classes
             oldOrientation = Orientation.Idle;
 
             Texture = playerImgStand;
-            this.rectangle = new Rectangle(300, 300,42, 50); //(300, 300, 42, 50);
+            this.rectangle = new Rectangle(300, 300, 42, 50); //(300, 300, 42, 50);
             this.movementSpeed = 6;
             this.jumpHeight = 120;
 
         }
-       
 
-        private void CalculatePlayerImgIndex(GameTime gameTime,Orientation ori)
+
+        private void CalculatePlayerImgIndex(GameTime gameTime, Orientation ori)
         {
 
             playerTime += gameTime.ElapsedGameTime.Milliseconds;
@@ -275,7 +276,7 @@ namespace Jump_n_Run.classes
 
                     Texture = playerImgRun;
 
-                    CalculatePlayerImgIndex(gt,Orientation.Right);
+                    CalculatePlayerImgIndex(gt, Orientation.Right);
 
                 }
                 else
@@ -308,10 +309,10 @@ namespace Jump_n_Run.classes
 
         public override void Draw(ref SpriteBatch sb)
         {
-            sb.Draw(Texture, rectangle, renderRect, Color.White,0.0f,new Vector2(0.0f,0.0f),playerDirection,0.0f);
+            sb.Draw(Texture, rectangle, renderRect, Color.White, 0.0f, new Vector2(0.0f, 0.0f), playerDirection, 0.0f);
         }
 
-        public override  void ItemPickup( ref Items item)
+        public override void ItemPickup(ref Items item)
         {
             if (item is Key)
             {
@@ -322,7 +323,7 @@ namespace Jump_n_Run.classes
             {
                 if (hasKey)
                 {
-                    float trans =  (300 - keyCounter) / 300.0f;
+                    float trans = (300 - keyCounter) / 300.0f;
 
                     ((KeyHole)item).transperency = trans;
 
@@ -333,11 +334,11 @@ namespace Jump_n_Run.classes
                         item.rectangle = new Rectangle(0, 0, 0, 0);
                         keyCounter = 0;
                     }
-
-                
                 }
-                else
+
+                else if (item is GunItem)
                 {
+
                 }
             }
         }

@@ -221,6 +221,11 @@ namespace Jump_n_Run.classes
                         collision = false;
                         break;
                     }
+                    else if ((obj is Player) && (collider is Gun))
+                    {
+                        collision = false;
+                        break;
+                    }
                     else
                     {
                         collision = true;

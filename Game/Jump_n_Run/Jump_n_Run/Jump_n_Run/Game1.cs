@@ -52,7 +52,9 @@ namespace Jump_n_Run
         Player player = new Player();
         Key key = new Key();
         KeyHole keyHole = new KeyHole();
+        GunItem gun = new GunItem();
 
+        GameObject Crosshair;
         
 
         Emitter emitter = new Emitter();
@@ -64,7 +66,7 @@ namespace Jump_n_Run
         {
             // open a window 800x600
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1024;
             Content.RootDirectory = "Content";
@@ -112,13 +114,17 @@ namespace Jump_n_Run
             // Item
             objItemKey = Content.Load<Texture2D>(@"Images/gameobjects/Schlüssel_2");
             objItemKeyHole = Content.Load<Texture2D>(@"Images/gameobjects/Schlüsselloch");
+            Texture2D objItemGun = Content.Load<Texture2D>(@"Images/gameobjects/Waffe2");
+           
 
             key = new Key(objItemKey, new Rectangle(400, 380, 20, 20));
             keyHole = new KeyHole(objItemKeyHole, new Rectangle(950, 640, 40, 80));
+            gun = new GunItem(objItemGun, new Rectangle(0, 0, 760, 290));
 
 
+            MouseState ms = Mouse.GetState();
 
-
+            Crosshair = new GameObject(objTex,new Rectangle(ms.X,ms.Y,5,5));
 
             #region testLevel
 
@@ -144,7 +150,8 @@ namespace Jump_n_Run
             GObjects.Add(player);
             GObjects.Add(key);
             GObjects.Add(keyHole);
-
+            GObjects.Add(gun);
+            GObjects.Add(Crosshair);
 
 
 
@@ -176,6 +183,23 @@ namespace Jump_n_Run
 
            
             pcomponent.particleEmitterList.Add(emitter);
+            pcomponent.particleEmitterList.Add(new Emitter()  {
+         Active = true,
+         TextureList = new List<Texture2D>()
+		{
+			Content.Load<Texture2D>(@"Kopie von object")
+			
+		 },
+         RandomEmissionInterval = new RandomMinMax(1.0d),
+         ParticleLifeTime = 2000,
+         ParticleDirection = new RandomMinMax(89,91),
+         ParticleSpeed = new RandomMinMax(6.0f, 12.0f),
+         ParticleRotation = new RandomMinMax(0, 100),
+         RotationSpeed = new RandomMinMax(0.015f),
+         ParticleFader = new ParticleFader(false, true, 1350),
+         ParticleScaler = new ParticleScaler(true, 0.04f),
+         colliders = GObjects
+     });
 
 
 
@@ -248,8 +272,42 @@ namespace Jump_n_Run
 
             GObjects.Remove(null);
 
-
             
+
+            MouseState ms = Mouse.GetState();
+
+            Crosshair.rectangle.X = ms.X;
+            Crosshair.rectangle.Y = ms.Y;
+
+            Vector2 mouse = new Vector2(ms.X, ms.Y);
+            Vector2 gunVec = new Vector2(gun.rectangle.X, gun.rectangle.Y);
+
+            Vector2 AngleVec = mouse - gunVec;
+
+            float rotation = (float)Math.Atan2(AngleVec.Y, AngleVec.X);
+
+            gun.rotation = rotation;
+            gun.rectangle.X = player.rectangle.X + 20;
+            gun.rectangle.Y = player.rectangle.Y + 20;
+
+            pcomponent.particleEmitterList[1].Position = new Vector2(gun.rectangle.X + 10, gun.rectangle.Y);
+
+            if (ms.LeftButton.Equals(ButtonState.Pressed))
+            {
+                pcomponent.particleEmitterList[1].Active = true;
+            }
+            else
+            {
+                pcomponent.particleEmitterList[1].Active = false;
+            }
+
+              
+            if (rotation > MathHelper.Pi)
+            {
+                player.playerDirection = SpriteEffects.FlipHorizontally;
+            }
+
+            gun.se = player.playerDirection;
 
             foreach (GameObject go in GObjects)
             {

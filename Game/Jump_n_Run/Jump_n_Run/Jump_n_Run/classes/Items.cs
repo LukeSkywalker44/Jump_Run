@@ -30,7 +30,7 @@ namespace Jump_n_Run.classes
 
     class Key : Items
     {
-         public Key() : this(null, new Rectangle()) { }
+        public Key() : this(null, new Rectangle()) { }
         public Key(Texture2D texture, Rectangle rect)
             :base(texture, rect)
         {
@@ -55,4 +55,26 @@ namespace Jump_n_Run.classes
             sb.Draw(this.Texture, this.rectangle, Color.White * transperency);
         }
     }
+
+    class GunItem : Items 
+    {
+        public SpriteEffects se = SpriteEffects.None;
+        public float rotation = 0.0f;
+        public GunItem() : this(null, new Rectangle()) { }
+        public GunItem(Texture2D texture, Rectangle rect)
+            : base(texture, rect) 
+        {
+            this.Texture = texture;
+            this.rectangle = rect;
+        }
+
+        public override void Draw(ref SpriteBatch sb)
+        {
+
+            sb.Draw(this.Texture, new Vector2(this.rectangle.X,this.rectangle.Y), null, Color.White, rotation, new Vector2(0,0), 0.07f, se,0);
+            
+            
+        }
+    }
+
 }
