@@ -32,6 +32,8 @@ namespace Jump_n_Run.classes
         protected int actualjumpHeight = 0;
         bool canJump;
 
+        
+
 
         public MoveableObject(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, Keys keyUp, Keys keyDown, Keys keyLeft, Keys keyRight, int jump)
         {
@@ -631,6 +633,7 @@ namespace Jump_n_Run.classes
             }
             else
             {
+                Collision.ObjCollision = true;
                 int oldMoveSpeed = this.gravity;
                 for (int i = 1; i <= this.gravity; i++)
                 {
@@ -665,6 +668,7 @@ namespace Jump_n_Run.classes
 
 
 
+            
 
             bool KeyUpPress = false;
             bool KeyDownPress = false;
@@ -728,6 +732,7 @@ namespace Jump_n_Run.classes
             else
             {
                 this.MoveIdle(mainFrame, GObjects, gt);
+                
             }
 
 

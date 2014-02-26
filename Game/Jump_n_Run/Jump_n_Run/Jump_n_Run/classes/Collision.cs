@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using X2DPE;
 using X2DPE.Helpers;
+using System.Threading.Tasks;
 
 namespace Jump_n_Run.classes
 {
@@ -14,7 +15,7 @@ namespace Jump_n_Run.classes
     static class Collision
     {
 
-
+        static public bool ObjCollision = false;
         /// <summary>
         /// Checks if the MoveableObject will be in the bound rectangle
         /// in the next frame
@@ -181,57 +182,85 @@ namespace Jump_n_Run.classes
             gobjs.Remove(obj);  // remove the moving object to prevent self-collision
 
 
+            bool collision = false;
 
+           
 
-            foreach (GameObject collider in gobjs)
-            {
-
-              
-                result = collider.rectangle.Intersects(futureRect);
-
-                if (result == true)
+            Parallel.ForEach(gobjs, (collider, state) =>
                 {
-                    if ((collider is Items) && (obj is Player))
-                    {
-                        Items item = (Items)collider;
-                        ((Player)obj).ItemPickup(ref item);
-                    }
-                    if ((obj is Panda) && (collider is Panda))
-                    {
-                        return false;
-                    }
-                    if ((obj is Player) && (collider is Panda))
-                    {
-                        return false;
-                    }
-                    if ((obj is Panda) && (collider is Player))
-                    {
-                        return false;
-                    }
+                    result = collider.rectangle.Intersects(futureRect);
 
-                   
-                    return true;
-                }
-            }
+                    if (result == true)
+                    {
+                        if ((collider is Items) && (obj is Player))
+                        {
+                            Items item = (Items)collider;
+                            ((Player)obj).ItemPickup(ref item);
+                            collision = false;
+
+                            if (collider is KeyHole)
+                            {
+                                collision = true;
+                            }
+                            state.Break();
+                        }
+                        else if ((obj is Panda) && (collider is Panda))
+                        {
+                            collision = false;
+                            state.Break();
+                        }
+                        else if ((obj is Player) && (collider is Panda))
+                        {
+                            collision = false;
+                            state.Break();
+                        }
+                        else if ((obj is Panda) && (collider is Player))
+                        {
+                            collision = false;
+                            state.Break();
+                        }
+                        else
+                        {
+                            collision = true;
+                            state.Break();
+                        }
 
 
-            return false;
+                    }
+                    
+
+                });
+
+
+            return collision;
         }
 
         public static bool ParticleCollision(IEnumerable<GameObject> Objects, Particle particle)
         {
             bool collides = false;
-            foreach (GameObject obj in Objects)
-            {
-                if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
-                {
-                    if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) return true;
+
+            //foreach (GameObject obj in Objects)
+            //{
+            //    if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
+            //    {
+            //        if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) return true;
                    
-                }
-            }
+            //    }
+            //}
+
+            Parallel.ForEach(Objects, (obj, state) =>
+                {
+                    if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
+                    {
+                        if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) { collides = true; state.Break(); }
+
+                    }
+
+                });
 
            
 
+           
             return collides;
         }
 

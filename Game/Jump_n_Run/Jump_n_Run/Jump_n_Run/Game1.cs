@@ -12,6 +12,8 @@ using System.Diagnostics;
 using Jump_n_Run.classes;
 using X2DPE;
 using X2DPE.Helpers;
+using System.Threading.Tasks;
+
 namespace Jump_n_Run
 {
     /// <summary>
@@ -51,7 +53,7 @@ namespace Jump_n_Run
         Key key = new Key();
         KeyHole keyHole = new KeyHole();
 
-
+        
 
         Emitter emitter = new Emitter();
         ParticleComponent pcomponent;
@@ -159,14 +161,14 @@ namespace Jump_n_Run
 			Content.Load<Texture2D>(@"Kopie von object")
 			
 		 },
-         RandomEmissionInterval = new RandomMinMax(0.5d),
+         RandomEmissionInterval = new RandomMinMax(1.0d),
          ParticleLifeTime = 2000,
-         ParticleDirection = new RandomMinMax(0, 359),
-         ParticleSpeed = new RandomMinMax(6.0f, 10.0f),
+         ParticleDirection = new RandomMinMax(0,359),
+         ParticleSpeed = new RandomMinMax(6.0f, 12.0f),
          ParticleRotation = new RandomMinMax(0, 100),
          RotationSpeed = new RandomMinMax(0.015f),
          ParticleFader = new ParticleFader(false, true, 1350),
-         ParticleScaler = new ParticleScaler(true, 0.08f),
+         ParticleScaler = new ParticleScaler(true, 0.04f),
          colliders = GObjects
      };
 
@@ -199,7 +201,12 @@ namespace Jump_n_Run
 
 
 
-            pcomponent.particleEmitterList[0].Position = new Vector2(player.rectangle.X + 20, player.rectangle.Y + 10);
+            pcomponent.particleEmitterList[0].Position = new Vector2(player.rectangle.X + 30, player.rectangle.Y + 35);
+
+
+
+            pcomponent.particleEmitterList[0].Position = new Vector2(new Random().Next(-100, 2000), -100);
+            pcomponent.particleEmitterList[0].Active = true;
 
             sw.Stop();
             frametime = sw.ElapsedMilliseconds;
@@ -216,7 +223,6 @@ namespace Jump_n_Run
 
 
             emitter.Active = true;
-            emitter.DrawParticles(gameTime, spriteBatch);
             updateCounter++;
             KeyboardState kbstate = Keyboard.GetState();
 
@@ -237,25 +243,26 @@ namespace Jump_n_Run
             {
                 this.Exit();
             }
-
+            pcomponent.particleEmitterList[0].Active = true;
             List<GameObject> toDelete = new List<GameObject>();
 
             GObjects.Remove(null);
 
 
-
-            foreach (GameObject go in GObjects)
-            {
-                go.Move(gameTime, kbstate, mainFrame, GObjects);
-            }
-
+            Parallel.ForEach(GObjects, go =>
+                {
+                    go.Move(gameTime, kbstate, mainFrame, GObjects);
+                });
 
 
 
-            foreach (Enemy gegner in enemies)
-            {
-                gegner.KI_Movement(mainFrame, GObjects, gameTime);
-            }
+            Parallel.ForEach(enemies, gegner =>
+                {
+                    gegner.KI_Movement(mainFrame, GObjects, gameTime);
+                });
+        
+
+            
 
             Scrolling.Scroll(player, GObjects, ref bgFrame, mainFrame, pcomponent.particleEmitterList[0]);
 
@@ -283,7 +290,6 @@ namespace Jump_n_Run
             base.Update(gameTime);
 
 
-
         }
 
         /// <summary>
@@ -299,17 +305,19 @@ namespace Jump_n_Run
             spriteBatch.Draw(background, bgFrame, Color.White);
 
 
+
             foreach (GameObject gobject in GObjects)
             {
                 gobject.Draw(ref spriteBatch);
             }
 
 
-
             spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
             spriteBatch.DrawString(Arial, fpsDraw, new Vector2(1, 20), Color.LimeGreen);
             spriteBatch.DrawString(Arial, "Pandas: " + enemies.Count, new Vector2(1, 40), Color.LimeGreen);
             spriteBatch.DrawString(Arial, "Partikel: " + pcomponent.particleEmitterList[0].ParticleList.Count, new Vector2(1, 60), Color.LimeGreen);
+
+          
 
             spriteBatch.End();
 

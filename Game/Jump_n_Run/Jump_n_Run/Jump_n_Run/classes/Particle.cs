@@ -26,6 +26,7 @@ namespace X2DPE
 		public int Fade { get; set; }
 		public float Scale { get; set; }
 		public int InitialOpacity { get; private set; }
+        public float downSpeed { get; set; }
 
         private Vector2 position;
 

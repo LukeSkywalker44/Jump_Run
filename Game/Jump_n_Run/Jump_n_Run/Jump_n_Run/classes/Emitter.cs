@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using X2DPE.Helpers;
 using Jump_n_Run.classes;
+using System.Threading.Tasks;
 
 namespace X2DPE
 {
@@ -40,6 +41,8 @@ namespace X2DPE
 		private double timeSinceLastEmission = 0;
 
         public IEnumerable<GameObject> colliders = new List<GameObject>();
+
+        Random randomizer = new Random();
 
 		public Emitter()
 		{
@@ -83,13 +86,14 @@ namespace X2DPE
                     if(particle.TotalLifetime >= 100)
                     {
                         particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
-                        if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(0, particle.Speed); }
+                        if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(0, particle.downSpeed); }
                         if (particle.TotalLifetime > ParticleLifeTime)
                         {
                             ParticleList.Remove(particle);
                         }
                     }
                     else{
+                      
 
 					float y = -1 * ((float)Math.Cos(MathHelper.ToRadians(particle.Direction))) * particle.Speed;
 					float x = (float)Math.Sin(MathHelper.ToRadians(particle.Direction)) * particle.Speed;
@@ -123,6 +127,9 @@ namespace X2DPE
 																			 MathHelper.ToRadians((float)emitterHelper.RandomizedDouble(ParticleRotation)),
 																			 (float)emitterHelper.RandomizedDouble(RotationSpeed),
 																			 Opacity);
+
+
+            particle.downSpeed = randomizer.Next(5, 10);
 			ParticleList.Add(particle);
 			EmittedNewParticle = true;
 			LastEmittedParticle = particle;
@@ -131,18 +138,20 @@ namespace X2DPE
 
 		public void DrawParticles(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			foreach (Particle particle in ParticleList)
-			{
-				spriteBatch.Draw(particle.Texture,
-												 particle.Position,
-												 null,
-												 particle.Color,
-												 particle.Rotation,
-												 particle.Center,
-												 particle.Scale,
-												 SpriteEffects.None,
-												 0);
-			}
+            foreach (Particle particle in ParticleList)
+            {
+                spriteBatch.Draw(particle.Texture,
+                                                 particle.Position,
+                                                 null,
+                                                 particle.Color,
+                                                 particle.Rotation,
+                                                 particle.Center,
+                                                 particle.Scale,
+                                                 SpriteEffects.None,
+                                                 0);
+            }
+
+          
 		}
 	}
 }
