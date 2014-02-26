@@ -3,6 +3,9 @@
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     color: #232323;
     background-color: #fff;
+  
+ 
+    
 }
 
 header, footer, nav, section {
@@ -68,6 +71,7 @@ textarea {
     background-color:black;
     width:1200px;
     height:1500px;
+    margin:0px auto 0px auto;
 }
 
 #head {
