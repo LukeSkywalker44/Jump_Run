@@ -186,50 +186,50 @@ namespace Jump_n_Run.classes
 
            
 
-            Parallel.ForEach(gobjs, (collider, state) =>
+           
+            foreach (GameObject collider in gobjs)
+            {
+
+                result = collider.rectangle.Intersects(futureRect);
+
+                if (result == true)
                 {
-                    result = collider.rectangle.Intersects(futureRect);
-
-                    if (result == true)
+                    if ((collider is Items) && (obj is Player))
                     {
-                        if ((collider is Items) && (obj is Player))
-                        {
-                            Items item = (Items)collider;
-                            ((Player)obj).ItemPickup(ref item);
-                            collision = false;
+                        Items item = (Items)collider;
+                        ((Player)obj).ItemPickup(ref item);
+                        collision = false;
 
-                            if (collider is KeyHole)
-                            {
-                                collision = true;
-                            }
-                            state.Break();
-                        }
-                        else if ((obj is Panda) && (collider is Panda))
-                        {
-                            collision = false;
-                            state.Break();
-                        }
-                        else if ((obj is Player) && (collider is Panda))
-                        {
-                            collision = false;
-                            state.Break();
-                        }
-                        else if ((obj is Panda) && (collider is Player))
-                        {
-                            collision = false;
-                            state.Break();
-                        }
-                        else
+                        if (collider is KeyHole)
                         {
                             collision = true;
-                            state.Break();
                         }
-
-
+                        break;
                     }
-                    
+                    else if ((obj is Panda) && (collider is Panda))
+                    {
+                        collision = false;
+                        break;
+                    }
+                    else if ((obj is Player) && (collider is Panda))
+                    {
+                        collision = false;
+                        break;
+                    }
+                    else if ((obj is Panda) && (collider is Player))
+                    {
+                        collision = false;
+                        break;
+                    }
+                    else
+                    {
+                        collision = true;
+                        break;
+                    }
 
-                });
+
+                }
+            }
 
 
             return collision;
@@ -239,24 +239,16 @@ namespace Jump_n_Run.classes
         {
             bool collides = false;
 
-            //foreach (GameObject obj in Objects)
-            //{
-            //    if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
-            //    {
-            //        if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) return true;
-                   
-            //    }
-            //}
-
-            Parallel.ForEach(Objects, (obj, state) =>
+            foreach (GameObject obj in Objects)
+            {
+                if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
                 {
-                    if (obj.GetType().Equals(new GameObject().GetType()) || obj.GetType().Equals(new KeyHole().GetType()) || obj.GetType().Equals(new Particle().GetType()))
-                    {
-                        if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) { collides = true; state.Break(); }
+                    if (obj.rectangle.Contains(new Point(Convert.ToInt32(particle.Position.X), Convert.ToInt32(particle.Position.Y)))) return true;
 
-                    }
+                }
+            }
 
-                });
+           
 
            
 

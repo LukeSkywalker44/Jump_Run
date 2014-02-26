@@ -249,17 +249,23 @@ namespace Jump_n_Run
             GObjects.Remove(null);
 
 
-            Parallel.ForEach(GObjects, go =>
-                {
-                    go.Move(gameTime, kbstate, mainFrame, GObjects);
-                });
+            
+
+            foreach (GameObject go in GObjects)
+            {
+                 go.Move(gameTime, kbstate, mainFrame, GObjects);
+               
+            }
 
 
 
-            Parallel.ForEach(enemies, gegner =>
-                {
-                    gegner.KI_Movement(mainFrame, GObjects, gameTime);
-                });
+
+          
+
+            foreach (Enemy gegner in enemies)
+            {
+                gegner.KI_Movement(mainFrame, GObjects, gameTime);
+            }
         
 
             
