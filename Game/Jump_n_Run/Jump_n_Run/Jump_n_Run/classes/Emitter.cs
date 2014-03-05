@@ -41,6 +41,7 @@ namespace X2DPE
 		private double timeSinceLastEmission = 0;
 
         public IEnumerable<GameObject> colliders = new List<GameObject>();
+        public string emittertype;
 
         Random randomizer = new Random();
 
@@ -83,7 +84,7 @@ namespace X2DPE
 				foreach (Particle particle in ParticleList.ToArray())
 				{
 
-                    if(particle.TotalLifetime >= 100)
+                    if(particle.TotalLifetime >= 100 && emittertype == "gravity")
                     {
                         particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
                         if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(0, particle.downSpeed); }

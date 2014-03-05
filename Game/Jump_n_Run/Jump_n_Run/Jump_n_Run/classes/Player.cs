@@ -31,6 +31,8 @@ namespace Jump_n_Run.classes
         private bool hasKey = false;
         private int keyCounter = 0;
 
+        public List<Gun> guns = new List<Gun>();
+
         //ctors
         /*STATIC !!!!!!!!!*/
         public Player() : this(null, null, null, null, new Vector2(0, 0), null, 0, new Rectangle(), Keys.Up, Keys.Down, Keys.Left, Keys.Right, 0, 0) { } // static !!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -136,6 +138,7 @@ namespace Jump_n_Run.classes
 
         public override void animation(Orientation ori, GameTime gt)
         {
+
             if (ori == Orientation.Idle)
             {
                 // texture auf stand
@@ -335,11 +338,12 @@ namespace Jump_n_Run.classes
                         keyCounter = 0;
                     }
                 }
+            }
+            else if (item is GunItem)
+            {
+                item.rectangle = new Rectangle(0, 0, 0, 0);
 
-                else if (item is GunItem)
-                {
-
-                }
+                guns.Add(new Gun(item.Texture, new Rectangle(0, 0, 60, 25)));
             }
         }
     }

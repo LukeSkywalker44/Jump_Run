@@ -25,7 +25,7 @@ namespace Jump_n_Run.classes
         /// <param name="player">the Player object</param>
         /// <param name="gobjects">the objects which will move</param>
         /// <param name="backgroundRenderFrame">the rectangle used for rendering the background</param>
-        static public void Scroll(Player player,   IEnumerable<GameObject> gobjects, ref Rectangle backgroundRenderFrame, Rectangle mainframe, Emitter emitter)
+        static public void Scroll(Player player,   IEnumerable<GameObject> gobjects, ref Rectangle backgroundRenderFrame, Rectangle mainframe, IEnumerable<Emitter> emitter)
         {
             if (player.rectangle.X > 700)
             {
@@ -33,9 +33,14 @@ namespace Jump_n_Run.classes
                 {
                     obj.rectangle.X -= player.movementSpeed;
                 }
-                foreach (Particle particle in emitter.ParticleList)
+
+
+                foreach (Emitter emit in emitter)
                 {
-                    particle.Position.X -= player.movementSpeed;
+                    foreach (Particle particle in emit.ParticleList)
+                    {
+                        particle.Position.X -= player.movementSpeed;
+                    }
                 }
 
                 backgroundRenderFrame.X -= player.movementSpeed;
@@ -47,9 +52,12 @@ namespace Jump_n_Run.classes
                 {
                     obj.rectangle.X += player.movementSpeed;
                 }
-                foreach (Particle particle in emitter.ParticleList)
+                foreach (Emitter emit in emitter)
                 {
-                    particle.Position.X += player.movementSpeed;
+                    foreach (Particle particle in emit.ParticleList)
+                    {
+                        particle.Position.X += player.movementSpeed;
+                    }
                 }
 
                 backgroundRenderFrame.X += player.movementSpeed;
