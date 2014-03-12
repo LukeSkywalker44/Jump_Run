@@ -126,6 +126,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Classes\GästebuchConfig.cs" />
+    <Compile Include="Classes\GästebuchContext.cs" />
+    <Compile Include="Classes\GästebuchDAL.cs" />
+    <Compile Include="Classes\I_DB.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -133,9 +137,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Gast.cs" />
+    <Compile Include="Models\MessageView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\BackgroundContent.jpg" />
+    <Content Include="Content\Images\BackgroundFooter.jpg" />
+    <Content Include="Content\Images\Header.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -227,11 +236,13 @@
     <Content Include="Views\Comment\Index.cshtml" />
     <Content Include="Views\Pictures\Index.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Geschlecht.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Sterne.cshtml" />
+    <Content Include="Views\Comment\CommentOK.cshtml" />
+    <Content Include="Views\Comment\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Images\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

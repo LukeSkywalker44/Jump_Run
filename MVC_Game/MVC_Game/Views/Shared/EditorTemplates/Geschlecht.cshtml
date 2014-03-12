@@ -1,0 +1,6 @@
+﻿@model MVC_Game.Models.Geschlecht
+
+@using MVC_Game.Models;
+  <select id="Geschlecht" name="Geschlecht"> @foreach(Geschlecht sex in Enum.GetValues(typeof(Geschlecht))){ 
+ <option value="@sex" @(Model == sex ? "selected=\"selected\"" : "")>
+  @sex</option> } </select>

@@ -1,5 +1,15 @@
-﻿@{
+﻿@model List< MVC_Game.Models.Gast>
+@{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Kommentar:</h2>
+@Html.ActionLink(">>>> Gästebucheintrag Hinzufügen <<<<<", "add", "gästebuch");
+
+<!-- hier werden alle GB-Einträge angezeigt-->
+
+@foreach (var entry in Model) { 
+    
+
+
+}

@@ -1,0 +1,10 @@
+﻿@model MVC_Game.Models.Sterne
+
+
+@using MVC_Game.Models;
+<select id ="Sterne" name="Stars">
+    @foreach (Sterne star in Enum.GetValues(typeof(Sterne)))
+    {
+        <option value="@star" @(Model==star? "selected=\"selected\" ":"")>@star</option>
+    }
+</select>

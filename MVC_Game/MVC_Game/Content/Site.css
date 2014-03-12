@@ -4,7 +4,6 @@
     color: #232323;
     background-color: #fff;
   
- 
     
 }
 
@@ -69,15 +68,15 @@ textarea {
 
 #container {
     background-color:black;
-    width:1200px;
-    height:1500px;
+    width:1024px;
+    height:1400px;
     margin:0px auto 0px auto;
 }
 
 #head {
-    background-color:darkgreen;
+    background-color:gray;
     color:orange;
-    height:350px;
+    height:410px;
 }
 
 #containerMain {
@@ -93,19 +92,20 @@ textarea {
 }
 
 #content {
-    background-color:gray;
-    color:orange;
-    width:680px;
-    height:1000px;
+    background-image:url("../../Content/Images/BackgroundContent.jpg");
+    color:red;
+    width:630px;
+    height:996px;
     float:left;
     padding-left:10px;
     padding-right:10px;
+    border:inset 2px;
 }
 
 #info {
     background-color:green;
     color:brown;
-    width:280px;
+    width:150px;
     height:1000px;
     float:right;
     padding-left:10px;
@@ -113,10 +113,10 @@ textarea {
 }
 
 #footer {
-    background-color:#128712;
+    background-image:url("../../Content/Images/BackgroundFooter.jpg");
     color:brown;
     clear:both;
-    height:150px;
+    height:50px;
     padding-top:70px;
     border-top-style:groove;
     border-top-color:brown;

@@ -1,0 +1,37 @@
+﻿@model MVC_Game.Models.Gast
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Eintag Hinzufügen</h2>
+
+@using (Html.BeginForm()) { 
+    
+    <p>
+        @Html.LabelFor(x => x.Name)<br />
+        @Html.TextBoxFor(x => x.Name)<br />
+        @Html.ValidationMessageFor(x => x.Name,"Bitte Name eingeben")<br />
+    </p>
+    
+     <p>
+        @Html.LabelFor(x => x.Email)<br />
+        @Html.TextBoxFor(x => x.Email)<br />
+    </p>
+    
+     <p>
+        @Html.LabelFor(x => x.Comment)<br />
+        @Html.TextAreaFor(x => x.Comment)<br />
+        @Html.ValidationMessageFor(x => x.Comment,"Bitte Text eingeben");
+    </p>
+    /*
+    <p>
+        @Html.LabelFor(x => x.Stars)<br />
+        @Html.DropDownListFor(x => x.Stars)<br />
+        @Html.ValidationMessageFor(x => x.Stars,"Bitte Sterne auswählen");
+    </p>
+    
+    */
+    <input type="submit" value="absenden" />
+    <input type="reset" value="abbrechen" />
+}
