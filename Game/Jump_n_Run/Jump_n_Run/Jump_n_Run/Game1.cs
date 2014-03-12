@@ -59,9 +59,10 @@ namespace Jump_n_Run
         GunItem gunItem = new GunItem();
 
         GameObject Crosshair;
-        
 
-        Emitter emitter = new Emitter();
+
+        Emitter emitter;
+        Emitter gunEmitter = new Emitter();
         ParticleComponent pcomponent;
 
         float rotationDegrees = 0;
@@ -72,7 +73,7 @@ namespace Jump_n_Run
         {
             // open a window 800x600
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1024;
             Content.RootDirectory = "Content";
@@ -146,7 +147,7 @@ namespace Jump_n_Run
 
             GObjects.Add(new GameObject(objTex, new Rectangle(300, 400, 200, 10)));
 
-            GObjects.Add(new GameObject(objTex, new Rectangle(0, 718, 1024, 50)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(-1000, 718, 10000, 50)));
 
             GObjects.Add(new GameObject(objTex, new Rectangle(950, 0, 40, 640)));
 
@@ -167,24 +168,24 @@ namespace Jump_n_Run
 
 
 
-            Emitter emitter = new Emitter()
+          this.emitter = new Emitter()
      {
-         Active = true,
+         Active = false,
          TextureList = new List<Texture2D>()
 		{
 			Content.Load<Texture2D>(@"Kopie von object")
 			
 		 },
-         RandomEmissionInterval = new RandomMinMax(1.0d),
+         RandomEmissionInterval = new RandomMinMax(5.0d),
          ParticleLifeTime = 2000,
          ParticleDirection = new RandomMinMax(0,359),
-         ParticleSpeed = new RandomMinMax(6.0f, 12.0f),
-         ParticleRotation = new RandomMinMax(0, 100),
-         RotationSpeed = new RandomMinMax(0.015f),
+         ParticleSpeed = new RandomMinMax(9.0f,15.0f),
+         ParticleRotation = new RandomMinMax(0,100),
+         RotationSpeed = new RandomMinMax(0,10),
          ParticleFader = new ParticleFader(false, true, 1350),
-         ParticleScaler = new ParticleScaler(true, 0.04f),
+         ParticleScaler = new ParticleScaler(true, 0.08f),
          colliders = GObjects,
-         emittertype = "gravity"
+         emittertype = "gravity_bullet"
      };
 
            
@@ -198,17 +199,20 @@ namespace Jump_n_Run
 			Content.Load<Texture2D>(@"Kopie (2) von object")
 			
 		 },
-         RandomEmissionInterval = new RandomMinMax(100.0d),
+         RandomEmissionInterval = new RandomMinMax(300.0d),
          ParticleLifeTime = 2000,
          ParticleDirection = new RandomMinMax(89,91),
-         ParticleSpeed = new RandomMinMax(9.0f, 9.0f),
+         ParticleSpeed = new RandomMinMax(8.0f),
          ParticleRotation = new RandomMinMax(0, 90),
          RotationSpeed = new RandomMinMax(0.015f),
          ParticleFader = new ParticleFader(false, true, 1350),
          ParticleScaler = new ParticleScaler(true, 0.08f),
          colliders = GObjects,
+         Damage = 100,
          emittertype = "bullet"
      });
+
+            gunEmitter = pcomponent.particleEmitterList[1];
 
 
 
@@ -232,15 +236,6 @@ namespace Jump_n_Run
         protected override void Update(GameTime gameTime)
         {
 
-
-
-            pcomponent.particleEmitterList[0].Position = new Vector2(player.rectangle.X + 30, player.rectangle.Y + 35);
-
-
-
-            pcomponent.particleEmitterList[0].Position = new Vector2(new Random().Next(-100, 2000), -100);
-            pcomponent.particleEmitterList[0].Active = true;
-
             sw.Stop();
             frametime = sw.ElapsedMilliseconds;
             fps = frametime / 1000.0 * 3600.0;
@@ -255,28 +250,19 @@ namespace Jump_n_Run
             }
 
 
-            emitter.Active = true;
+           
             updateCounter++;
             KeyboardState kbstate = Keyboard.GetState();
 
 
-            if (kbstate.IsKeyDown(Keys.E))
-            {
-
-                pcomponent.particleEmitterList[0].Active = true;
-              
-            }
-            else
-            {
-                pcomponent.particleEmitterList[0].Active = false;
-            }
+            
 
             // Allows the game to exit
             if (kbstate.IsKeyDown(Keys.Escape))
             {
                 this.Exit();
             }
-            pcomponent.particleEmitterList[0].Active = true;
+        
             List<GameObject> toDelete = new List<GameObject>();
 
             GObjects.Remove(null);
@@ -322,22 +308,22 @@ namespace Jump_n_Run
                 float offsetY = 40 * (float)Math.Sin(rotation);
 
 
-                pcomponent.particleEmitterList[1].Position = new Vector2(player.guns[0].rectangle.X + offsetX, player.guns[0].rectangle.Y + offsetY);
-
-                
+                pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].Position = new Vector2(player.guns[0].rectangle.X + offsetX, player.guns[0].rectangle.Y + offsetY);
 
 
-                pcomponent.particleEmitterList[1].ParticleDirection = new RandomMinMax(rotationDegrees + 90);
+
+
+                pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].ParticleDirection = new RandomMinMax(rotationDegrees + 90);
 
              
 
                 if (ms.LeftButton.Equals(ButtonState.Pressed))
                 {
-                    pcomponent.particleEmitterList[1].Active = true;
+                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].Active = true;
                 }
                 else
                 {
-                    pcomponent.particleEmitterList[1].Active = false;
+                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].Active = false;
                 }
 
 
@@ -363,15 +349,72 @@ namespace Jump_n_Run
             }
             else
             {
-                pcomponent.particleEmitterList[1].Active = false;
+                pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].Active = false;
             }
+
+             List<Enemy> deadEnemies = new List<Enemy>();
 
             foreach (GameObject go in GObjects)
             {
                  go.Move(gameTime, kbstate, mainFrame, GObjects);
+
+                 if (go is Enemy)
+                 {
+                     Enemy enemy = (Enemy)go;
+
+                     if (enemy.dead)
+                     {
+                         deadEnemies.Add(enemy);
+                     }
+                 }
                
             }
 
+
+            foreach (Enemy enemy in deadEnemies)
+            {
+                GObjects[GObjects.IndexOf(enemy)] = new GameObject();
+            }
+
+
+            foreach (Enemy go in enemies)
+            {
+                go.Move(gameTime, kbstate, mainFrame, GObjects);
+
+                if (go is Enemy)
+                {
+                    Enemy enemy = (Enemy)go;
+
+                    if (enemy.dead)
+                    {
+                        deadEnemies.Add(enemy);
+                    }
+                }
+
+            }
+
+
+            foreach (Enemy enemy in deadEnemies)
+            {
+                pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(enemy.emitter)].Active = false;
+                enemies.Remove(enemy);
+            }
+           
+
+
+            List<Emitter> EmittersDelete = new List<Emitter>();
+
+            foreach (Emitter emitter in pcomponent.particleEmitterList)
+            {
+                if ((emitter.ParticleList.Count == 0) && emitter.emittertype == "gravity_bullet")
+                {
+                    EmittersDelete.Add(emitter);
+                }
+            }
+            foreach (Emitter emitter in EmittersDelete)
+            {
+                pcomponent.particleEmitterList.Remove(emitter);
+            }
           
 
 
@@ -381,7 +424,7 @@ namespace Jump_n_Run
 
             foreach (Enemy gegner in enemies)
             {
-                gegner.KI_Movement(mainFrame, GObjects, gameTime);
+                gegner.KI_Movement(mainFrame, GObjects, gameTime, pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].ParticleList, ref pcomponent, emitter);
             }
         
 
@@ -394,6 +437,7 @@ namespace Jump_n_Run
 
             Panda locpanda = new Panda();
             locpanda.loadPanda(this.graphics, this.Content);
+            locpanda.health = 100;
 
             locpanda.rectangle.X = new Random().Next(0, 1000);
             locpanda.rectangle.Y = new Random().Next(0, 500);
@@ -429,7 +473,7 @@ namespace Jump_n_Run
 
             spriteBatch.Draw(background, bgFrame, Color.White);
 
-
+            int particleCount = 0;
 
             foreach (GameObject gobject in GObjects)
             {
@@ -442,20 +486,17 @@ namespace Jump_n_Run
 
             Crosshair.Draw(ref spriteBatch);
 
-            if (player.guns.Count > 0)
+
+            foreach (Emitter emitter in pcomponent.particleEmitterList)
             {
-                spriteBatch.DrawString(Arial, "Winkel[rad]: " + player.guns[0].rotation, new Vector2(1, 80), Color.LimeGreen);
-            }
-            else
-            {
-                spriteBatch.DrawString(Arial, "Winkel[rad]: " + "gar nix", new Vector2(1, 80), Color.LimeGreen);
+                particleCount += emitter.ParticleList.Count;
             }
 
             spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
             spriteBatch.DrawString(Arial, fpsDraw, new Vector2(1, 20), Color.LimeGreen);
             spriteBatch.DrawString(Arial, "Pandas: " + enemies.Count, new Vector2(1, 40), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, "Partikel: " + pcomponent.particleEmitterList[0].ParticleList.Count, new Vector2(1, 60), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, "Winkel[grad]: " + rotationDegrees, new Vector2(1, 100), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, "Partikel: " + particleCount , new Vector2(1, 60), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, "Emitter: " + pcomponent.particleEmitterList.Count,  new Vector2(1, 80),Color.LimeGreen);
             
 
           

@@ -261,6 +261,16 @@ namespace Jump_n_Run.classes
             return collides;
         }
 
+        public static int ParticleCollision(Enemy Object, List<Particle> particles)
+        {
+            foreach(Particle particle in particles)
+            {
+                if (Object.rectangle.Contains(new Point((int)particle.Position.X, (int)particle.Position.Y)))return particles.IndexOf(particle);
+            }
+
+            return -1;
+        }
+
 
     }
 }

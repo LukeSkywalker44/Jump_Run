@@ -44,6 +44,12 @@ namespace X2DPE
         public string emittertype;
 
         Random randomizer = new Random();
+        List<Particle> ToDelete = new List<Particle>();
+
+        public int Damage { get; set; }
+
+        public string EmitterID { get; set; }
+        public bool noEmit = false;
 
 		public Emitter()
 		{
@@ -51,10 +57,26 @@ namespace X2DPE
 			ParticleList = new List<Particle>();
 			TextureList = new List<Texture2D>();
 			Opacity = 255;
+            EmitterID = this.Position.X + "/" + this.Position.Y;
 		}
 
 		public void UpdateParticles(GameTime gameTime)
 		{
+            EmitterID = this.Position.X + "/" + this.Position.Y;
+
+            foreach (Particle part in ParticleList)
+            {
+                if (part.stopped) ToDelete.Add(part);
+            }
+            foreach (Particle part in ToDelete)
+            {
+                ParticleList.Remove(part);
+            }
+            ToDelete = new List<Particle>();
+
+            
+
+
 			EmittedNewParticle = false;
 			if (gameTime.ElapsedGameTime.TotalMilliseconds > 0)
 			{
@@ -84,7 +106,7 @@ namespace X2DPE
 				foreach (Particle particle in ParticleList.ToArray())
 				{
 
-                    if(particle.TotalLifetime >= 100 && emittertype == "gravity")
+                    if(particle.TotalLifetime >= 100 && emittertype == "gravity_bullet")
                     {
                         particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
                         if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(0, particle.downSpeed); }
@@ -119,26 +141,36 @@ namespace X2DPE
 
 		private void EmitParticle()
 		{
-			if (i > TextureList.Count - 1) i = 0;
+            if (!noEmit)
+            {
+                EmitterID = this.Position.X + "/" + this.Position.Y;
+                if (i > TextureList.Count - 1) i = 0;
+                this.ParticleDirection = new RandomMinMax(ParticleDirection.Min - 10, ParticleDirection.Max + 10);
 
-			Particle particle = new Particle(TextureList[i],
-																			 Position,
-																			 (float)emitterHelper.RandomizedDouble(ParticleSpeed),
-																			 (float)emitterHelper.RandomizedDouble(ParticleDirection),
-																			 MathHelper.ToRadians((float)emitterHelper.RandomizedDouble(ParticleRotation)),
-																			 (float)emitterHelper.RandomizedDouble(RotationSpeed),
-																			 Opacity);
+                for(int j = 0; j < 6; j++)
+                {
+                Particle particle = new Particle(TextureList[i],
+                                                                                 Position,
+                                                                                 (float)emitterHelper.RandomizedDouble(ParticleSpeed),
+                                                                                 (float)emitterHelper.RandomizedDouble(ParticleDirection),
+                                                                                 MathHelper.ToRadians((float)emitterHelper.RandomizedDouble(ParticleRotation)),
+                                                                                 (float)emitterHelper.RandomizedDouble(RotationSpeed),
+                                                                                 Opacity);
 
 
-            particle.downSpeed = randomizer.Next(5, 10);
-			ParticleList.Add(particle);
-			EmittedNewParticle = true;
-			LastEmittedParticle = particle;
-			i++;
+                particle.downSpeed = randomizer.Next(5, 10);
+                particle.Damage = this.Damage;
+                ParticleList.Add(particle);
+                }
+                EmittedNewParticle = true;
+                LastEmittedParticle = ParticleList.Last();
+                i++;
+            }
 		}
 
 		public void DrawParticles(GameTime gameTime, SpriteBatch spriteBatch)
 		{
+            EmitterID = this.Position.X + "/" + this.Position.Y;
             foreach (Particle particle in ParticleList)
             {
                 spriteBatch.Draw(particle.Texture,

@@ -28,7 +28,9 @@ namespace X2DPE
 		public int InitialOpacity { get; private set; }
         public float downSpeed { get; set; }
 
-        private Vector2 position;
+        public int Damage { get; set; }
+        public bool stopped { get; set; }
+        
 
 		public Particle(Texture2D texture, Vector2 position, float speed, float direction, float rotation, float rotationSpeed, int opacity)
 		{

@@ -25,11 +25,16 @@ namespace Jump_n_Run.classes
 
         public GameObject()
         {
+            this.Texture = null;
+            this.rectangle = new Rectangle(0, 0, 0, 0);
         }
 
         public virtual void  Draw(ref SpriteBatch sb)
         {
-            sb.Draw(this.Texture, this.rectangle, Color.White);
+            if (Texture != null)
+            {
+                sb.Draw(this.Texture, this.rectangle, Color.White);
+            }
         }
 
         public virtual void Move(GameTime gt, KeyboardState kbstate, Rectangle mainFrame, IEnumerable<GameObject> GObjects)

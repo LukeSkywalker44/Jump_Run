@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -10,6 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
+using Jump_n_Run.classes;
+using X2DPE;
+using X2DPE.Helpers;
+using System.Threading.Tasks;
 
 namespace Jump_n_Run.classes
 {
@@ -21,13 +24,67 @@ namespace Jump_n_Run.classes
         int successiveMAX = 60;
         int jumpBase = 800;
         public bool gnd;
+        public Emitter emitter;
+        public int health = 100;
+        public bool dead = false;
+
+
+
+
+
         public Enemy(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump) : base(moveSpeed, gravity, texture, rect, jump) { rand = new Random(); }
 
 
-        public void KI_Movement(Rectangle bound, IEnumerable<GameObject> colliders, GameTime gt)
+        public void KI_Movement(Rectangle bound, IEnumerable<GameObject> colliders, GameTime gt, List<Particle> particles, ref ParticleComponent pcomponent, Emitter Emitter)
         {
 
+            int CollisionReturn = Collision.ParticleCollision(this, particles);
 
+            if (CollisionReturn > 0)
+            {
+                pcomponent.particleEmitterList[0].ParticleList.RemoveAt(CollisionReturn);
+
+                this.health -= pcomponent.particleEmitterList.First().Damage;
+
+                if (health <= 0)
+                {
+                    dead = true;
+                }
+
+                if (emitter == null)
+                {
+                    emitter = Emitter;
+                    this.emitter.Active = true;
+                    this.emitter.noEmit = false;
+                    this.emitter.Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
+                    pcomponent.particleEmitterList.Add(this.emitter);
+                   
+                }
+                else
+                {
+                    if(pcomponent.particleEmitterList.Contains(emitter))
+                    {
+                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].noEmit = false;
+                    emitter.noEmit = false;
+                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
+                    emitter.Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
+                    }
+                }
+
+            }
+            else
+            {
+                if (emitter != null)
+                {
+                    if (pcomponent.particleEmitterList.Contains(emitter))
+                    {
+
+                        pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].noEmit = true;
+                        
+                    }
+                    emitter = null;
+                }
+            }
 
             
             int movement = rand.Next(0, 6);
@@ -478,5 +535,7 @@ namespace Jump_n_Run.classes
         {
            
         }
+
+       
     }
 }
