@@ -24,12 +24,14 @@ namespace MVC_Game.Classes
             using (GästebuchContext gbContext = new GästebuchContext()){
                 var entryToUpdate = (from entry in gbContext.Gäste
                                      where entry.EntryId == key
-                                     select entry).FirstOrDefault();
+                                     select entry)
+                                     .FirstOrDefault();
                 // falls != null
                 if (entryToUpdate != null)
                 {
                     // dann mit den aktuellen Daten (updatedEntry) aktualisieren ( SaveChanges() )
                     entryToUpdate.Name = updatedEntry.Name;
+                    entryToUpdate.Email = updatedEntry.Email;
                     entryToUpdate.Stars = updatedEntry.Stars;
                     entryToUpdate.Comment= updatedEntry.Comment;
                     // Datum und EntryID werden nicht geändert

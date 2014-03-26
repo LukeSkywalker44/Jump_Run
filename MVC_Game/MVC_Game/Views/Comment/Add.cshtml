@@ -6,7 +6,8 @@
 
 <h2>Eintag Hinzufügen</h2>
 
-@using (Html.BeginForm()) { 
+@using (Html.BeginForm()) 
+{ 
     
     <p>
         @Html.LabelFor(x => x.Name)<br />
@@ -22,7 +23,7 @@
      <p>
         @Html.LabelFor(x => x.Comment)<br />
         @Html.TextAreaFor(x => x.Comment)<br />
-        @Html.ValidationMessageFor(x => x.Comment,"Bitte Text eingeben");
+        @Html.ValidationMessageFor(x => x.Comment,"Bitte Text eingeben")
     </p>
   /*  
     <p>

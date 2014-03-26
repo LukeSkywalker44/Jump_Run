@@ -6,9 +6,10 @@
 
 
 <h2>Kommentar:</h2>
-@Html.ActionLink(">>>> Gästebucheintrag Hinzufügen <<<<<", "add", "comment");
+@Html.ActionLink(">>>> Gästebucheintrag Hinzufügen <<<<<", "add", "comment")
 
-
+<br />
+<br />
 
 <!-- hier werden alle GB-Einträge angezeigt-->
 <table border ="1">
@@ -16,7 +17,7 @@
 <!-- alle Einträge in Tabellenform anzeigen -->
         <tr>
             <td>@entry.Name</td>
-            <td>@entry.Comment</td>
+            <td>@entry.Email</td>
             <td>@entry.Stars</td>
             <!-- 7. Überladung von ActionLink() verwenden --> 
             <!-- Link löschen --> 

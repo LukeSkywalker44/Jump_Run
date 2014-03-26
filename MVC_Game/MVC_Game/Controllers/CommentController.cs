@@ -132,7 +132,7 @@ namespace MVC_Game.Controllers
                 if (gbDal.Update(updateID, entry))
                 {
                     // es wird zur Action Index (GuestbookController) weitergeleitet
-                    return RedirectToAction("index", "guestbook");
+                    return RedirectToAction("index", "comment");
                 }
                 else
                 {

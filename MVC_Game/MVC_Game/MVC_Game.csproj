@@ -240,7 +240,6 @@
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Geschlecht.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Sterne.cshtml" />
-    <Content Include="Views\Comment\CommentOK.cshtml" />
     <Content Include="Views\Comment\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
