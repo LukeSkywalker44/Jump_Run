@@ -3,13 +3,32 @@
     ViewBag.Title = "Index";
 }
 
+
+
 <h2>Kommentar:</h2>
-@Html.ActionLink(">>>> Gästebucheintrag Hinzufügen <<<<<", "add", "gästebuch");
+@Html.ActionLink(">>>> Gästebucheintrag Hinzufügen <<<<<", "add", "comment");
+
+
 
 <!-- hier werden alle GB-Einträge angezeigt-->
-
+<table border ="1">
 @foreach (var entry in Model) { 
+<!-- alle Einträge in Tabellenform anzeigen -->
+        <tr>
+            <td>@entry.Name</td>
+            <td>@entry.Comment</td>
+            <td>@entry.Stars</td>
+            <!-- 7. Überladung von ActionLink() verwenden --> 
+            <!-- Link löschen --> 
+            <td>@Html.ActionLink("Löschen", "delete", "comment", new{ delID = @entry.EntryId}, null)</td>
+            <!-- Link ändern -->
+            <td>@Html.ActionLink("Ändern", "update", "comment", new{ updateID = @entry.EntryId}, null)</td>
+        </tr>
+        <tr>
+            <td colspan="5">@entry.Comment</td>
+        </tr>
     
+    }
+</table>
 
-
-}
+<!-- Hier werden alle vorhandenen GB - Einträge gezeigt -->

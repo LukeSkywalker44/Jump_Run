@@ -7,6 +7,7 @@ using MVC_Game.Classes;
 using MVC_Game.Models;
 
 namespace MVC_Game.Classes
+
 {
     public class GästebuchContext:DbContext
      {
@@ -19,7 +20,7 @@ namespace MVC_Game.Classes
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new GästebuchkConfig());
+            modelBuilder.Configurations.Add(new GästebuchConfig());
         }
     }
 }

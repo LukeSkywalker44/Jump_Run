@@ -21,28 +21,67 @@ namespace MVC_Game.Classes
 
         public bool Update(int key, Gast updatedEntry)
         {
-            throw new NotImplementedException();
+            using (GästebuchContext gbContext = new GästebuchContext()){
+                var entryToUpdate = (from entry in gbContext.Gäste
+                                     where entry.EntryId == key
+                                     select entry).FirstOrDefault();
+                // falls != null
+                if (entryToUpdate != null)
+                {
+                    // dann mit den aktuellen Daten (updatedEntry) aktualisieren ( SaveChanges() )
+                    entryToUpdate.Name = updatedEntry.Name;
+                    entryToUpdate.Stars = updatedEntry.Stars;
+                    entryToUpdate.Comment= updatedEntry.Comment;
+                    // Datum und EntryID werden nicht geändert
+                }
+
+                return gbContext.SaveChanges() == 1;
+            }
         }
-/*
+
         public Gast GetEntry(int id)
         {
             using (GästebuchContext gbContext = new GästebuchContext()){
-                List<Gast> gbEntries = from g in gbContext.Gäste
-                                       select g;
+                var gbEntries = (from entry in gbContext.Gäste
+                                       where entry.EntryId== id
+                                       select entry)
+                                       .FirstOrDefault();
 
-
+                return gbEntries;
 
             }
         }
-        */
+        
         public List<Gast> GetAllEntries()
         {
-            throw new NotImplementedException();
+            using (GästebuchContext gbContext = new GästebuchContext())
+            {
+                var gbEntries = from g in gbContext.Gäste
+                                orderby g.Datum descending
+                                select g;
+
+                return gbEntries.ToList();
+            }
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            // LINQ - Abfrage (Entry mit der ID id)
+            using (GästebuchContext gbContext = new GästebuchContext())
+            {
+                var entryToDelete = (from entry in gbContext.Gäste
+                                     where entry.EntryId == id
+                                     select entry)
+                                    .FirstOrDefault();
+
+                // auf dem Kontext Remove() aufrufen
+                if (entryToDelete != null)
+                {
+                    gbContext.Gäste.Remove(entryToDelete);
+                }
+
+                return gbContext.SaveChanges() == 1;
+            }
         }
     }
 }
