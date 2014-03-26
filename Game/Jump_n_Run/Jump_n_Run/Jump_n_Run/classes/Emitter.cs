@@ -51,6 +51,8 @@ namespace X2DPE
         public string EmitterID { get; set; }
         public bool noEmit = false;
 
+        TimeSpan lastMove = new TimeSpan();
+
 		public Emitter()
 		{
 			Active = true;
@@ -109,7 +111,13 @@ namespace X2DPE
                     if(particle.TotalLifetime >= 100 && emittertype == "gravity_bullet")
                     {
                         particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
-                        if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(0, particle.downSpeed); }
+                        if (!Collision.ParticleCollision(colliders, particle)) 
+                        {
+                            if ((gameTime.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                            {
+                                particle.Position += new Vector2(0, particle.downSpeed);
+                            }
+                        }
                         if (particle.TotalLifetime > ParticleLifeTime)
                         {
                             ParticleList.Remove(particle);
@@ -122,7 +130,16 @@ namespace X2DPE
 					float x = (float)Math.Sin(MathHelper.ToRadians(particle.Direction)) * particle.Speed;
 
 					particle.TotalLifetime += gameTime.ElapsedGameTime.Milliseconds;
-                    if (!Collision.ParticleCollision(colliders, particle)) { particle.Position += new Vector2(x, y); }
+                    if (!Collision.ParticleCollision(colliders, particle)) 
+                    { 
+                       
+
+
+                        if ((gameTime.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+                            particle.Position += new Vector2(x, y);
+                        }
+                    }
 					particle.Rotation += particle.RotationSpeed;
 					ParticleScaler.Scale(particle, ParticleLifeTime);
 					particle.Fade = ParticleFader.Fade(particle, ParticleLifeTime);
@@ -139,15 +156,15 @@ namespace X2DPE
 			}
 		}
 
-		private void EmitParticle()
+		public void EmitParticle()
 		{
             if (!noEmit)
             {
                 EmitterID = this.Position.X + "/" + this.Position.Y;
                 if (i > TextureList.Count - 1) i = 0;
-                this.ParticleDirection = new RandomMinMax(ParticleDirection.Min - 10, ParticleDirection.Max + 10);
+                this.ParticleDirection = new RandomMinMax(ParticleDirection.Min - 2, ParticleDirection.Max + 2);
 
-                for(int j = 0; j < 6; j++)
+                for(int j = 0; j < 3; j++)
                 {
                 Particle particle = new Particle(TextureList[i],
                                                                                  Position,

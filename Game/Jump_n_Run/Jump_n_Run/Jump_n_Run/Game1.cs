@@ -67,6 +67,9 @@ namespace Jump_n_Run
 
         float rotationDegrees = 0;
 
+        TimeSpan lastShot = new TimeSpan();
+        ButtonState lastState = ButtonState.Released;
+
 
 
         public Game1()
@@ -77,6 +80,10 @@ namespace Jump_n_Run
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1024;
             Content.RootDirectory = "Content";
+
+            graphics.SynchronizeWithVerticalRetrace = false;
+
+            this.IsFixedTimeStep = false;
 
             this.initMemory = GC.GetTotalMemory(false);
 
@@ -201,8 +208,8 @@ namespace Jump_n_Run
 		 },
          RandomEmissionInterval = new RandomMinMax(300.0d),
          ParticleLifeTime = 2000,
-         ParticleDirection = new RandomMinMax(89,91),
-         ParticleSpeed = new RandomMinMax(8.0f),
+         ParticleDirection = new RandomMinMax(90,91),
+         ParticleSpeed = new RandomMinMax(3.0f),
          ParticleRotation = new RandomMinMax(0, 90),
          RotationSpeed = new RandomMinMax(0.015f),
          ParticleFader = new ParticleFader(false, true, 1350),
@@ -317,14 +324,18 @@ namespace Jump_n_Run
 
              
 
-                if (ms.LeftButton.Equals(ButtonState.Pressed))
+                if (ms.LeftButton.Equals(ButtonState.Pressed) && (lastState == ButtonState.Released))
                 {
-                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].Active = true;
+                    if ((gameTime.TotalGameTime - lastShot) >= new TimeSpan(0,0,0,0,0))
+                    {
+                        pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].EmitParticle();
+                        lastShot = gameTime.TotalGameTime;
+                        
+                    }
                 }
-                else
-                {
-                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].Active = false;
-                }
+
+                lastState = ms.LeftButton;
+        
 
 
                 if (Math.Abs(rotation) > Math.Abs(MathHelper.Pi/2))

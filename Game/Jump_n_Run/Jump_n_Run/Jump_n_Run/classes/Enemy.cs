@@ -19,7 +19,7 @@ namespace Jump_n_Run.classes
     class Enemy : MoveableObject
     {
         Random rand;
-        int lastMove = 0;
+        int lastMoveInt = 0;
         int successive = 0;
         int successiveMAX = 60;
         int jumpBase = 800;
@@ -27,7 +27,9 @@ namespace Jump_n_Run.classes
         public Emitter emitter;
         public int health = 100;
         public bool dead = false;
+        TimeSpan lastMoveKI = new TimeSpan();
 
+        
 
 
 
@@ -86,123 +88,134 @@ namespace Jump_n_Run.classes
                 }
             }
 
-            
-            int movement = rand.Next(0, 6);
 
-             this.gnd = this.GroundCollision(bound, colliders);
-
-            if (gnd) jumpBase = this.rectangle.Bottom;
-            int height = this.rectangle.Bottom;
-            int maxHeight = jumpBase + jumpHeight;
-
-            if (successive < successiveMAX)
+            if ((gt.TotalGameTime - lastMoveKI) >= new TimeSpan(0, 0, 0, 0, 17))
             {
 
-                    if (lastMove == 0)
+                lastMoveKI = gt.TotalGameTime;
+
+
+
+                int movement = rand.Next(0, 6);
+
+                //movement = 3;
+
+                this.gnd = this.GroundCollision(bound, colliders);
+
+                if (gnd) jumpBase = this.rectangle.Bottom;
+                int height = this.rectangle.Bottom;
+                int maxHeight = jumpBase + jumpHeight;
+
+                if (successive < successiveMAX)
+                {
+
+                    if (lastMoveInt == 0)
                     {
                         this.MoveIdle(bound, colliders, gt);
                         successiveMAX = 60;
-                        lastMove = 0;
+                        lastMoveInt = 0;
                     }
-                    else if (lastMove == 1)
+                    else if (lastMoveInt == 1)
                     {
                         this.MoveLeft(bound, colliders, gt);
                         successiveMAX = 60;
-                        lastMove = 1;
+                        lastMoveInt = 1;
                     }
-                    else if (lastMove == 2)
+                    else if (lastMoveInt == 2)
                     {
                         this.MoveRight(bound, colliders, gt);
                         successiveMAX = 60;
-                        lastMove = 2;
+                        lastMoveInt = 2;
                     }
-                    else if (lastMove == 3)
+                    else if (lastMoveInt == 3)
                     {
                         this.MoveUp(bound, colliders, gt);
                         successiveMAX = 10;
-                        lastMove = 3;
+                        lastMoveInt = 3;
                     }
-                    else if (lastMove == 4)
+                    else if (lastMoveInt == 4)
                     {
                         this.MoveUpLeft(bound, colliders, gt);
                         successiveMAX = 10;
-                        lastMove = 4;
+                        lastMoveInt = 4;
                     }
-                    else if (lastMove == 5)
+                    else if (lastMoveInt == 5)
                     {
                         this.MoveUpRight(bound, colliders, gt);
                         successiveMAX = 10;
-                        lastMove = 5;
+                        lastMoveInt = 5;
                     }
                     successive++;
+                }
+                else
+                {
+                    successive = 0;
+                    if (movement == 0)
+                    {
+                        this.MoveIdle(bound, colliders, gt);
+                        lastMoveInt = 0;
+                    }
+                    else if (movement == 1)
+                    {
+                        this.MoveLeft(bound, colliders, gt);
+                        lastMoveInt = 1;
+                    }
+                    else if (movement == 2)
+                    {
+                        this.MoveRight(bound, colliders, gt);
+                        lastMoveInt = 2;
+                    }
+                    else if (movement == 3)
+                    {
+
+                        if (height <= maxHeight)
+                        {
+                            this.MoveUp(bound, colliders, gt);
+                            successiveMAX = 10;
+                            lastMoveInt = 3;
+                            gnd = false;
+
+
+
+
+                        }
+
+                    }
+                    else if (movement == 4)
+                    {
+
+                        if (height <= maxHeight)
+                        {
+                            this.MoveUpLeft(bound, colliders, gt);
+                            successiveMAX = 10;
+                            lastMoveInt = 4;
+                            gnd = false;
+
+
+
+                        }
+
+                    }
+                    else if (movement == 5)
+                    {
+
+                        if (height <= maxHeight)
+                        {
+                            this.MoveUpRight(bound, colliders, gt);
+                            successiveMAX = 10;
+                            lastMoveInt = 5;
+                            gnd = false;
+
+
+
+                        }
+
+                    }
+
+
+                }
             }
-            else
-            {
-                successive = 0;
-                if (movement == 0)
-                {
-                    this.MoveIdle(bound, colliders, gt);
-                    lastMove = 0;
-                }
-                else if (movement == 1)
-                {
-                    this.MoveLeft(bound, colliders, gt);
-                    lastMove = 1;
-                }
-                else if (movement == 2)
-                {
-                    this.MoveRight(bound, colliders, gt);
-                    lastMove = 2;
-                }
-                else if (movement == 3)
-                {
-                    
-                    if (height <= maxHeight)
-                    {
-                        this.MoveUp(bound, colliders, gt);
-                        successiveMAX = 10;
-                        lastMove = 3;
-                        gnd = false;
-                       
-                       
-                        
-                        
-                    }
-                   
-                }
-                else if (movement == 4)
-                {
-                    
-                    if (height <= maxHeight)
-                    {
-                        this.MoveUpLeft(bound, colliders, gt);
-                        successiveMAX = 10;
-                        lastMove = 4;
-                        gnd = false;
-                        
-                      
-                        
-                    }
-                    
-                }
-                else if (movement == 5)
-                {
-                    
-                    if (height <= maxHeight)
-                    {
-                        this.MoveUpRight(bound, colliders, gt);
-                        successiveMAX = 10;
-                        lastMove = 5;
-                        gnd = false;
-                       
-                      
-                       
-                    }
-                   
-                }
-               
-              
-            }
+             
 
 
         }
@@ -218,11 +231,19 @@ namespace Jump_n_Run.classes
 
         protected override void MoveUp(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
-
+            lastMove = new TimeSpan();
+            bool moved = false;
                 this.orientation = Orientation.Up;
                 if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                 {
-                    this.rectangle.Y -= this.movementSpeed * 2;
+                    
+
+                    if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                    {
+
+                        moved = true;
+                        this.rectangle.Y -= this.movementSpeed * 2;
+                    }
                 }
                 else
                 {
@@ -235,7 +256,16 @@ namespace Jump_n_Run.classes
 
                         if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                         {
-                            this.rectangle.Y -= newSpeed;
+                            
+
+                            if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                            {
+
+                                moved = true;
+                                this.rectangle.Y -= newSpeed;
+                            }
+
+
                             break;
                         }
                         else
@@ -254,15 +284,27 @@ namespace Jump_n_Run.classes
 
 
                 animation(Orientation.Up, gt);
+
+                if (moved) lastMove = gt.TotalGameTime;
             
                
         }
         protected override void MoveUpLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            lastMove = new TimeSpan();
+            bool moved = false;
             this.orientation = Orientation.Up;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.Y -= this.movementSpeed;
+               
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.Y -= this.movementSpeed;
+                }
+
             }
             else
             {
@@ -275,7 +317,16 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.Y -= newSpeed;
+                        
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.Y -= newSpeed;
+                        }
+
+
                         break;
                     }
                     else
@@ -295,7 +346,14 @@ namespace Jump_n_Run.classes
             this.orientation = Orientation.Left;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.X -= this.movementSpeed;
+                
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.X -= this.movementSpeed;
+                }
             }
             else
             {
@@ -308,20 +366,41 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.X -= newSpeed;
+                        
+
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.X -= newSpeed;
+                        }
+
+
                         break;
                     }
                     this.movementSpeed = oldMoveSpeed;
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+
+            if (moved) lastMove = gt.TotalGameTime;
         }
         protected override void MoveUpRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            lastMove = new TimeSpan();
+            bool moved = false;
             this.orientation = Orientation.Up;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.Y -= this.movementSpeed;
+                
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.Y -= this.movementSpeed;
+                }
             }
             else
             {
@@ -334,7 +413,16 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.Y -= newSpeed;
+                       
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.Y -= newSpeed;
+                        }
+
+
                         break;
                     }
                     else
@@ -354,7 +442,15 @@ namespace Jump_n_Run.classes
             this.orientation = Orientation.Right;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.X += this.movementSpeed;
+                
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.X += this.movementSpeed;
+                }
+
             }
             else
             {
@@ -367,20 +463,40 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.X += newSpeed;
+                        
+
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.X += newSpeed;
+                        }
+
                         break;
                     }
                     this.movementSpeed = oldMoveSpeed;
                 }
                 this.movementSpeed = oldMoveSpeed;
             }
+
+            if (moved) lastMove = gt.TotalGameTime;
         }
         protected override void MoveIdle(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            lastMove = new TimeSpan();
+            bool moved = false;
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
                 this.rectangle.Y += this.gravity;
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.Y += this.gravity;
+                }
                
             }
             else
@@ -394,7 +510,14 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.Y += newSpeed;
+                        
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.Y += newSpeed;
+                        }
                         
                         break;
                     }
@@ -413,16 +536,27 @@ namespace Jump_n_Run.classes
 
             this.orientation = Orientation.Idle;
 
+            if (moved) lastMove = gt.TotalGameTime;
+
         }
         protected override void MoveDown(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
         }
         protected override void MoveLeft(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            lastMove = new TimeSpan();
+            bool moved = false;
             this.orientation = Orientation.Left;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.X -= this.movementSpeed;
+                
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.X -= this.movementSpeed;
+                }
             }
             else
             {
@@ -435,7 +569,16 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.X -= newSpeed;
+                        
+
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.X -= newSpeed;
+                        }
+
                         break;
                     }
                     this.movementSpeed = oldMoveSpeed;
@@ -446,7 +589,14 @@ namespace Jump_n_Run.classes
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.Y += this.gravity;
+               
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.Y += this.gravity;
+                }
                
             }
             else
@@ -460,7 +610,16 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.Y += newSpeed;
+                       
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.Y += newSpeed;
+                        }
+
+
                         break;
                     }
                    
@@ -473,13 +632,24 @@ namespace Jump_n_Run.classes
 
             animation(Orientation.Left, gt);
 
+            if (moved) lastMove = gt.TotalGameTime;
+
         }
         protected override void MoveRight(Rectangle bound, IEnumerable<GameObject> collider, GameTime gt)
         {
+            lastMove = new TimeSpan();
+            bool moved = false;
             this.orientation = Orientation.Right;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.X += this.movementSpeed;
+                
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.X += this.movementSpeed;
+                }
             }
             else
             {
@@ -492,7 +662,15 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.X += newSpeed;
+                       
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.X += newSpeed;
+                        }
+
                         break;
                     }
                     this.movementSpeed = oldMoveSpeed;
@@ -503,7 +681,14 @@ namespace Jump_n_Run.classes
             this.orientation = Orientation.Down;
             if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
             {
-                this.rectangle.Y += this.gravity;
+                
+
+                if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    moved = true;
+                    this.rectangle.Y += this.gravity;
+                }
 
             }
             else
@@ -517,7 +702,15 @@ namespace Jump_n_Run.classes
 
                     if ((!Collision.BoundCollision(bound, this)) && (!Collision.ObjectCollision(collider, this)))
                     {
-                        this.rectangle.Y += newSpeed;
+                       
+
+                        if ((gt.TotalGameTime - lastMove) >= new TimeSpan(0, 0, 0, 0, 17))
+                        {
+
+                            moved = true;
+                            this.rectangle.Y += newSpeed;
+                        }
+
                         break;
                     }
 
@@ -529,8 +722,9 @@ namespace Jump_n_Run.classes
             }
 
             animation(Orientation.Right, gt);
-        }
 
+            if (moved) lastMove = gt.TotalGameTime;
+        }
         public override void animation(Orientation ori, GameTime gt)
         {
            
