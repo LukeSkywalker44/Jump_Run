@@ -44,7 +44,7 @@ namespace MVC_Game.Controllers
                         Message = "Eintrag war erfolgreich"
                     };
 
-                    return View("ViewMessage", mv);
+                    return View("index");
                     // return //alles OK
                 }
                 else
@@ -57,7 +57,7 @@ namespace MVC_Game.Controllers
                         Message = "Eintrag war nicht erfolgreich",
                         AdditonalInfos = "xxxxxxx"
                     };
-                    return View("ViewMessage", mv);
+                    return View("index");
                     //  return //Eintrag hat nicht funktioniert
 
                     //+ entsprechende Meldung ausgeben 
