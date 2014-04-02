@@ -31,10 +31,12 @@ namespace Jump_n_Run.classes
         public bool deadAnimation = false;
         public Texture2D enemyImgDead;
         public ContentManager content;
-        public Rectangle[] rectEnemyDead;
+        public Rectangle[] rectEnemyDead = new Rectangle[4];
+        int i = -1;
+        Stopwatch sw = new Stopwatch();
+        
 
-
-        public Enemy(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump) : base(moveSpeed, gravity, texture, rect, jump) { rand = new Random(); }
+        public Enemy(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump, Texture2D img) : base(moveSpeed, gravity, texture, rect, jump) { rand = new Random(); }
 
 
         public void KI_Movement(Rectangle bound, IEnumerable<GameObject> colliders, GameTime gt, List<Particle> particles, ref ParticleComponent pcomponent, Emitter Emitter)
@@ -48,48 +50,8 @@ namespace Jump_n_Run.classes
 
                 this.health -= pcomponent.particleEmitterList.First().Damage;
 
-                if (health <= 0)
-                {
-                    // Dead - Animation
-                    enemyImgDead = content.Load<Texture2D>("Images/gameobjects/Panda_Dead_T");
 
-                    int startX = 0;
-                    int deltaX = 69;
 
-                    rectEnemyDead = new Rectangle[4];
-                    for (int i = 0; i < rectEnemyDead.Length; i++)
-                    {
-                        rectEnemyDead[i] = new Rectangle(startX + i * deltaX, 0, 69, 59);
-                    }
-
-                    deadAnimation = true;
-
-                    if (deadAnimation == true)
-                    {
-                        dead = true;
-                    }
-                    
-                }
-
-                if (emitter == null)
-                {
-                    emitter = Emitter;
-                    this.emitter.Active = true;
-                    this.emitter.noEmit = false;
-                    this.emitter.Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
-                    pcomponent.particleEmitterList.Add(this.emitter);
-                   
-                }
-                else
-                {
-                    if(pcomponent.particleEmitterList.Contains(emitter))
-                    {
-                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].noEmit = false;
-                    emitter.noEmit = false;
-                    pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
-                    emitter.Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
-                    }
-                }
 
             }
             else
@@ -106,133 +68,205 @@ namespace Jump_n_Run.classes
                 }
             }
 
-
-            if ((gt.TotalGameTime - lastMoveKI) >= new TimeSpan(0, 0, 0, 0, 17))
+            if (health <= 0)
             {
+                // Dead - Animation
+                this.deadAnimation = true;
+                i++;
 
-                lastMoveKI = gt.TotalGameTime;
-
-
-
-                int movement = rand.Next(0, 6);
-
-                //movement = 3;
-
-                this.gnd = this.GroundCollision(bound, colliders);
-
-                if (gnd) jumpBase = this.rectangle.Bottom;
-                int height = this.rectangle.Bottom;
-                int maxHeight = jumpBase + jumpHeight;
-
-                if (successive < successiveMAX)
+                if (!sw.IsRunning)
                 {
+                    sw.Start();
+                }
 
-                    if (lastMoveInt == 0)
+                int startX = 0;
+                int deltaX = 69;
+
+                //rectEnemyDead = new Rectangle[4];
+
+                //rectEnemyDead[i] = new Rectangle(startX + i * deltaX, 0, 69, 59);
+
+
+                this.Texture = enemyImgDead;
+
+
+                sw.Stop();
+
+                if (sw.ElapsedMilliseconds >= 800)
+                {
+                    dead = true;
+                    this.deadAnimation = false;
+                }
+                sw.Start();
+
+
+                sw.Stop();
+
+
+
+                if (dead)
+                {
+                    if (pcomponent.particleEmitterList.Contains(emitter))
                     {
-                        this.MoveIdle(bound, colliders, gt);
-                        successiveMAX = 60;
-                        lastMoveInt = 0;
+
+                        pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].noEmit = true;
+
                     }
-                    else if (lastMoveInt == 1)
-                    {
-                        this.MoveLeft(bound, colliders, gt);
-                        successiveMAX = 60;
-                        lastMoveInt = 1;
-                    }
-                    else if (lastMoveInt == 2)
-                    {
-                        this.MoveRight(bound, colliders, gt);
-                        successiveMAX = 60;
-                        lastMoveInt = 2;
-                    }
-                    else if (lastMoveInt == 3)
-                    {
-                        this.MoveUp(bound, colliders, gt);
-                        successiveMAX = 10;
-                        lastMoveInt = 3;
-                    }
-                    else if (lastMoveInt == 4)
-                    {
-                        this.MoveUpLeft(bound, colliders, gt);
-                        successiveMAX = 10;
-                        lastMoveInt = 4;
-                    }
-                    else if (lastMoveInt == 5)
-                    {
-                        this.MoveUpRight(bound, colliders, gt);
-                        successiveMAX = 10;
-                        lastMoveInt = 5;
-                    }
-                    successive++;
+                    emitter = null;
                 }
                 else
                 {
-                    successive = 0;
-                    if (movement == 0)
+                    if (pcomponent.particleEmitterList.Contains(emitter))
                     {
-                        this.MoveIdle(bound, colliders, gt);
-                        lastMoveInt = 0;
+                        pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].noEmit = false;
+                        emitter.noEmit = false;
+                        pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(emitter)].Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
+                        emitter.Position = new Vector2(this.rectangle.Center.X, this.rectangle.Center.Y);
                     }
-                    else if (movement == 1)
+                    else
                     {
-                        this.MoveLeft(bound, colliders, gt);
-                        lastMoveInt = 1;
+                        if (emitter == null)
+                        {
+                            emitter = Emitter;
+                            pcomponent.particleEmitterList.Add(this.emitter);
+                        }
                     }
-                    else if (movement == 2)
-                    {
-                        this.MoveRight(bound, colliders, gt);
-                        lastMoveInt = 2;
-                    }
-                    else if (movement == 3)
+                   
+                }
+               
+            }
+
+
+            
+
+                if ((gt.TotalGameTime - lastMoveKI) >= new TimeSpan(0, 0, 0, 0, 17))
+                {
+
+                    lastMoveKI = gt.TotalGameTime;
+
+
+
+                    int movement = rand.Next(0, 6);
+
+                    //movement = 3;
+
+                    this.gnd = this.GroundCollision(bound, colliders);
+
+                    if (gnd) jumpBase = this.rectangle.Bottom;
+                    int height = this.rectangle.Bottom;
+                    int maxHeight = jumpBase + jumpHeight;
+
+                    if (successive < successiveMAX)
                     {
 
-                        if (height <= maxHeight)
+                        if (lastMoveInt == 0)
+                        {
+                            this.MoveIdle(bound, colliders, gt);
+                            successiveMAX = 60;
+                            lastMoveInt = 0;
+                        }
+                        else if (lastMoveInt == 1)
+                        {
+                            this.MoveLeft(bound, colliders, gt);
+                            successiveMAX = 60;
+                            lastMoveInt = 1;
+                        }
+                        else if (lastMoveInt == 2)
+                        {
+                            this.MoveRight(bound, colliders, gt);
+                            successiveMAX = 60;
+                            lastMoveInt = 2;
+                        }
+                        else if (lastMoveInt == 3)
                         {
                             this.MoveUp(bound, colliders, gt);
                             successiveMAX = 10;
                             lastMoveInt = 3;
-                            gnd = false;
-
-
-
-
                         }
-
-                    }
-                    else if (movement == 4)
-                    {
-
-                        if (height <= maxHeight)
+                        else if (lastMoveInt == 4)
                         {
                             this.MoveUpLeft(bound, colliders, gt);
                             successiveMAX = 10;
                             lastMoveInt = 4;
-                            gnd = false;
-
-
-
                         }
-
-                    }
-                    else if (movement == 5)
-                    {
-
-                        if (height <= maxHeight)
+                        else if (lastMoveInt == 5)
                         {
                             this.MoveUpRight(bound, colliders, gt);
                             successiveMAX = 10;
                             lastMoveInt = 5;
-                            gnd = false;
+                        }
+                        successive++;
+                    }
+                    else
+                    {
+                        successive = 0;
+                        if (movement == 0)
+                        {
+                            this.MoveIdle(bound, colliders, gt);
+                            lastMoveInt = 0;
+                        }
+                        else if (movement == 1)
+                        {
+                            this.MoveLeft(bound, colliders, gt);
+                            lastMoveInt = 1;
+                        }
+                        else if (movement == 2)
+                        {
+                            this.MoveRight(bound, colliders, gt);
+                            lastMoveInt = 2;
+                        }
+                        else if (movement == 3)
+                        {
+
+                            if (height <= maxHeight)
+                            {
+                                this.MoveUp(bound, colliders, gt);
+                                successiveMAX = 10;
+                                lastMoveInt = 3;
+                                gnd = false;
 
 
+
+
+                            }
+
+                        }
+                        else if (movement == 4)
+                        {
+
+                            if (height <= maxHeight)
+                            {
+                                this.MoveUpLeft(bound, colliders, gt);
+                                successiveMAX = 10;
+                                lastMoveInt = 4;
+                                gnd = false;
+
+
+
+                            }
+
+                        }
+                        else if (movement == 5)
+                        {
+
+                            if (height <= maxHeight)
+                            {
+                                this.MoveUpRight(bound, colliders, gt);
+                                successiveMAX = 10;
+                                lastMoveInt = 5;
+                                gnd = false;
+
+
+
+                            }
 
                         }
 
+
                     }
-
-
-                }
-            }
+               }
+            
+           
              
 
 
@@ -746,6 +780,11 @@ namespace Jump_n_Run.classes
         public override void animation(Orientation ori, GameTime gt)
         {
            
+        }
+
+        public override void Draw(ref SpriteBatch sb)
+        {
+            sb.Draw(Texture, rectangle, renderRect, Color.White, 0.0f, new Vector2(0.0f, 0.0f), SpriteEffects.None, 0.0f);
         }
 
        

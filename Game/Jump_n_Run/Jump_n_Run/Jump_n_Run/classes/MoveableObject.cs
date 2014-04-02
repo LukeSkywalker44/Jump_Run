@@ -32,6 +32,7 @@ namespace Jump_n_Run.classes
         protected int actualjumpHeight = 0;
         bool canJump;
         protected TimeSpan lastMove = new TimeSpan();
+        protected Rectangle renderRect;
 
         
 
@@ -1049,6 +1050,8 @@ namespace Jump_n_Run.classes
         public override void Draw(ref SpriteBatch sb)
         {
             sb.Draw(this.Texture, this.rectangle, Color.White);
+
+           
         }
 
         public virtual void ItemPickup(ref Items item)
