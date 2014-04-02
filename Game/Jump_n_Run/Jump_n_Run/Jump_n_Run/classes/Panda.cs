@@ -25,32 +25,27 @@ namespace Jump_n_Run.classes
         private int pandaTime;
         private const int pandaImgChangeTimeRun = 80;
         private const int pandaImgChangeTimeJump = 80;
-        private const int pandaImgChangeTimeDead = 200;
         private int pandaImgIndexRun = 0;
         private int pandaImgIndexJump = 0;
-        private int pandaImgIndexDead = 0;
         private Orientation oldOrientation;
-      
 
         Color drawColor = Color.White;
 
         // ctors
-        public Panda() : this(0,0,null,new Rectangle(0,0,0,0),0,null, null, null) { }
-        public Panda(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump, Texture2D pandaImgRun, Texture2D pandaImgJump, Texture2D img)
-            : base(moveSpeed, gravity, texture, rect, jump, img) 
+        public Panda() : this(0,0,null,new Rectangle(0,0,0,0),0,null, null) { }
+        public Panda(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump, Texture2D pandaImgRun, Texture2D pandaImgJump)
+            : base(moveSpeed, gravity, texture, rect, jump) 
         {
             this.pandaImgRun = pandaImgRun;
             this.pandaImgJump = pandaImgJump;
         }
 
 
-        public void loadPanda(GraphicsDeviceManager graphics, ContentManager Content, Texture2D pandaDead)
+        public void loadPanda(GraphicsDeviceManager graphics, ContentManager Content)
         {
             pandaImgStand = Content.Load<Texture2D>("Images/gameobjects/PandaStand");
             pandaImgRun = Content.Load<Texture2D>("Images/gameobjects/PandaRunv1");      // ändern/weck
             pandaImgJump = Content.Load<Texture2D>("Images/gameobjects/PandaJumpv1");     // ändern/weck
-
-            this.enemyImgDead = pandaDead;
 
             int startX = 0;
             int deltaX = 54;
@@ -86,54 +81,34 @@ namespace Jump_n_Run.classes
         {
             pandaTime += gametime.ElapsedGameTime.Milliseconds;
 
-           
-            if (this.deadAnimation)
+            if (ori == Orientation.Right || ori == Orientation.Left) 
             {
-
-                if (pandaTime >= pandaImgChangeTimeDead)
+                if (pandaTime >= pandaImgChangeTimeRun)
                 {
                     pandaTime = 0;
-                    pandaImgIndexDead++;
-                    if (pandaImgIndexDead >= rectEnemyDead.Length)
+                    pandaImgIndexRun++;
+                    if (pandaImgIndexRun >= pandaRectsRun.Length)
                     {
-                        pandaImgIndexDead = 0;
+                        pandaImgIndexRun = 0;
                     }
 
-                    renderRect = rectEnemyDead[pandaImgIndexDead];
+                    renderRect = pandaRectsRun[pandaImgIndexRun];
                 }
             }
-            else
+
+            if (ori == Orientation.Up || ori == Orientation.Down)
             {
-                if (ori == Orientation.Right || ori == Orientation.Left)
+                if (pandaTime >= pandaImgChangeTimeJump)
                 {
-                    if (pandaTime >= pandaImgChangeTimeRun)
+                    pandaTime = 0;
+                    pandaImgIndexJump++;
+                    if (pandaImgIndexJump >= pandaRectsJump.Length)
                     {
-                        pandaTime = 0;
-                        pandaImgIndexRun++;
-                        if (pandaImgIndexRun >= pandaRectsRun.Length)
-                        {
-                            pandaImgIndexRun = 0;
-                        }
-
-                        renderRect = pandaRectsRun[pandaImgIndexRun];
+                        pandaImgIndexJump = 0;
                     }
+
+                    renderRect = pandaRectsJump[pandaImgIndexJump];
                 }
-
-                if (ori == Orientation.Up || ori == Orientation.Down)
-                {
-                    if (pandaTime >= pandaImgChangeTimeJump)
-                    {
-                        pandaTime = 0;
-                        pandaImgIndexJump++;
-                        if (pandaImgIndexJump >= pandaRectsJump.Length)
-                        {
-                            pandaImgIndexJump = 0;
-                        }
-
-                        renderRect = pandaRectsJump[pandaImgIndexJump];
-                    }
-                }
-
             }
            
         }
@@ -252,16 +227,6 @@ namespace Jump_n_Run.classes
                 renderRect = pandaRectIdle;
 
                 oldOrientation = Orientation.Down;
-            }
-
-            if (this.deadAnimation)
-            {
-
-                this.Texture = enemyImgDead;
-                   
-
-                   
-              
             }
         }
 

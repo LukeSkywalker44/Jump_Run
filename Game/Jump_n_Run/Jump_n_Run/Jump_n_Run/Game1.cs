@@ -183,7 +183,7 @@ namespace Jump_n_Run
 			Content.Load<Texture2D>(@"Kopie von object")
 			
 		 },
-         RandomEmissionInterval = new RandomMinMax(100.0d),
+         RandomEmissionInterval = new RandomMinMax(5.0d),
          ParticleLifeTime = 2000,
          ParticleDirection = new RandomMinMax(0,359),
          ParticleSpeed = new RandomMinMax(9.0f,15.0f),
@@ -447,7 +447,7 @@ namespace Jump_n_Run
 
 
             Panda locpanda = new Panda();
-            locpanda.loadPanda(this.graphics, this.Content, Content.Load<Texture2D>("Images/gameobjects/Panda_Dead_T"));
+            locpanda.loadPanda(this.graphics, this.Content);
             locpanda.health = 100;
 
             locpanda.rectangle.X = new Random().Next(0, 1000);
