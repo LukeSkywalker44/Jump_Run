@@ -29,9 +29,6 @@ namespace Jump_n_Run.classes
         public bool dead = false;
         TimeSpan lastMoveKI = new TimeSpan();
         public bool deadAnimation = false;
-        public Texture2D enemyImgDead;
-        public ContentManager content;
-        public Rectangle[] rectEnemyDead;
 
 
         public Enemy(int moveSpeed, int gravity, Texture2D texture, Rectangle rect, int jump) : base(moveSpeed, gravity, texture, rect, jump) { rand = new Random(); }
@@ -48,28 +45,11 @@ namespace Jump_n_Run.classes
 
                 this.health -= pcomponent.particleEmitterList.First().Damage;
 
-                if (health <= 0)
+                if (deadAnimation == true)
                 {
-                    // Dead - Animation
-                    enemyImgDead = content.Load<Texture2D>("Images/gameobjects/Panda_Dead_T");
-
-                    int startX = 0;
-                    int deltaX = 69;
-
-                    rectEnemyDead = new Rectangle[4];
-                    for (int i = 0; i < rectEnemyDead.Length; i++)
-                    {
-                        rectEnemyDead[i] = new Rectangle(startX + i * deltaX, 0, 69, 59);
-                    }
-
-                    deadAnimation = true;
-
-                    if (deadAnimation == true)
-                    {
-                        dead = true;
-                    }
-                    
+                    dead = true;
                 }
+                
 
                 if (emitter == null)
                 {

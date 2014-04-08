@@ -15,18 +15,21 @@ namespace Jump_n_Run.classes
     class Panda : Enemy
     {
         // fields
-        private Texture2D pandaImgRun, pandaImgJump, pandaImgStand;
+        private Texture2D pandaImgRun, pandaImgJump, pandaImgStand, pandaImgDead;
        // private Vector2 pandaPosition;
         private Rectangle pandaRectIdle;
         private Rectangle[] pandaRectsRun;
         private Rectangle[] pandaRectsJump;
+        private Rectangle[] pandaRectsDead;
         private Rectangle renderRect;
         private SpriteEffects pandaDirection = SpriteEffects.None;
         private int pandaTime;
         private const int pandaImgChangeTimeRun = 80;
         private const int pandaImgChangeTimeJump = 80;
+        private const int pandaImgChangeTimeDead = 80;
         private int pandaImgIndexRun = 0;
         private int pandaImgIndexJump = 0;
+        private int pandaImgIndexDead = 0;
         private Orientation oldOrientation;
 
         Color drawColor = Color.White;
@@ -46,10 +49,12 @@ namespace Jump_n_Run.classes
             pandaImgStand = Content.Load<Texture2D>("Images/gameobjects/PandaStand");
             pandaImgRun = Content.Load<Texture2D>("Images/gameobjects/PandaRunv1");      // ändern/weck
             pandaImgJump = Content.Load<Texture2D>("Images/gameobjects/PandaJumpv1");     // ändern/weck
+            pandaImgDead = Content.Load<Texture2D>("Images/gameobjects/Panda_Dead_T");
 
             int startX = 0;
             int deltaX = 54;
             int deltaY = 58;
+            int deltaD = 69;
 
             this.gravity = 10;
 
@@ -65,6 +70,12 @@ namespace Jump_n_Run.classes
             for (int i = 0; i < pandaRectsJump.Length; i++)
             {
                 pandaRectsJump[i] = new Rectangle(startX + i * deltaY, 0, 58, 60);
+            }
+
+            pandaRectsDead = new Rectangle[4];
+            for (int i = 0; i < pandaRectsDead.Length; i++)
+            {
+                pandaRectsDead[i] = new Rectangle(startX + i * deltaD, 0, 69, 59);
             }
 
             oldOrientation = Orientation.Idle;
@@ -108,6 +119,21 @@ namespace Jump_n_Run.classes
                     }
 
                     renderRect = pandaRectsJump[pandaImgIndexJump];
+                }
+            }
+
+            if (health <= 0)
+            {
+                if (pandaTime >= pandaImgChangeTimeDead)
+                {
+                    pandaTime = 0;
+                    pandaImgIndexDead++;
+                    if (pandaImgIndexDead >= pandaRectsDead.Length)
+                    {
+                        pandaImgIndexDead = 0;
+                    }
+
+                    renderRect = pandaRectsDead[pandaImgIndexDead];
                 }
             }
            
@@ -227,6 +253,15 @@ namespace Jump_n_Run.classes
                 renderRect = pandaRectIdle;
 
                 oldOrientation = Orientation.Down;
+            }
+
+            if (this.health <= 0)
+            {
+                pandaDirection = SpriteEffects.None;
+                this.Texture = pandaImgDead;
+                pandaImgIndexDead = 0;
+                CalculatePandaImgIndex(gt, Orientation.Down);
+                deadAnimation = true;
             }
         }
 

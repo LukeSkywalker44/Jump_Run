@@ -27,6 +27,10 @@ namespace Jump_n_Run
         Rectangle mainFrame = new Rectangle(0, 0, 1024, 768);
         Rectangle bgFrame = new Rectangle(0, 0, 2048, 768);
 
+        Rectangle rect1;
+        Rectangle rect2;
+
+
         Texture2D background;
         Texture2D objTex;
         Texture2D objItemKey;
@@ -107,6 +111,11 @@ namespace Jump_n_Run
             background = new Texture2D(graphics.GraphicsDevice, 800, 600);
             base.Initialize();
             sw.Start();
+
+            rect1 = new Rectangle(0, 0, 1100, 600);
+            rect2 = new Rectangle(1100, 0, 1100, 600);
+
+
         }
 
         /// <summary>
@@ -242,6 +251,15 @@ namespace Jump_n_Run
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            if (rect1.X + background.Width <= 0)
+            {
+                rect1.X = rect2.X + background.Width;
+            }
+            if (rect2.X + background.Width <= 0)
+            {
+                rect2.X = rect1.X + background.Width;
+            }
 
             sw.Stop();
             frametime = sw.ElapsedMilliseconds;
@@ -480,6 +498,8 @@ namespace Jump_n_Run
         {
 
             KeyboardState kbstate = Keyboard.GetState();
+            
+
             spriteBatch.Begin();
 
             spriteBatch.Draw(background, bgFrame, Color.White);
