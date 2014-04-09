@@ -497,6 +497,12 @@ namespace Jump_n_Run
         protected override void Draw(GameTime gameTime)
         {
 
+
+            double FPS = 1 / gameTime.ElapsedGameTime.TotalMilliseconds * 1000;
+
+            FPS = Math.Truncate(FPS);
+
+
             KeyboardState kbstate = Keyboard.GetState();
             
 
@@ -524,7 +530,7 @@ namespace Jump_n_Run
             }
 
             spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, fpsDraw, new Vector2(1, 20), Color.LimeGreen);
+            spriteBatch.DrawString(Arial, "FPS: " + FPS, new Vector2(1, 20), Color.LimeGreen);
             spriteBatch.DrawString(Arial, "Pandas: " + enemies.Count, new Vector2(1, 40), Color.LimeGreen);
             spriteBatch.DrawString(Arial, "Partikel: " + particleCount , new Vector2(1, 60), Color.LimeGreen);
             spriteBatch.DrawString(Arial, "Emitter: " + pcomponent.particleEmitterList.Count,  new Vector2(1, 80),Color.LimeGreen);
