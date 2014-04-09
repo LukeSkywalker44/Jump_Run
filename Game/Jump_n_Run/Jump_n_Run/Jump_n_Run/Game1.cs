@@ -127,7 +127,7 @@ namespace Jump_n_Run
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>(@"Images/background/Game_Background_by_flashpotatoes");
+            background = Content.Load<Texture2D>(@"Images/background/background_richtig");
 
             player.loadPlayer(this.graphics, this.Content);
 
