@@ -32,12 +32,28 @@ namespace Jump_n_Run
         Rectangle rect2;
 
 
+        Rectangle menuHeaderRect = new Rectangle(0, 192, 1024, 410);
+        Texture2D menuHeader;
+
+        Rectangle menuStartRect = new Rectangle(422, 409, 100, 50);
+        Texture2D menuStart;
+        Texture2D menuStart2;
+        Texture2D menuStartRender;
+
+
         Texture2D background;
         Texture2D objTex;
         Texture2D objItemKey;
         Texture2D objItemKeyHole;
         Texture2D objItemGun;
         Texture2D crosshair;
+
+        SoundEffect shotgun;
+        SoundEffect scream;
+        
+
+
+        Song bgSong;
 
         SpriteFont Arial;
         int updateCounter = 0;
@@ -75,6 +91,8 @@ namespace Jump_n_Run
         TimeSpan lastShot = new TimeSpan();
         ButtonState lastState = ButtonState.Released;
 
+        bool menu = true;
+        int startRenderIndex = 1;
 
 
         public Game1()
@@ -85,6 +103,7 @@ namespace Jump_n_Run
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1024;
             Content.RootDirectory = "Content";
+            
 
             graphics.SynchronizeWithVerticalRetrace = false;
 
@@ -97,6 +116,11 @@ namespace Jump_n_Run
             pcomponent = new ParticleComponent(this);
 
             this.Components.Add(pcomponent);
+
+            bgSong = Content.Load<Song>(@"sound/background/Star Wars - Der Imperiale Marsch [Das Original!].mp4");
+            MediaPlayer.Volume = 1.0f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(bgSong);
 
         }
 
@@ -140,6 +164,13 @@ namespace Jump_n_Run
             objItemKeyHole = Content.Load<Texture2D>(@"Images/gameobjects/Schlüsselloch");
             objItemGun = Content.Load<Texture2D>(@"Images/gameobjects/Shotgun");
             crosshair = Content.Load<Texture2D>(@"Images/gameobjects/Crosshair");
+            menuHeader = Content.Load<Texture2D>(@"Images/menu/Header");
+            menuStart = Content.Load<Texture2D>(@"Images/menu/Start");
+            menuStart2 = Content.Load<Texture2D>(@"Images/menu/Start_negativ");
+            shotgun = Content.Load<SoundEffect>(@"sound/effects/gun-gunshot-02");
+            scream = Content.Load<SoundEffect>(@"sound/effects/WilhelmScream");
+          
+            menuStartRender = menuStart;
            
 
             key = new Key(objItemKey, new Rectangle(400, 380, 20, 20));
@@ -149,7 +180,8 @@ namespace Jump_n_Run
 
             MouseState ms = Mouse.GetState();
 
-            Crosshair = new GameObject(crosshair,new Rectangle(ms.X,ms.Y,32,32));
+            Crosshair = new GameObject(crosshair,new Rectangle(ms.X + 16,ms.Y + 16,32,32));
+
 
             #region testLevel
 
@@ -162,7 +194,7 @@ namespace Jump_n_Run
 
             GObjects.Add(new GameObject(objTex, new Rectangle(600, 500, 200, 10)));
 
-            GObjects.Add(new GameObject(objTex, new Rectangle(300, 400, 200, 10)));
+            GObjects.Add(new GameObject(objTex, new Rectangle(400, 400, 200, 10)));
 
             GObjects.Add(new GameObject(objTex, new Rectangle(-1000, 718, 10000, 50)));
 
@@ -171,11 +203,12 @@ namespace Jump_n_Run
 
             #endregion
 
-
+           
             GObjects.Add(player);
             GObjects.Add(key);
             GObjects.Add(keyHole);
             GObjects.Add(gunItem);
+        
       
 
 
@@ -254,7 +287,14 @@ namespace Jump_n_Run
         {
 
 
-            GObjects[6].rectangle.X = mainFrame.X - 1000;
+
+
+
+            if (GObjects.Count >= 7)
+            {
+
+                GObjects[6].rectangle.X = mainFrame.X - 1000;
+            }
 
 
 
@@ -310,6 +350,8 @@ namespace Jump_n_Run
             KeyboardState kbstate = Keyboard.GetState();
 
 
+
+
             
 
             // Allows the game to exit
@@ -325,8 +367,37 @@ namespace Jump_n_Run
             MouseState ms = Mouse.GetState();
 
 
-            Crosshair.rectangle.X = ms.X;
-            Crosshair.rectangle.Y = ms.Y;
+            Crosshair.rectangle.X = ms.X -16;
+            Crosshair.rectangle.Y = ms.Y -16;
+
+
+            Point mousePoint = new Point(ms.X, ms.Y);
+
+            if (menuStartRect.Contains(mousePoint))
+            {
+                if (startRenderIndex == 1)
+                {
+                    menuStartRender = menuStart2;
+                    startRenderIndex = 2;
+                }
+                else
+                {
+                    menuStartRender = menuStart;
+                    startRenderIndex = 1;
+                }
+                if (ms.LeftButton.Equals(ButtonState.Pressed))
+                {
+
+                    menu = false;
+                }
+            }
+            else
+            {
+                menuStartRender = menuStart;
+                startRenderIndex = 1;
+            }
+
+
 
             if (player.guns.Count > 0)
             {
@@ -376,6 +447,7 @@ namespace Jump_n_Run
                 {
                     if ((gameTime.TotalGameTime - lastShot) >= new TimeSpan(0,0,0,0,0))
                     {
+                        shotgun.Play();
                         pcomponent.particleEmitterList[pcomponent.particleEmitterList.IndexOf(gunEmitter)].EmitParticle();
                         lastShot = gameTime.TotalGameTime;
                         
@@ -446,6 +518,7 @@ namespace Jump_n_Run
 
                     if (enemy.dead)
                     {
+                        scream.Play();
                         deadEnemies.Add(enemy);
                     }
                 }
@@ -533,31 +606,53 @@ namespace Jump_n_Run
             FPS = Math.Truncate(FPS);
 
 
-            KeyboardState kbstate = Keyboard.GetState();
+           
             
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, bgFrame, Color.White);
-            spriteBatch.Draw(background, bgFrame2, Color.White);
+            
 
             int particleCount = 0;
 
-            foreach (GameObject gobject in GObjects)
+            if (!menu)
             {
-                gobject.Draw(ref spriteBatch);
+                spriteBatch.Draw(background, bgFrame, Color.White);
+                spriteBatch.Draw(background, bgFrame2, Color.White);
+                foreach (GameObject gobject in GObjects)
+                {
+                    gobject.Draw(ref spriteBatch);
+                }
+                foreach (Gun gun in player.guns)
+                {
+                    gun.Draw(ref spriteBatch);
+                }
+
+                
+
+
+                foreach (Emitter emitter in pcomponent.particleEmitterList)
+                {
+                    particleCount += emitter.ParticleList.Count;
+                    emitter.Draw = true;
+
+                }
+
             }
-            foreach (Gun gun in player.guns)
+            else
             {
-                gun.Draw(ref spriteBatch);
-            }
+                foreach (Emitter emitter in pcomponent.particleEmitterList)
+                {
+                    emitter.Draw = false;
 
-            Crosshair.Draw(ref spriteBatch);
+                }
+
+                spriteBatch.Draw(menuHeader, menuHeaderRect, Color.White);
+                spriteBatch.Draw(menuStartRender, menuStartRect, Color.White);
 
 
-            foreach (Emitter emitter in pcomponent.particleEmitterList)
-            {
-                particleCount += emitter.ParticleList.Count;
+
+
             }
 
             spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.Magenta);
@@ -566,14 +661,18 @@ namespace Jump_n_Run
             spriteBatch.DrawString(Arial, "Partikel: " + particleCount, new Vector2(1, 60), Color.Magenta);
             spriteBatch.DrawString(Arial, "Emitter: " + pcomponent.particleEmitterList.Count, new Vector2(1, 80), Color.Magenta);
 
-            
-            
 
-          
+
+
+            Crosshair.Draw(ref spriteBatch);
 
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+      
     }
+
+ 
 }

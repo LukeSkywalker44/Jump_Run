@@ -37,6 +37,7 @@ namespace X2DPE
 		public int Opacity { get; set; }
 
 		private int i = 0;
+        public bool Draw { get; set; }
 		private double emitterFrequency = 0;	// in ms
 		private double timeSinceLastEmission = 0;
 
@@ -187,18 +188,24 @@ namespace X2DPE
 
 		public void DrawParticles(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-            EmitterID = this.Position.X + "/" + this.Position.Y;
-            foreach (Particle particle in ParticleList)
+
+            if (Draw)
             {
-                spriteBatch.Draw(particle.Texture,
-                                                 particle.Position,
-                                                 null,
-                                                 particle.Color,
-                                                 particle.Rotation,
-                                                 particle.Center,
-                                                 particle.Scale,
-                                                 SpriteEffects.None,
-                                                 0);
+
+                EmitterID = this.Position.X + "/" + this.Position.Y;
+                foreach (Particle particle in ParticleList)
+                {
+                    spriteBatch.Draw(particle.Texture,
+                                                     particle.Position,
+                                                     null,
+                                                     particle.Color,
+                                                     particle.Rotation,
+                                                     particle.Center,
+                                                     particle.Scale,
+                                                     SpriteEffects.None,
+                                                     0);
+                }
+
             }
 
           
