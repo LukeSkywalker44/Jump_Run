@@ -45,6 +45,11 @@ namespace Jump_n_Run.classes
 
                 this.health -= pcomponent.particleEmitterList.First().Damage;
 
+                if (this.health <= 100)
+                {
+                    dead = true;
+                }
+
                 if (deadAnimation == true)
                 {
                     dead = true;

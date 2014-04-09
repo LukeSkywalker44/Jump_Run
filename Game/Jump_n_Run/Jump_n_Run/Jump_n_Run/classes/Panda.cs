@@ -255,14 +255,7 @@ namespace Jump_n_Run.classes
                 oldOrientation = Orientation.Down;
             }
 
-            if (this.health <= 0)
-            {
-                pandaDirection = SpriteEffects.None;
-                this.Texture = pandaImgDead;
-                pandaImgIndexDead = 0;
-                CalculatePandaImgIndex(gt, Orientation.Down);
-                deadAnimation = true;
-            }
+           
         }
 
         public override void Draw(ref SpriteBatch sb)

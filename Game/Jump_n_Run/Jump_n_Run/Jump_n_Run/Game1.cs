@@ -25,7 +25,8 @@ namespace Jump_n_Run
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle mainFrame = new Rectangle(0, 0, 1024, 768);
-        Rectangle bgFrame = new Rectangle(0, 0, 2048, 768);
+        Rectangle bgFrame = new Rectangle(0, 0, 1024, 768);
+        Rectangle bgFrame2 = new Rectangle(0, 0, 1024, 768);
 
         Rectangle rect1;
         Rectangle rect2;
@@ -126,7 +127,7 @@ namespace Jump_n_Run
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            background = Content.Load<Texture2D>("landscape_2048x768");
+            background = Content.Load<Texture2D>(@"Images/background/Game_Background_by_flashpotatoes");
 
             player.loadPlayer(this.graphics, this.Content);
 
@@ -251,6 +252,35 @@ namespace Jump_n_Run
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+
+            GObjects[6].rectangle.X = mainFrame.X - 1000;
+
+
+
+            if (bgFrame.Left >= mainFrame.Left)
+            {
+                bgFrame2.X = bgFrame.Left - bgFrame2.Width;
+            }
+
+            if (bgFrame2.Left >= mainFrame.Left)
+            {
+                bgFrame.X = bgFrame2.Left - bgFrame.Width;
+            }
+
+            if (bgFrame.Right <= mainFrame.Right)
+            {
+                bgFrame2.X = bgFrame.Right;
+            }
+
+            if (bgFrame2.Right <= mainFrame.Right)
+            {
+                bgFrame.X = bgFrame2.Right;
+            }
+
+
+
+
 
             if (rect1.X + background.Width <= 0)
             {
@@ -459,7 +489,7 @@ namespace Jump_n_Run
 
             
 
-            Scrolling.Scroll(player, GObjects, ref bgFrame, mainFrame, pcomponent.particleEmitterList);
+            Scrolling.Scroll(player, GObjects, ref bgFrame,ref bgFrame2, mainFrame, pcomponent.particleEmitterList);
 
             
 
@@ -509,6 +539,7 @@ namespace Jump_n_Run
             spriteBatch.Begin();
 
             spriteBatch.Draw(background, bgFrame, Color.White);
+            spriteBatch.Draw(background, bgFrame2, Color.White);
 
             int particleCount = 0;
 
@@ -529,11 +560,13 @@ namespace Jump_n_Run
                 particleCount += emitter.ParticleList.Count;
             }
 
-            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, "FPS: " + FPS, new Vector2(1, 20), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, "Pandas: " + enemies.Count, new Vector2(1, 40), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, "Partikel: " + particleCount , new Vector2(1, 60), Color.LimeGreen);
-            spriteBatch.DrawString(Arial, "Emitter: " + pcomponent.particleEmitterList.Count,  new Vector2(1, 80),Color.LimeGreen);
+            spriteBatch.DrawString(Arial, Convert.ToString(((GC.GetTotalMemory(false)) / 1024)) + "KB", new Vector2(1, 1), Color.Magenta);
+            spriteBatch.DrawString(Arial, "FPS: " + FPS, new Vector2(1, 20), Color.Magenta);
+            spriteBatch.DrawString(Arial, "Pandas: " + enemies.Count, new Vector2(1, 40), Color.Magenta);
+            spriteBatch.DrawString(Arial, "Partikel: " + particleCount, new Vector2(1, 60), Color.Magenta);
+            spriteBatch.DrawString(Arial, "Emitter: " + pcomponent.particleEmitterList.Count, new Vector2(1, 80), Color.Magenta);
+
+            
             
 
           

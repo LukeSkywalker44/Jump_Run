@@ -25,7 +25,7 @@ namespace Jump_n_Run.classes
         /// <param name="player">the Player object</param>
         /// <param name="gobjects">the objects which will move</param>
         /// <param name="backgroundRenderFrame">the rectangle used for rendering the background</param>
-        static public void Scroll(Player player,   IEnumerable<GameObject> gobjects, ref Rectangle backgroundRenderFrame, Rectangle mainframe, IEnumerable<Emitter> emitter)
+        static public void Scroll(Player player, IEnumerable<GameObject> gobjects, ref Rectangle backgroundRenderFrame, ref Rectangle backgroundRenderFrame2, Rectangle mainframe, IEnumerable<Emitter> emitter)
         {
             if (player.rectangle.X > 700)
             {
@@ -44,6 +44,7 @@ namespace Jump_n_Run.classes
                 }
 
                 backgroundRenderFrame.X -= player.movementSpeed;
+                backgroundRenderFrame2.X -= player.movementSpeed;
             }
 
             if (player.rectangle.X < 300)
@@ -61,6 +62,7 @@ namespace Jump_n_Run.classes
                 }
 
                 backgroundRenderFrame.X += player.movementSpeed;
+                backgroundRenderFrame2.X += player.movementSpeed;
             }
         }
     }
